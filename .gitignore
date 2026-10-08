@@ -1,0 +1,5 @@
+/dist/
+/tests/.artifacts/
+__pycache__/
+*.py[cod]
+*.blend*

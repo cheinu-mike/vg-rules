@@ -1,0 +1,15 @@
+schema_version = "1.0.0"
+id = "vg_rules"
+version = "0.1.0"
+name = "VG Rules"
+tagline = "Clean up vertex groups and assign full weights with rules"
+maintainer = "Blank Glyph"
+type = "add-on"
+website = "https://github.com/cheinu-mike/vg-rules"
+tags = ["Rigging"]
+blender_version_min = "4.2.0"
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = ["2026 Blank Glyph"]
+
+[permissions]
+files = "Import and export rule presets"
