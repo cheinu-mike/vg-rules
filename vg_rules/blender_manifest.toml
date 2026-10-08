@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "vg_rules"
-version = "0.1.0"
+version = "0.1.1"
 name = "VG Rules"
 tagline = "Clean up vertex groups and assign full weights with rules"
 maintainer = "Blank Glyph"

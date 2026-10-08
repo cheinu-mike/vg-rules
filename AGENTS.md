@@ -1,8 +1,9 @@
 # Release policy
 
-The first release remains **0.1.0**. Later releases may change version.
+The current release is **0.1.1**; preserve historical **0.1.0** artifacts.
 Derive installer filenames from `vg_rules/__init__.py`'s `bl_info` version and
 require matching `blender_manifest.toml` metadata.
+Record release changes and verification limits in `CHANGELOG.md`.
 
 # Packaging
 

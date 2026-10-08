@@ -96,8 +96,8 @@ assert addon.VGR_PT_rules.is_registered
 fresh_scene = bpy.data.scenes.new("Fresh Scene")
 for _ in range(2):
     addon.initialize_loaded_scenes(None)
-    assert fresh_scene.vgr_settings.initialized
     assert addon.export_rules(fresh_scene) == {}
+    assert fresh_scene.vgr_settings.initialized
     assert not fresh_scene.vgr_settings.log
 assert bpy.ops.vgr.preview(scope='ALL') == {'CANCELLED'}
 assert bpy.ops.vgr.apply(scope='ALL') == {'CANCELLED'}
@@ -992,9 +992,9 @@ original_populate = addon.populate_rules
 for suffix in (None, ".json", ".py"):
     populated_rows = []
 
-    def fail_partial_population(collection, incoming):
+    def fail_partial_population(collection, incoming, scene):
         first_name = next(iter(incoming))
-        original_populate(collection, {first_name: incoming[first_name]})
+        original_populate(collection, {first_name: incoming[first_name]}, scene)
         populated_rows.extend(rule.object_name for rule in collection)
         settings.log.clear()
         settings.status = "Partially loaded"

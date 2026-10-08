@@ -25,7 +25,7 @@ def main():
     run = Path(tempfile.mkdtemp(prefix="blender-", dir=artifacts)).resolve()
     if not run.is_relative_to(artifacts.resolve()):
         raise RuntimeError("Test output must stay inside the artifacts directory.")
-    for check in ("verify_addon", "verify_extension"):
+    for check in ("verify_addon", "verify_runtime", "verify_extension"):
         profile = run / check
         profile.mkdir()
         environment = os.environ.copy()
@@ -50,8 +50,9 @@ def main():
             return 1
         (run / f"{check}.stdout.txt").write_text(result.stdout, encoding="utf-8")
         (run / f"{check}.stderr.txt").write_text(result.stderr, encoding="utf-8")
-        marker = ("ALL ADD-ON INTEGRATION CHECKS PASSED" if check == "verify_addon"
-                  else '"status": "PASS"')
+        marker = {"verify_addon": "ALL ADD-ON INTEGRATION CHECKS PASSED",
+                  "verify_runtime": "ALL RUNTIME COMPLIANCE CHECKS PASSED",
+                  "verify_extension": '"status": "PASS"'}[check]
         if result.returncode or marker not in result.stdout:
             print(result.stdout)
             print(result.stderr)

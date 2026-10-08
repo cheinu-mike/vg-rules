@@ -19,7 +19,7 @@
 bl_info = {
     "name": "VG Rules",
     "author": "Blank Glyph",
-    "version": (0, 1, 0),
+    "version": (0, 1, 1),
     "blender": (4, 2, 0),
     "location": "3D Viewport > Sidebar > VG Rules",
     "description": "Edit object cleanup rules and assign all mesh vertices full group weights",
@@ -93,7 +93,7 @@ class VGR_Assignment(PropertyGroup):
 
 
 def mesh_poll(self, obj):
-    return obj.type == 'MESH'
+    return obj.type == 'MESH' and object_in_scene(obj, self.id_data)
 
 
 def update_rule_target(rule, context):
@@ -150,16 +150,21 @@ def active_rule(scene):
     return None
 
 
-def target_object(rule):
+def object_in_scene(obj, scene):
+    return obj is not None and scene.objects.get(obj.name) == obj
+
+
+def target_object(rule, scene=None):
+    scene = scene if scene is not None else rule.id_data
     if rule.target is not None:
-        return rule.target
+        return rule.target if object_in_scene(rule.target, scene) else None
     if rule.target_was_set:
         return None
-    return bpy.data.objects.get(rule.object_name)
+    return scene.objects.get(rule.object_name)
 
 
-def rule_name(rule):
-    obj = target_object(rule)
+def rule_name(rule, scene=None):
+    obj = rule.target if rule.target is not None else target_object(rule, scene)
     return obj.name if obj is not None else rule.object_name or "Choose an object"
 
 
@@ -232,7 +237,7 @@ def restore_property_group(group, values):
             setattr(group, name, value)
 
 
-def populate_rules(collection, rules):
+def populate_rules(collection, rules, scene):
     for object_name, values in rules.items():
         rule = collection.add()
         rule.pattern_lists_split = True
@@ -240,7 +245,7 @@ def populate_rules(collection, rules):
         for key in engine.CASE_KEYS:
             setattr(rule, key, values.get(key, False))
         rule.object_name = object_name
-        obj = bpy.data.objects.get(object_name)
+        obj = scene.objects.get(object_name)
         if obj is not None and obj.type == 'MESH':
             rule.target = obj
         for kind in engine.PATTERN_KEYS:
@@ -264,7 +269,7 @@ def load_rules(scene, rules):
     previous = snapshot_property_group(settings)
     try:
         settings.rules.clear()
-        populate_rules(settings.rules, rules)
+        populate_rules(settings.rules, rules, scene)
         settings.initialized = True
         settings.rule_index = 0
         settings.log.clear()
@@ -276,9 +281,10 @@ def load_rules(scene, rules):
 
 
 def export_rules(scene):
+    initialize_scene(scene)
     result = {}
     for rule in scene.vgr_settings.rules:
-        obj = target_object(rule)
+        obj = rule.target if rule.target is not None else target_object(rule, scene)
         name = obj.name if obj is not None else rule.object_name
         if not name:
             raise ValueError("Choose an object or enter a name for every rule before exporting.")
@@ -305,11 +311,12 @@ class VGR_OT_add_rule(Operator):
     def execute(self, context):
         settings = context.scene.vgr_settings
         settings.initialized = True
-        objects = [obj for obj in context.selected_objects if obj.type == 'MESH'] if self.selected else [None]
+        objects = [obj for obj in context.selected_objects
+                   if obj.type == 'MESH' and object_in_scene(obj, context.scene)] if self.selected else [None]
         added = 0
         for obj in objects:
             existing = next((index for index, rule in enumerate(settings.rules)
-                             if obj is not None and target_object(rule) == obj), None)
+                             if obj is not None and target_object(rule, context.scene) == obj), None)
             if existing is not None:
                 settings.rule_index = existing
                 continue
@@ -365,6 +372,7 @@ class VGR_OT_edit_list(Operator):
 
 
 def scoped_rules(scene, scope):
+    initialize_scene(scene)
     settings = scene.vgr_settings
     if scope == 'ALL':
         rules = [rule for rule in settings.rules if rule.enabled]
@@ -374,7 +382,7 @@ def scoped_rules(scene, scope):
     # Capture the identity of newly resolved imported names before running them.
     # target_object itself stays read-only because the sidebar also calls it.
     for rule in rules:
-        obj = target_object(rule)
+        obj = target_object(rule, scene)
         if obj is not None and obj.type == 'MESH':
             if rule.target is None:
                 rule.target = obj
@@ -383,11 +391,11 @@ def scoped_rules(scene, scope):
     return rules
 
 
-def duplicate_rule_targets(rules):
+def duplicate_rule_targets(rules, scene):
     seen_targets = set()
     duplicates = {}
     for rule in rules:
-        obj = target_object(rule)
+        obj = target_object(rule, scene)
         if obj is None:
             continue
         identity = obj.as_pointer()
@@ -397,12 +405,12 @@ def duplicate_rule_targets(rules):
     return list(duplicates.values())
 
 
-def conflicting_mesh_targets(rules):
+def conflicting_mesh_targets(rules, scene):
     groups = {}
     for rule in rules:
         if not rule.enabled:
             continue
-        obj = target_object(rule)
+        obj = target_object(rule, scene)
         if obj is None or obj.type != 'MESH':
             continue
         # Count targets before planning: a currently empty match can become
@@ -419,18 +427,21 @@ def mesh_conflict_message(group):
             'Disable extra rules or use Preview Rule and Apply Rule one at a time.')
 
 
-def shared_mesh_groups(rules):
+def shared_mesh_groups(rules, scene):
     owners = {}
     for obj in bpy.data.objects:
         if obj.type == 'MESH':
             owners.setdefault(obj.data.as_pointer(), []).append(obj)
     groups = {}
     for rule in rules:
-        obj = target_object(rule)
+        obj = target_object(rule, scene)
         if obj is None or obj.type != 'MESH':
             continue
         identity = obj.data.as_pointer()
-        if len(owners.get(identity, [])) < 2:
+        objects = owners.get(identity, [])
+        # One object can affect several scenes without another mesh user.
+        scenes = {owner.as_pointer(): tuple(owner.users_scene) for owner in objects}
+        if len(objects) < 2 and len(scenes.get(obj.as_pointer(), ())) < 2:
             continue
         try:
             plan = engine.make_plan(obj, rule_dictionary(rule))
@@ -439,7 +450,8 @@ def shared_mesh_groups(rules):
             continue
         if not plan.delete_names and not plan.assignments:
             continue
-        group = groups.setdefault(identity, {"mesh": obj.data, "targets": {}, "objects": owners[identity]})
+        group = groups.setdefault(identity, {"mesh": obj.data, "targets": {},
+                                             "objects": objects, "scenes": scenes})
         group["targets"][obj.as_pointer()] = obj
     return list(groups.values())
 
@@ -452,7 +464,15 @@ def object_names(objects):
 def shared_mesh_message(group):
     return (f'Shared mesh {group["mesh"].name!r}: rule targets {object_names(group["targets"].values())}. '
             f'Objects sharing this mesh: {object_names(group["objects"])}. '
-            'Vertex groups and weights can change on all listed objects.')
+            f'Affected objects and scenes: {affected_scenes(group)}. '
+            'Vertex groups and weights can change on all listed objects and in their scenes.')
+
+
+def affected_scenes(group):
+    return "; ".join(
+        f'{json.dumps(obj.name, ensure_ascii=False)} in '
+        f'{object_names(group["scenes"][obj.as_pointer()]) or "no scene (unlinked)"}'
+        for obj in sorted(group["objects"], key=lambda obj: obj.name.casefold()))
 
 
 def log_shared_meshes(settings, groups, status):
@@ -473,7 +493,7 @@ def run_rules(operator, context, scope, apply, allow_shared_data=False):
     settings.log.clear()
     settings.log_index = 0
     if scope == 'ALL':
-        duplicate_targets = duplicate_rule_targets(rules)
+        duplicate_targets = duplicate_rule_targets(rules, context.scene)
         if duplicate_targets:
             for obj in duplicate_targets:
                 log_line(settings, "WARNING", f'{obj.name}: Multiple enabled rules target this object. Combine them or disable duplicates before running All.')
@@ -481,7 +501,7 @@ def run_rules(operator, context, scope, apply, allow_shared_data=False):
             settings.show_log = True
             operator.report({'WARNING'}, settings.status)
             return {'CANCELLED'}
-        mesh_conflicts = conflicting_mesh_targets(rules)
+        mesh_conflicts = conflicting_mesh_targets(rules, context.scene)
         if mesh_conflicts:
             settings.status = ("No rules ran: multiple enabled rules share mesh data. "
                                "Disable extra rules or use Preview Rule and Apply Rule one at a time.")
@@ -491,7 +511,7 @@ def run_rules(operator, context, scope, apply, allow_shared_data=False):
                 log_line(settings, "WARNING", message)
                 operator.report({'WARNING'}, message)
             return {'CANCELLED'}
-    shared_groups = shared_mesh_groups(rules)
+    shared_groups = shared_mesh_groups(rules, context.scene)
     if shared_groups:
         log_shared_meshes(settings, shared_groups, "No rules ran: shared mesh data needs confirmation.")
         if apply and not allow_shared_data:
@@ -501,8 +521,14 @@ def run_rules(operator, context, scope, apply, allow_shared_data=False):
     warnings = len(shared_groups)
     for rule in rules:
         try:
+            if rule.target is not None and not object_in_scene(rule.target, context.scene):
+                raise ValueError(f'Target is outside executing scene {context.scene.name!r}; rule skipped. '
+                                 'Link the object into this scene or choose a target here.')
+            obj = target_object(rule, context.scene)
+            if obj is None:
+                raise ValueError(f'Object was not found in scene {context.scene.name!r}. Choose an object for this rule.')
             values = rule_dictionary(rule)
-            plan = engine.make_plan(target_object(rule), values)
+            plan = engine.make_plan(obj, values)
             descriptions = engine.describe_plan(plan)
             if apply:
                 engine.apply_plan(plan)
@@ -512,7 +538,7 @@ def run_rules(operator, context, scope, apply, allow_shared_data=False):
             deleted += len(plan.delete_names)
             assigned += len(plan.assignments)
         except (ValueError, RuntimeError, KeyError, TypeError) as error:
-            log_line(settings, "WARNING", f"{rule_name(rule)}: {error}")
+            log_line(settings, "WARNING", f"{rule_name(rule, context.scene)}: {error}")
             warnings += 1
     verb = "Applied" if apply else "Previewed"
     settings.status = f"{verb} {completed} rule(s): {deleted} deletion(s), {assigned} assignment(s), {warnings} warning(s)."
@@ -538,15 +564,16 @@ class VGR_OT_apply(Operator):
     bl_options = {'REGISTER', 'UNDO'}
     scope: EnumProperty(items=(('ACTIVE', "Active Rule", ""), ('ALL', "All Enabled Rules", "")))
     allow_shared_data: BoolProperty(default=False, options={'HIDDEN', 'SKIP_SAVE'},
-                                   description="Explicitly allow changes to meshes used by multiple objects")
+                                   description="Explicitly allow changes affecting shared objects or multiple scenes")
 
     def invoke(self, context, event):
         # Each click needs a fresh decision; a previous confirmation is not reused.
         self.allow_shared_data = False
         rules = scoped_rules(context.scene, self.scope)
-        if self.scope == 'ALL' and (duplicate_rule_targets(rules) or conflicting_mesh_targets(rules)):
+        if self.scope == 'ALL' and (duplicate_rule_targets(rules, context.scene)
+                                   or conflicting_mesh_targets(rules, context.scene)):
             return self.execute(context)
-        self._shared_groups = shared_mesh_groups(rules)
+        self._shared_groups = shared_mesh_groups(rules, context.scene)
         if not self._shared_groups:
             return self.execute(context)
         log_shared_meshes(context.scene.vgr_settings, self._shared_groups,
@@ -558,15 +585,16 @@ class VGR_OT_apply(Operator):
 
     def draw(self, context):
         layout = self.layout
-        layout.label(text="These objects share mesh data.", icon='ERROR')
+        layout.label(text="These changes affect shared objects or multiple scenes.", icon='ERROR')
         for group in getattr(self, "_shared_groups", []):
             box = layout.box()
             for text in (f'Rule targets: {object_names(group["targets"].values())}',
-                         f'Objects sharing this mesh: {object_names(group["objects"])}'):
+                         f'Objects sharing this mesh: {object_names(group["objects"])}',
+                         f'Affected scenes: {affected_scenes(group)}'):
                 # Leave room for wide glyphs at smaller window sizes.
                 for line in textwrap.wrap(text, width=40):
                     box.label(text=line)
-        layout.label(text="Vertex groups and weights can change on all listed objects.")
+        layout.label(text="Vertex groups and weights can change in all listed scenes.")
         layout.label(text="Continue to apply, or Cancel to leave them unchanged.")
 
     def cancel(self, context):
@@ -603,9 +631,7 @@ class VGR_OT_export(Operator, ExportHelper):
     def execute(self, context):
         try:
             rules = export_rules(context.scene)
-            with open(self.filepath, "w", encoding="utf-8") as file:
-                json.dump(rules, file, indent=2)
-                file.write("\n")
+            presets.write_rules(self.filepath, rules)
         except (OSError, ValueError) as error:
             self.report({'ERROR'}, str(error))
             return {'CANCELLED'}
@@ -617,8 +643,8 @@ class VGR_UL_objects(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         row = layout.row(align=True)
         row.prop(item, "enabled", text="")
-        obj = target_object(item)
-        row.label(text=rule_name(item), icon='MESH_DATA' if obj is not None else 'ERROR')
+        obj = target_object(item, context.scene)
+        row.label(text=rule_name(item, context.scene), icon='MESH_DATA' if obj is not None else 'ERROR')
         row.label(text=f"{len(item.keep_patterns) + len(item.delete_patterns)} / {len(item.assignments)}")
 
 
@@ -679,6 +705,7 @@ class VGR_PT_rules(Panel):
 
     def draw(self, context):
         layout = self.layout
+        initialize_scene(context.scene)
         settings = context.scene.vgr_settings
         layout.use_property_split = False
         row = layout.row(align=True)
@@ -697,10 +724,13 @@ class VGR_PT_rules(Panel):
             layout.prop(rule, "target")
             if rule.target is None:
                 layout.prop(rule, "object_name", text="Fallback Name")
-            obj = target_object(rule)
+            obj = target_object(rule, context.scene)
             if obj is None:
-                message = ("The selected object is missing. Choose a mesh above or explicitly edit the fallback name."
-                           if rule.target_was_set else "Object not found. Choose a mesh above.")
+                if rule.target is not None:
+                    message = f'Target is outside scene {context.scene.name!r}; this rule will be skipped. Link it here or choose a local mesh.'
+                else:
+                    message = ("The selected object is missing. Choose a mesh above or explicitly edit the fallback name."
+                               if rule.target_was_set else "Object not found in this scene. Choose a mesh above.")
                 wrapped_labels(layout, message, context.region, 'ERROR')
             elif obj.mode == 'EDIT' or obj.data.is_editmode:
                 wrapped_labels(layout, "Switch the target and any objects sharing its mesh to Object Mode.", context.region, 'ERROR')
@@ -755,21 +785,30 @@ class VGR_PT_rules(Panel):
                 wrapped_labels(layout, line.message, context.region, wide_text=line.kind == "WARNING")
 
 
+def initialize_scene(scene):
+    if not scene.vgr_settings.initialized:
+        if not scene.vgr_settings.rules:
+            load_rules(scene, {})
+        else:
+            scene.vgr_settings.initialized = True
+    for rule in scene.vgr_settings.rules:
+        if rule.target is not None:
+            update_rule_target(rule, None)
+        split_legacy_patterns(rule)
+
+
 @persistent
 def initialize_loaded_scenes(_):
-    for scene in bpy.data.scenes:
-        if not scene.vgr_settings.initialized:
-            load_rules(scene, {})
-        for rule in scene.vgr_settings.rules:
-            if rule.target is not None:
-                update_rule_target(rule, None)
-            split_legacy_patterns(rule)
+    # Other scenes initialize when their UI or operators are used.
+    scene = getattr(bpy.context, "scene", None)
+    if scene is not None:
+        initialize_scene(scene)
 
 
 def initialize_pending_scenes():
     # Blender restricts data access while an add-on's register() runs.
     # Initialize only once that enable step has finished.
-    if hasattr(bpy.types.Scene, "vgr_settings"):
+    if owns_scene_property():
         initialize_loaded_scenes(None)
     return None
 
@@ -783,25 +822,80 @@ CLASSES = (
 )
 
 
+_registered_classes = []
+_scene_property = None
+_owns_handler = False
+_owns_timer = False
+
+
+def registered_class(cls):
+    base = next(base for base in (PropertyGroup, Operator, UIList, Panel) if issubclass(cls, base))
+    identifier = getattr(cls, "bl_idname", cls.__name__)
+    if issubclass(cls, Operator):
+        prefix, name = identifier.split(".", 1)
+        identifier = f"{prefix.upper()}_OT_{name}"
+    return base.bl_rna_get_subclass_py(identifier, None)
+
+
+def owns_scene_property():
+    prop = bpy.types.Scene.bl_rna.properties.get("vgr_settings")
+    return (_scene_property is not None and prop is not None and prop.type == 'POINTER'
+            and prop.as_pointer() == _scene_property and registered_class(VGR_Settings) is VGR_Settings
+            and prop.fixed_type == VGR_Settings.bl_rna)
+
+
 def register():
-    for cls in CLASSES:
-        bpy.utils.register_class(cls)
-    bpy.types.Scene.vgr_settings = PointerProperty(type=VGR_Settings)
-    bpy.app.handlers.load_post.append(initialize_loaded_scenes)
-    if hasattr(bpy.data, "scenes"):
-        initialize_loaded_scenes(None)
-    else:
+    global _scene_property, _owns_handler, _owns_timer
+    if (_registered_classes or hasattr(bpy.types.Scene, "vgr_settings")
+            or any(registered_class(cls) is not None for cls in CLASSES)
+            or initialize_loaded_scenes in bpy.app.handlers.load_post
+            or bpy.app.timers.is_registered(initialize_pending_scenes)):
+        raise RuntimeError("VG Rules installation conflicts with already registered resources. "
+                           "Disable the other installation and restart Blender before enabling this one.")
+    try:
+        for cls in CLASSES:
+            _registered_classes.append(cls)
+            bpy.utils.register_class(cls)
+        bpy.types.Scene.vgr_settings = PointerProperty(type=VGR_Settings)
+        _scene_property = bpy.types.Scene.bl_rna.properties["vgr_settings"].as_pointer()
+        _owns_handler = True
+        bpy.app.handlers.load_post.append(initialize_loaded_scenes)
+        _owns_timer = True
+        # Defer data changes until Blender has finished enabling the add-on.
         bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
+    except Exception:
+        unregister()
+        raise
 
 
 def unregister():
-    if bpy.app.timers.is_registered(initialize_pending_scenes):
-        bpy.app.timers.unregister(initialize_pending_scenes)
-    if initialize_loaded_scenes in bpy.app.handlers.load_post:
-        bpy.app.handlers.load_post.remove(initialize_loaded_scenes)
-    del bpy.types.Scene.vgr_settings
-    for cls in reversed(CLASSES):
-        bpy.utils.unregister_class(cls)
+    global _scene_property, _owns_handler, _owns_timer
+    errors = []
+    try:
+        if _owns_timer and bpy.app.timers.is_registered(initialize_pending_scenes):
+            bpy.app.timers.unregister(initialize_pending_scenes)
+        _owns_timer = False
+    except Exception as error:
+        errors.append(error)
+    if _owns_handler:
+        if initialize_loaded_scenes in bpy.app.handlers.load_post:
+            bpy.app.handlers.load_post.remove(initialize_loaded_scenes)
+        _owns_handler = False
+    try:
+        if owns_scene_property():
+            del bpy.types.Scene.vgr_settings
+        _scene_property = None
+    except Exception as error:
+        errors.append(error)
+    for cls in reversed(_registered_classes.copy()):
+        try:
+            if registered_class(cls) is cls:
+                bpy.utils.unregister_class(cls)
+            _registered_classes.remove(cls)
+        except Exception as error:
+            errors.append(error)
+    if errors:
+        raise RuntimeError(f"Could not unregister all owned VG Rules resources: {errors!r}")
 
 
 if __name__ == "__main__":

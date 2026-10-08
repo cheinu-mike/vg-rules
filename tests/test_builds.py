@@ -35,8 +35,10 @@ class Builds(unittest.TestCase):
             shutil.copy2(ROOT / "vg_rules" / name, self.root / "vg_rules" / name)
         self.blender = self.root / "blender.exe"
         self.blender.write_bytes(b"Only used with a mocked subprocess")
-        self.legacy = self.root / "dist/vg_rules-0.1.0.zip"
-        self.extension = self.root / "dist/blender_extensions/vg_rules-0.1.0.zip"
+        self.version = build_addon.read_metadata((self.root / "vg_rules/__init__.py").read_bytes())["version"]
+        self.version_text = ".".join(map(str, self.version))
+        self.legacy = self.root / "dist" / f"vg_rules-{self.version_text}.zip"
+        self.extension = self.root / "dist/blender_extensions" / f"vg_rules-{self.version_text}.zip"
         self.extension.parent.mkdir(parents=True)
         self.legacy.write_bytes(b"Existing add-on: preserve on failure")
         self.extension.write_bytes(b"Existing extension: preserve on failure")
@@ -81,7 +83,7 @@ class Builds(unittest.TestCase):
         with ZipFile(self.extension) as archive:
             self.assertEqual(set(archive.namelist()), set(build_addon.FILES) | {build_extension.MANIFEST})
             manifest = tomllib.loads(archive.read(build_extension.MANIFEST).decode())
-            self.assertEqual(manifest["version"], "0.1.0")
+            self.assertEqual(manifest["version"], self.version_text)
             original = ast.parse((self.root / "vg_rules/__init__.py").read_bytes())
             original.body = [node for node in original.body if not (
                 isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and
@@ -101,7 +103,7 @@ class Builds(unittest.TestCase):
 
     def test_mismatched_version_fails_before_validation(self):
         manifest = self.root / "vg_rules/blender_manifest.toml"
-        manifest.write_text(manifest.read_text().replace('version = "0.1.0"', 'version = "9.9.9"'))
+        manifest.write_text(manifest.read_text().replace(f'version = "{self.version_text}"', 'version = "9.9.9"'))
         with patch.object(build_extension.subprocess, "run") as run:
             self.safe_failure(self.build_extension, ValueError)
         run.assert_not_called()
@@ -135,14 +137,16 @@ class Builds(unittest.TestCase):
                 self.safe_failure(builder, PermissionError)
 
     def test_future_version_uses_metadata_for_both_filenames(self):
+        future = (*self.version[:2], self.version[2] + 1)
+        future_text = ".".join(map(str, future))
         source = self.root / "vg_rules/__init__.py"
-        source.write_text(source.read_text().replace('"version": (0, 1, 0)', '"version": (0, 1, 1)'))
+        source.write_text(source.read_text().replace(f'"version": {self.version!r}', f'"version": {future!r}'))
         manifest = self.root / "vg_rules/blender_manifest.toml"
-        manifest.write_text(manifest.read_text().replace('version = "0.1.0"', 'version = "0.1.1"'))
+        manifest.write_text(manifest.read_text().replace(f'version = "{self.version_text}"', f'version = "{future_text}"'))
         before = (self.legacy.read_bytes(), self.extension.read_bytes())
-        self.assertEqual(build_addon.build(self.root), self.root / "dist/vg_rules-0.1.1.zip")
+        self.assertEqual(build_addon.build(self.root), self.root / "dist" / f"vg_rules-{future_text}.zip")
         with patch.object(build_extension.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
-            self.assertEqual(self.build_extension(), self.root / "dist/blender_extensions/vg_rules-0.1.1.zip")
+            self.assertEqual(self.build_extension(), self.root / "dist/blender_extensions" / f"vg_rules-{future_text}.zip")
         self.assertEqual((self.legacy.read_bytes(), self.extension.read_bytes()), before)
 
     def test_cli_requires_blender(self):

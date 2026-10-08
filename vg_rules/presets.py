@@ -20,7 +20,9 @@
 
 import ast
 import json
+import os
 from pathlib import Path
+import tempfile
 
 from .engine import CASE_KEYS, PATTERN_KEYS, RuleMatcher, validate_assignment_name
 
@@ -104,3 +106,35 @@ def read_rules(filepath):
                 return validate_rules(rules)
         raise ValueError("The script has no literal OBJECT_RULES dictionary.")
     return validate_rules(json.loads(source))
+
+
+def write_rules(filepath, rules):
+    """Stage presets beside their destination; protect VG Rules installations."""
+    import bpy
+
+    destination = Path(filepath).expanduser().resolve()
+    packages = [Path(__file__).resolve().parent]
+    packages.extend(Path(directory) / "vg_rules"
+                    for directory in bpy.utils.script_paths(subdir="addons", check_all=True))
+    packages.extend(Path(repo.directory) / "vg_rules" for repo in bpy.context.preferences.extensions.repos
+                    if repo.directory)
+    if any(destination.is_relative_to(package.resolve()) for package in packages):
+        raise ValueError("Export presets outside the installed VG Rules directory.")
+    data = (json.dumps(validate_rules(rules), indent=2) + "\n").encode("utf-8")
+    descriptor, name = tempfile.mkstemp(prefix=f".{destination.name}.", suffix=".tmp",
+                                        dir=destination.parent)
+    stage = Path(name)
+    try:
+        with os.fdopen(descriptor, "wb") as file:
+            descriptor = None
+            file.write(data)
+            file.flush()
+            os.fsync(file.fileno())
+        os.replace(stage, destination)
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+        try:
+            stage.unlink(missing_ok=True)
+        except OSError:
+            pass

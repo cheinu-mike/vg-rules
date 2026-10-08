@@ -68,18 +68,29 @@ def _failure(label, reason):
     return ValueError(f"{label}: {reason}; simplify the expression or use literal filters.")
 
 
-def _run_matches(keep, delete, names, literals):
-    label = _label(keep, delete)
+def _bundled_interpreter(label):
+    # This is only called inside Blender, never by the standalone worker.
+    import bpy
+
     executable = sys.executable
     if not isinstance(executable, str) or not executable:
         raise _failure(label, "Safe matching needs Blender's Python interpreter")
     try:
         interpreter = Path(executable).resolve()
+        resource = Path(bpy.utils.resource_path('LOCAL')).resolve()
+        python = (resource / "python").resolve()
         available = interpreter.is_file()
     except (OSError, ValueError, RuntimeError):
         raise _failure(label, "Safe matching could not locate Blender's Python interpreter") from None
-    if not available or re.fullmatch(r"python(?:\d+(?:\.\d+)*)?(?:t|w)?(?:\.exe)?", interpreter.name, re.IGNORECASE) is None:
+    if (not available or not python.is_relative_to(resource) or not interpreter.is_relative_to(python)
+            or re.fullmatch(r"python(?:\d+(?:\.\d+)*)?(?:t|w)?(?:\.exe)?", interpreter.name, re.IGNORECASE) is None):
         raise _failure(label, "Safe matching needs Blender's Python interpreter")
+    return interpreter
+
+
+def _run_matches(keep, delete, names, literals):
+    label = _label(keep, delete)
+    interpreter = _bundled_interpreter(label)
     payload = json.dumps({"keep": keep, "delete": delete, "names": names, "literals": literals})
     options = {"capture_output": True, "text": True, "encoding": "utf-8", "errors": "replace",
                "timeout": MATCH_TIMEOUT_SECONDS}
@@ -87,7 +98,7 @@ def _run_matches(keep, delete, names, literals):
         options["creationflags"] = subprocess.CREATE_NO_WINDOW
     try:
         # run() kills and waits for the child on timeout. No regex search runs here.
-        result = subprocess.run([str(interpreter), "-I", str(Path(__file__).resolve())],
+        result = subprocess.run([str(interpreter), "-I", "-B", str(_worker_path(label))],
                                 input=payload, **options)
     except subprocess.TimeoutExpired:
         raise _failure(label, f"Matching exceeded the {MATCH_TIMEOUT_SECONDS:g}-second time limit") from None
@@ -111,6 +122,16 @@ def _cached_matches(keep, delete, names, literals):
     return _run_matches(keep, delete, names, literals)
 
 
+def _worker_path(label):
+    try:
+        path = Path(__file__).resolve()
+        if path.is_file():
+            return path
+    except (OSError, ValueError, RuntimeError):
+        pass
+    raise _failure(label, "Safe matching worker is unavailable")
+
+
 def match_groups(keep_patterns, delete_patterns, names, literal_matches):
     keep = tuple((pattern.pattern, int(pattern.flags)) for pattern in keep_patterns)
     delete = tuple((pattern.pattern, int(pattern.flags)) for pattern in delete_patterns)
@@ -123,6 +144,10 @@ def match_groups(keep_patterns, delete_patterns, names, literal_matches):
         raise _failure(label, "Invalid literal matching input")
     if not keep and not delete:
         return tuple(not protected and selected for protected, selected in literals)
+    # A regex rule must not mutate data with unavailable worker resources,
+    # even if its matches would be cached or all names are literal-protected.
+    _bundled_interpreter(label)
+    _worker_path(label)
     if not names or all(protected for protected, _ in literals):
         return (False,) * len(names)
     character_count = sum(len(name) for name in names) + sum(len(pattern) for pattern, _ in (*keep, *delete))

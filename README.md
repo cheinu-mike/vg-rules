@@ -8,7 +8,7 @@ This is the canonical development repository for VG Rules.
 - Assign all vertices to groups at weight 1.0, with optional side and Mirror settings.
 - Save rules in the `.blend` file and exchange JSON presets.
 
-Version **0.1.0**. Requires Blender **4.2 or later**. Tested on Windows with
+Version **0.1.1**. Requires Blender **4.2 or later**. Tested on Windows with
 Blender **4.2.23 LTS** and **5.2.0 LTS**; macOS and Linux verification is pending.
 The extension package has not yet been submitted for Blender platform review.
 
@@ -35,25 +35,38 @@ Save a separate `.blend` copy before cleanup or weight changes. Keep matches
 override every Delete match; Keep alone deletes nothing. Matching is case
 insensitive unless the corresponding section's **Case Sensitive** checkbox is set.
 
+Imported names and executable targets resolve in the current scene. The picker
+shows its meshes. If a saved target is outside that scene, its pointer remains
+saved and the rule is skipped with a warning. Link it into this scene or choose
+a local object to run the rule.
+
 Full Weights replaces the assigned group's weights on every vertex, including
 hidden and unselected vertices and kept or locked groups. Mirror Weights creates
 and empties the opposite `.L`/`.R` group and enables vertex-group mirroring on
 existing Mirror modifiers. It does not apply those modifiers.
 
 Preview lists planned changes. Apply asks for confirmation when mesh data is
-shared; Cancel leaves the batch untouched. All stops when enabled rules target
-the same object or different objects sharing one mesh. Invalid rules are skipped
+shared or one target object belongs to multiple scenes. The warning lists every
+affected object and its scenes; Cancel leaves the batch untouched. All stops
+when enabled rules target the same object or different objects sharing one mesh.
+Invalid rules are skipped
 with warnings, while other valid rules may run. Review Results and use Undo or
 your saved copy to recover.
 
 Regex uses Python syntax and a one-second worker deadline per rule, with up to
 64 patterns per section and 4096 characters per pattern. Slow or invalid regex
-skips the affected rule before changes. Vertex group names allow at most 63 UTF-8
-bytes, including a `.L`/`.R` suffix.
+skips the affected rule before changes. The worker uses Blender's bundled Python;
+a missing interpreter or failed worker also skips the affected rule. Vertex
+group names allow at most 63 UTF-8 bytes, including a `.L`/`.R` suffix.
 
 Import replaces the rule list after validation and accepts JSON or a Python file
 containing a literal `OBJECT_RULES` dictionary. Python files are read without
 executing their code. Export a backup before importing.
+Export writes atomically, preserving existing presets on failure, and refuses
+destinations inside installed VG Rules directories, including disabled copies.
+Runtime operation requires no write access to those directories. Conflicting
+installations are rejected before
+registration changes; failed registration rolls back its owned resources.
 
 ## Build
 
@@ -72,8 +85,8 @@ python build_extension.py --blender "C:\Program Files\Blender Foundation\Blender
 
 The builders produce:
 
-- `dist/vg_rules-0.1.0.zip`: the Gumroad add-on, including `bl_info`.
-- `dist/blender_extensions/vg_rules-0.1.0.zip`: the extension, including
+- `dist/vg_rules-0.1.1.zip`: the Gumroad add-on, including `bl_info`.
+- `dist/blender_extensions/vg_rules-0.1.1.zip`: the extension, including
   `blender_manifest.toml` and omitting `bl_info`.
 
 Both packages use the same runtime code. Filenames derive from `bl_info`, and
@@ -90,7 +103,9 @@ python tests/run_blender.py --blender /path/to/blender
 ```
 
 Build the extension first. The Blender runner uses fresh offline profiles and
-generated meshes, presets and scenes. Output stays in ignored `tests/.artifacts/`.
+generated meshes, presets and scenes. It checks source and the installed extension
+namespace, including an installation with write access denied. Output stays in
+ignored `tests/.artifacts/`. See [CHANGELOG](CHANGELOG.md) for release changes.
 
 ## Support and license
 
