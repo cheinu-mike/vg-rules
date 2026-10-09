@@ -1,7 +1,9 @@
 # Install VG Rules
 
-Requires Blender **4.2 or later**. Version 0.1.2 is verified on Windows with
-Blender 4.2.23 LTS and 5.2.0 LTS. macOS/Linux verification remains pending.
+Requires Blender **4.2 or later**. Version 0.1.2 is verified on Windows x64,
+Linux x64 and macOS Apple Silicon with Blender 4.2.0, 4.2.23 and 5.2.0. macOS
+Intel is verified on 4.2.0 and 4.2.23; 5.2.0 has no official Intel build and is
+unsupported there. See the [verification report](../submission/COMPLIANCE.md).
 
 ## Extension package
 

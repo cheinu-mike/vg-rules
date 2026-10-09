@@ -5,6 +5,13 @@ Derive installer filenames from `vg_rules/__init__.py`'s `bl_info` version and
 require matching `blender_manifest.toml` metadata.
 Record release changes and verification limits in `CHANGELOG.md`.
 
+Require all eleven supported hosted platform/version combinations and local
+Windows GUI checks to pass against the final archive hash before marking it
+submission-ready. Blender 5.2.0 on macOS Intel is unsupported; verify Intel on
+4.2.0 and 4.2.23. Missing, failed or stale evidence is a release blocker.
+Keep generated fixtures in disposable temporary directories. Preserve portable
+results and screenshots separately from the installers.
+
 # Packaging
 
 Use one shared add-on implementation and two separate builders. Only the

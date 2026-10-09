@@ -32,5 +32,8 @@ Include:
 - Results text, warning/error messages and a screenshot if helpful.
 - A small synthetic mesh and preset if needed. Remove personal/confidential data first.
 
-The runtime is verified on Windows with Blender 4.2.23 and 5.2.0, including read-only
-extension directories. macOS/Linux verification remains pending.
+The full source and installed-extension suites, including read-only directories,
+pass on Windows x64, Linux x64 and macOS Apple Silicon with Blender 4.2.0,
+4.2.23 and 5.2.0, and macOS Intel with 4.2.0 and 4.2.23. Blender 5.2.0 on Intel
+macOS is unsupported because there is no official build. Local GUI checks cover
+Windows only. See [actual results and scope](../submission/COMPLIANCE.md).

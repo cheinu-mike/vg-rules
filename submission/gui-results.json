@@ -5,7 +5,7 @@
       "status": "PASS",
       "blender": "4.2.0",
       "platform": "windows-x64",
-      "archive_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
+      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -93,7 +93,7 @@
       "status": "PASS",
       "blender": "4.2.23",
       "platform": "windows-x64",
-      "archive_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
+      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -147,7 +147,7 @@
         },
         "confirmation": {
           "file": "submission/verification-images/4.2.23/confirmation.png",
-          "sha256": "f89e898bc56ca5893bb8d5545fc1d0f8474807c50b8af6a687936c8d1df2365f",
+          "sha256": "b13ce4c6dbada249f0d458994cf3d3d3eaed84f2491944731786bc804f614d43",
           "area": [
             0,
             18,
@@ -181,7 +181,7 @@
       "status": "PASS",
       "blender": "5.2.0",
       "platform": "windows-x64",
-      "archive_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
+      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",

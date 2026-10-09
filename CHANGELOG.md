@@ -10,13 +10,26 @@
 - Prepare listing text, the existing cube thumbnail, and genuine Preview/Apply
   screenshots from the packaged extension using a generated scene. Keep all
   submission artwork outside the installers.
+- Run the full source and installed-extension regressions on checksum-pinned
+  Blender 4.2.0, 4.2.23 and 5.2.0 in GitHub Actions, including real installation,
+  disable/re-enable, legacy migration, update, fresh-process restart and uninstall.
+- Add cross-scene shared-mesh and cancelled/rejected batch checks, with snapshots
+  of groups, locks, weights and per-object Mirror settings.
+- Use temporary fixtures and profiles, and enforce read-only installation access.
+  On Windows compare restored access rules and inheritance protection, allowing
+  Windows to normalize SDDL metadata. Write denial remains mandatory.
+- Make ZIP metadata reproducible and use LF text checkouts on every platform.
+  Keep a release gate that rejects missing, failed or wrong-hash evidence.
 
-Verification: 15 packaging checks, source integration and runtime regressions,
-and installed-extension checks passed on Windows with Blender 4.2.23 and 5.2.0.
-Installed checks use enforced read-only directories and verify packaged bytes.
-The final extension passed the official validator. Preview/Apply captures use
-that installed ZIP and verify the synthetic scene's actual weights and groups.
-macOS and Linux verification remains pending.
+Verification: 22 packaging/release-gate unit checks passed, with the real Blender
+validator rejection test enabled. Full source, runtime, installed ZIP and lifecycle
+checks passed on all eleven supported hosted combinations: Windows x64, Linux x64
+and macOS Apple Silicon on all three pinned versions, plus macOS Intel on both
+4.2 versions. Blender 5.2.0 has no official Intel build and is unsupported there.
+Local Windows GUI checks passed on all three versions: warning layout, actual
+Cancel/Continue, Ctrl-Z Undo, and saved legacy .blend/JSON migration. Product
+captures and GUI evidence use the final archive. See the hash-bound
+[compliance report](submission/COMPLIANCE.md) for actual results and scope.
 
 ## 0.1.1 (2026-10-08)
 

@@ -8,8 +8,10 @@ This is the canonical development repository for VG Rules.
 - Assign all vertices to groups at weight 1.0, with optional side and Mirror settings.
 - Save rules in the `.blend` file and exchange JSON presets.
 
-Version **0.1.2**. Requires Blender **4.2 or later**. Tested on Windows with
-Blender **4.2.23 LTS** and **5.2.0 LTS**; macOS and Linux verification is pending.
+Version **0.1.2**. Requires Blender **4.2 or later**. Verified on Windows x64,
+Linux x64 and macOS Apple Silicon with Blender **4.2.0**, **4.2.23** and **5.2.0**.
+macOS Intel is verified on **4.2.0** and **4.2.23**; Blender 5.2.0 has no official
+Intel build and is unsupported there. Local GUI checks cover all three Windows versions.
 The extension package has not yet been submitted for Blender platform review.
 
 Public guides: [Installation](docs/installation.md), [Usage](docs/usage.md),
@@ -109,10 +111,13 @@ python -m unittest discover -s tests -p "test_*.py"
 python tests/run_blender.py --blender /path/to/blender
 ```
 
-Build the extension first. The Blender runner uses fresh offline profiles and
-generated meshes, presets and scenes. It checks source and the installed extension
-namespace, including an installation with write access denied. Output stays in
-ignored `tests/.artifacts/`. See [CHANGELOG](CHANGELOG.md) for release changes.
+Build both installers first. The runner uses temporary offline profiles and
+generated meshes, presets and scenes. It runs the full source and installed ZIP
+suites with enforced read-only permissions, then separate processes for migration,
+update, restart and uninstall. GitHub Actions tests eleven required platform/version
+pairs using one candidate archive. See [Verification](docs/verification.md), the
+[archive-bound compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).
+Missing, failed or stale results block submission readiness.
 
 ## Support and license
 

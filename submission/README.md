@@ -11,6 +11,13 @@ has not yet been submitted for platform review.
 | [images/preview.png](images/preview.png) | Genuine Preview Rule capture from the installed extension |
 | [images/apply.png](images/apply.png) | Genuine Apply Rule result from the same synthetic scene |
 | [capture.json](capture.json) | Packaged-extension SHA-256, Blender version, preset, before/after weights and image hashes |
+| [COMPLIANCE.md](COMPLIANCE.md) | Actual platform and GUI results, release scope and final archive hashes |
+| [gui-results.json](gui-results.json) | Native warning, Cancel/Continue, Undo and migration evidence on three Windows versions |
+
+Read the compliance report before submitting. All eleven supported hosted
+platform/version pairs and the local GUI checks must pass against the final ZIP.
+Blender 5.2.0 on Intel macOS is unsupported; both pinned 4.2 versions cover Intel.
+Upload and moderation follow preparation and verification.
 
 ## Screenshot captions
 
