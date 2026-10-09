@@ -3,7 +3,7 @@
   "blender": "4.2.23 LTS",
   "extension_version": "0.1.2",
   "zip": "dist/blender_extensions/vg_rules-0.1.2.zip",
-  "zip_sha256": "3454614c9f5da84f29e0a378fd1e9663d983ab979587b0864f08322bc2249701",
+  "zip_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
   "scene": "VG Rules Synthetic Demo",
   "images": {
     "preview": {

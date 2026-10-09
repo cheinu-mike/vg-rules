@@ -7,6 +7,7 @@ on:
       - 'vg_rules/**'
       - 'tests/**'
       - 'build_*.py'
+      - '.gitattributes'
       - '.github/workflows/**'
       - 'submission/gui-results.json'
   pull_request:
@@ -14,6 +15,7 @@ on:
       - 'vg_rules/**'
       - 'tests/**'
       - 'build_*.py'
+      - '.gitattributes'
       - '.github/workflows/**'
 
 permissions:

@@ -1,0 +1,269 @@
+{
+  "method": "Actual native warning visually reviewed, Cancel/Continue clicked with Blender event simulation, then Ctrl-Z; synthetic scene and isolated offline Windows profiles",
+  "results": [
+    {
+      "status": "PASS",
+      "blender": "4.2.0",
+      "platform": "windows-x64",
+      "archive_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
+      "checks": [
+        {
+          "name": "legacy_saved_blend_migration",
+          "status": "PASS"
+        },
+        {
+          "name": "legacy_json_backup_migration",
+          "status": "PASS"
+        },
+        {
+          "name": "cancel_preserves_groups_weights_modifiers",
+          "status": "PASS"
+        },
+        {
+          "name": "warning_layout_reviewed",
+          "status": "PASS"
+        },
+        {
+          "name": "continue_applies_confirmed_changes",
+          "status": "PASS"
+        },
+        {
+          "name": "undo_restores_groups_weights_modifiers",
+          "status": "PASS"
+        },
+        {
+          "name": "migration_backups_unchanged",
+          "status": "PASS"
+        }
+      ],
+      "images": {
+        "warning": {
+          "file": "submission/verification-images/4.2.0/warning.png",
+          "sha256": "644aa01152d013c910db713a6737d1a8a580124c2e9c301a15de088783a4c04f",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "cancelled": {
+          "file": "submission/verification-images/4.2.0/cancelled.png",
+          "sha256": "602a94882a18a1bff438349f202d76df937bd05e3b463c4ce4bbe2bbb223cfa0",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "confirmation": {
+          "file": "submission/verification-images/4.2.0/confirmation.png",
+          "sha256": "644aa01152d013c910db713a6737d1a8a580124c2e9c301a15de088783a4c04f",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "continued": {
+          "file": "submission/verification-images/4.2.0/continued.png",
+          "sha256": "121ae8fbd956cb9bd5a14d39186fbdeeeb386a5029606b25bf5ada56ff138ed3",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "undo": {
+          "file": "submission/verification-images/4.2.0/undo.png",
+          "sha256": "44c9164898149cdb69841f5021d08c9a85f026c2d92a245f72932a03224ee1a2",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        }
+      }
+    },
+    {
+      "status": "PASS",
+      "blender": "4.2.23",
+      "platform": "windows-x64",
+      "archive_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
+      "checks": [
+        {
+          "name": "legacy_saved_blend_migration",
+          "status": "PASS"
+        },
+        {
+          "name": "legacy_json_backup_migration",
+          "status": "PASS"
+        },
+        {
+          "name": "cancel_preserves_groups_weights_modifiers",
+          "status": "PASS"
+        },
+        {
+          "name": "warning_layout_reviewed",
+          "status": "PASS"
+        },
+        {
+          "name": "continue_applies_confirmed_changes",
+          "status": "PASS"
+        },
+        {
+          "name": "undo_restores_groups_weights_modifiers",
+          "status": "PASS"
+        },
+        {
+          "name": "migration_backups_unchanged",
+          "status": "PASS"
+        }
+      ],
+      "images": {
+        "warning": {
+          "file": "submission/verification-images/4.2.23/warning.png",
+          "sha256": "b13ce4c6dbada249f0d458994cf3d3d3eaed84f2491944731786bc804f614d43",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "cancelled": {
+          "file": "submission/verification-images/4.2.23/cancelled.png",
+          "sha256": "307cd8e0b13f6a07dd6e1293d8ef63527e3f5b349750c35295f0eca5325c5341",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "confirmation": {
+          "file": "submission/verification-images/4.2.23/confirmation.png",
+          "sha256": "f89e898bc56ca5893bb8d5545fc1d0f8474807c50b8af6a687936c8d1df2365f",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "continued": {
+          "file": "submission/verification-images/4.2.23/continued.png",
+          "sha256": "5512b9bbb1b29a3d11e27c0b4b4be3d55e0108451938847aa449358d699a9e73",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "undo": {
+          "file": "submission/verification-images/4.2.23/undo.png",
+          "sha256": "1bf7557c0cc18859b13f903452a387ad864f879cd0f1d71e71190080ea72fa9d",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        }
+      }
+    },
+    {
+      "status": "PASS",
+      "blender": "5.2.0",
+      "platform": "windows-x64",
+      "archive_sha256": "37ad861f1ddbd6aab990f5a8bf761c7b5ba77363aa0cebfb0c2d945af6957660",
+      "checks": [
+        {
+          "name": "legacy_saved_blend_migration",
+          "status": "PASS"
+        },
+        {
+          "name": "legacy_json_backup_migration",
+          "status": "PASS"
+        },
+        {
+          "name": "cancel_preserves_groups_weights_modifiers",
+          "status": "PASS"
+        },
+        {
+          "name": "warning_layout_reviewed",
+          "status": "PASS"
+        },
+        {
+          "name": "continue_applies_confirmed_changes",
+          "status": "PASS"
+        },
+        {
+          "name": "undo_restores_groups_weights_modifiers",
+          "status": "PASS"
+        },
+        {
+          "name": "migration_backups_unchanged",
+          "status": "PASS"
+        }
+      ],
+      "images": {
+        "warning": {
+          "file": "submission/verification-images/5.2.0/warning.png",
+          "sha256": "a240187d1bfb8b9f37729f0fc41d831b53153c4ad7866e0e380235e62135a979",
+          "area": [
+            0,
+            19,
+            1800,
+            1059
+          ]
+        },
+        "cancelled": {
+          "file": "submission/verification-images/5.2.0/cancelled.png",
+          "sha256": "411b552a5ca4977c579aa2b0482cbb3b69f2d4c2399c952317f4883aa32dce14",
+          "area": [
+            0,
+            19,
+            1800,
+            1059
+          ]
+        },
+        "confirmation": {
+          "file": "submission/verification-images/5.2.0/confirmation.png",
+          "sha256": "a240187d1bfb8b9f37729f0fc41d831b53153c4ad7866e0e380235e62135a979",
+          "area": [
+            0,
+            19,
+            1800,
+            1059
+          ]
+        },
+        "continued": {
+          "file": "submission/verification-images/5.2.0/continued.png",
+          "sha256": "97c0185ffb57ef1827ced1d38716a8c2b58d00a1617b548a2c0d47c3888f71ca",
+          "area": [
+            0,
+            19,
+            1800,
+            1059
+          ]
+        },
+        "undo": {
+          "file": "submission/verification-images/5.2.0/undo.png",
+          "sha256": "f714cf3f0b850c00b00c4072de613d98261eddeb0cda9edbce324a68ccd69ff3",
+          "area": [
+            0,
+            19,
+            1800,
+            1059
+          ]
+        }
+      }
+    }
+  ]
+}
