@@ -58,6 +58,11 @@ def read_only(directory):
         read_acl = "(Get-Acl -LiteralPath $env:VGR_ACL_TARGET).GetSecurityDescriptorSddlForm([System.Security.AccessControl.AccessControlSections]::Access)"
         original_acl = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", read_acl],
                                       env=acl_environment, check=True, capture_output=True, text=True).stdout.strip()
+        # Windows may normalize the SDDL auto-inherited metadata on Set-Acl.
+        # Compare every permission rule and the inheritance protection state.
+        read_rules = "$vgrAcl = Get-Acl -LiteralPath $env:VGR_ACL_TARGET; $vgrRules = @($vgrAcl.GetAccessRules($true, $true, [System.Security.Principal.SecurityIdentifier]) | ForEach-Object { [ordered]@{ SID=$_.IdentityReference.Value; Rights=[int]$_.FileSystemRights; Type=[int]$_.AccessControlType; Inherited=$_.IsInherited; Inheritance=[int]$_.InheritanceFlags; Propagation=[int]$_.PropagationFlags } } | Sort-Object { $_.SID }, { $_.Rights }, { $_.Type }, { $_.Inherited }, { $_.Inheritance }, { $_.Propagation }); [ordered]@{ Protected=$vgrAcl.AreAccessRulesProtected; Rules=$vgrRules } | ConvertTo-Json -Depth 5 -Compress"
+        original_rules = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", read_rules],
+                                        env=acl_environment, check=True, capture_output=True, text=True).stdout.strip()
     else:
         modes = {path: stat.S_IMODE(path.stat().st_mode) for path in (directory, *directory.rglob("*"))}
         for path, mode in modes.items():
@@ -93,9 +98,9 @@ def read_only(directory):
             restore_acl = "$acl = [System.Security.AccessControl.DirectorySecurity]::new(); $acl.SetSecurityDescriptorSddlForm($env:VGR_ORIGINAL_DACL, [System.Security.AccessControl.AccessControlSections]::Access); Set-Acl -LiteralPath $env:VGR_ACL_TARGET -AclObject $acl"
             subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", restore_acl],
                            env=acl_environment, check=True, capture_output=True)
-            restored = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", read_acl],
+            restored = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", read_rules],
                                      env=acl_environment, check=True, capture_output=True, text=True).stdout.strip()
-            assert restored == original_acl, "Original directory permissions were not restored."
+            assert json.loads(restored) == json.loads(original_rules), f"Original directory permissions were not restored: {original_rules} -> {restored}"
         else:
             for path, mode in modes.items():
                 path.chmod(mode)

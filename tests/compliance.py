@@ -103,8 +103,11 @@ def collect(root, evidence):
     version = '.'.join(map(str, metadata['version']))
     archive = root / f'dist/blender_extensions/vg_rules-{version}.zip'
     legacy = root / f'dist/vg_rules-{version}.zip'
-    archive_hash, legacy_hash = digest(archive), digest(legacy)
     blockers = []
+    archive_hash = digest(archive) if archive.is_file() else None
+    legacy_hash = digest(legacy) if legacy.is_file() else None
+    if archive_hash is None or legacy_hash is None:
+        blockers.append('Final extension and Gumroad installers must both exist')
     static = []
     try:
         payload = {name: (source / name).read_bytes() for name in (*build_addon.FILES, *build_extension.EXTRA_FILES)}
@@ -131,9 +134,16 @@ def collect(root, evidence):
         except (OSError, ValueError) as error:
             blockers.append(f'Unreadable evidence {path.name}: {error}')
     gui_path = root / 'submission/gui-results.json'
-    gui = json.loads(gui_path.read_text(encoding='utf-8')).get('results', []) if gui_path.exists() else []
+    try:
+        gui = json.loads(gui_path.read_text(encoding='utf-8')).get('results', []) if gui_path.exists() else []
+    except (OSError, ValueError) as error:
+        gui = []
+        blockers.append(f'Unreadable GUI evidence: {error}')
     matrix, local, failures = evaluate(records, gui, archive_hash, legacy_hash)
     blockers += failures
+    if os.environ.get('GITHUB_SHA'):
+        if any(r.get('github_sha') != os.environ['GITHUB_SHA'] for r in records):
+            blockers.append('Hosted results must all come from this workflow source revision')
     for record in gui:
         for image in record.get('images', {}).values():
             path = root / image.get('file', '')
