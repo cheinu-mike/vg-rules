@@ -11,6 +11,15 @@ import tempfile
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parent
+
+
+def zip_info(filename):
+    """Use fixed metadata so CI and local builds identify the same payload."""
+    info = ZipInfo(filename, date_time=(2026, 1, 1, 0, 0, 0))
+    info.create_system = 3
+    info.external_attr = 0o100644 << 16
+    info.compress_type = ZIP_DEFLATED
+    return info
 FILES = ("__init__.py", "engine.py", "regex_guard.py", "presets.py", "NOTICE.txt", "COPYING.txt")
 
 
@@ -98,9 +107,7 @@ def build(root=ROOT):
             ast.parse(text, filename=str(path))
         name = f"vg_rules/{filename}"
         source_bytes[name] = data
-        info = ZipInfo.from_file(path, arcname=name)
-        info.compress_type = ZIP_DEFLATED
-        source_info[name] = info
+        source_info[name] = zip_info(name)
     metadata = read_metadata(source_bytes["vg_rules/__init__.py"])
     version = ".".join(str(part) for part in metadata["version"])
     destination = root / "dist" / f"vg_rules-{version}.zip"

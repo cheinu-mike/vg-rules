@@ -16,11 +16,12 @@ import bpy
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = Path(os.environ["VGR_TEST_ARTIFACT_DIR"]).resolve()
-assert ARTIFACTS.is_relative_to(ROOT / "tests/.artifacts")
+assert ARTIFACTS.is_relative_to(Path(os.environ["VGR_TEST_RUN_ROOT"]).resolve())
 ARTIFACTS.mkdir(parents=True, exist_ok=True)
 if "addon" not in globals():
     sys.path.insert(0, str(ROOT))
     import vg_rules as addon
+if not addon.owns_scene_property():
     addon.register()
 
 
@@ -246,6 +247,36 @@ message = next(line.message for line in settings.log if line.kind == 'WARNING')
 assert all(name in message for name in (single.name, sibling.name, unlinked.name, scene.name, other.name))
 assert "no scene (unlinked)" in message
 print("PASS: single-object multi-scene edits require confirmation; warnings map all shared users to their scenes")
+
+# Rejected cross-scene shared-mesh batches preserve every user and an earlier
+# independent target, including each object's own Mirror modifier settings.
+earlier = mesh('Cross-scene Earlier Independent', scene)
+cross = mesh('Cross-scene Shared Target', scene)
+alias = cross.copy()
+alias.name = 'Cross-scene Shared Alias'
+other.collection.objects.link(alias)
+alias.modifiers['Mirror'].use_mirror_vertex_groups = True
+scene.collection.objects.link(alias)
+mirror_values = {'delete_exact': ['Cleanup'], 'assign_all_vertices': [
+    {'group': 'Cross Pair', 'side': 'L', 'mirror': True}]}
+addon.load_rules(scene, {earlier.name: mirror_values, cross.name: mirror_values, alias.name: mirror_values})
+cross_before = [snapshot(obj) for obj in (earlier, cross, alias)]
+for operation in (bpy.ops.vgr.preview, bpy.ops.vgr.apply):
+    assert operation(scope='ALL') == {'CANCELLED'}
+    assert [snapshot(obj) for obj in (earlier, cross, alias)] == cross_before
+# One rule can Preview, but execution without confirmation cancels the whole batch.
+settings.rules[2].enabled = False
+assert bpy.ops.vgr.preview(scope='ALL') == {'FINISHED'}
+assert all(name in next(line.message for line in settings.log if line.kind == 'WARNING')
+           for name in (cross.name, alias.name, scene.name, other.name))
+assert bpy.ops.vgr.apply(scope='ALL') == {'CANCELLED'}
+assert [snapshot(obj) for obj in (earlier, cross, alias)] == cross_before
+scene.collection.objects.unlink(cross)
+settings.rule_index = 1
+assert bpy.ops.vgr.apply(scope='ACTIVE', allow_shared_data=True) == {'FINISHED'}
+assert [snapshot(obj) for obj in (earlier, cross, alias)] == cross_before
+assert settings.rules[1].target == cross and 'outside executing scene' in settings.log[0].message
+print('PASS: cross-scene shared meshes, cancelled confirmation and removed-scene targets preserve groups, weights and per-object modifiers')
 
 addon.load_rules(scene, {local.name: {"assign_all_vertices": ["Export Weight"]}})
 destination = ARTIFACTS / "atomic_export.json"

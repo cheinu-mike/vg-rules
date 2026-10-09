@@ -16,7 +16,7 @@ import tempfile
 import tomllib
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from build_addon import FILES, ROOT, cleanup_file, read_metadata
+from build_addon import FILES, ROOT, cleanup_file, read_metadata, zip_info
 
 
 MANIFEST = "blender_manifest.toml"
@@ -136,7 +136,7 @@ def build(root=ROOT, *, blender):
         os.close(descriptor)
         with ZipFile(stage, "w", compression=ZIP_DEFLATED) as archive:
             for name, data in payloads.items():
-                archive.writestr(name, data)
+                archive.writestr(zip_info(name), data)
         verify_archive(stage, payloads, metadata)
         validate_with_blender(blender, stage, destination.parent)
         verify_archive(stage, payloads, metadata)

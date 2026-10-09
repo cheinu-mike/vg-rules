@@ -24,12 +24,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class Builds(unittest.TestCase):
     def setUp(self):
-        artifacts = ROOT / "tests/.artifacts"
-        artifacts.mkdir(parents=True, exist_ok=True)
-        self.temporary = tempfile.TemporaryDirectory(prefix="build-", dir=artifacts)
+        # Workspace temporary directories also work under Windows app sandboxes
+        # that deny atomic replacement in their redirected system temp folder.
+        base = Path(os.environ.get('RUNNER_TEMP', ROOT / 'tests/.artifacts'))
+        base.mkdir(parents=True, exist_ok=True)
+        self.temporary = tempfile.TemporaryDirectory(prefix="vgr-build-", dir=base)
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name).resolve()
-        self.assertTrue(self.root.is_relative_to(artifacts.resolve()))
         (self.root / "vg_rules").mkdir()
         for name in (*build_addon.FILES, *build_extension.EXTRA_FILES):
             shutil.copy2(ROOT / "vg_rules" / name, self.root / "vg_rules" / name)
@@ -175,6 +176,17 @@ class Builds(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("--blender", result.stderr)
+
+    def test_builds_are_reproducible_despite_source_mtime_changes(self):
+        with patch.object(build_extension.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
+            build_addon.build(self.root)
+            self.build_extension()
+            before = (self.legacy.read_bytes(), self.extension.read_bytes())
+            for file in (self.root / 'vg_rules').iterdir():
+                os.utime(file, (1700000000, 1700000000))
+            build_addon.build(self.root)
+            self.build_extension()
+        self.assertEqual((self.legacy.read_bytes(), self.extension.read_bytes()), before)
 
     @unittest.skipUnless(os.environ.get("VGR_TEST_BLENDER"), "Set VGR_TEST_BLENDER to exercise official validation rejection")
     def test_real_blender_rejects_invalid_manifest_without_replacing_output(self):

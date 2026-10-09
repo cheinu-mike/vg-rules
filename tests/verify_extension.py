@@ -16,19 +16,20 @@ import subprocess
 import sys
 import tomllib
 from zipfile import ZipFile
+from unittest.mock import patch
 
 import bpy
 
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE = Path(os.environ["VGR_EXTENSION_TEST_DIR"]).resolve()
-assert PROFILE.is_relative_to(ROOT / "tests")
+assert PROFILE.is_relative_to(Path(os.environ['VGR_TEST_RUN_ROOT']).resolve())
 for key in ("BLENDER_USER_RESOURCES", "BLENDER_USER_CONFIG", "BLENDER_USER_SCRIPTS",
             "BLENDER_USER_DATAFILES", "BLENDER_USER_EXTENSIONS"):
     assert Path(os.environ[key]).resolve().is_relative_to(PROFILE), key
 assert not bpy.app.online_access
 release = tomllib.loads((ROOT / "vg_rules/blender_manifest.toml").read_text(encoding="utf-8"))
-ZIP = ROOT / "dist/blender_extensions" / f'{release["id"]}-{release["version"]}.zip'
+ZIP = Path(os.environ['VGR_TEST_ARCHIVE']).resolve()
 REPORT = PROFILE.parent / f"{PROFILE.name}_results.json"
 report = {"blender": bpy.app.version_string, "zip": str(ZIP), "checks": [],
           "sha256": hashlib.sha256(ZIP.read_bytes()).hexdigest(), "status": "FAIL"}
@@ -102,11 +103,12 @@ def read_only(directory):
 
 
 try:
-    repository = PROFILE / "extensions" / "vgr_verification"
+    namespace = os.environ['VGR_TEST_NAMESPACE']
+    repository = PROFILE / "extensions" / namespace
     repository.mkdir(parents=True, exist_ok=True)
     assert not (repository / "vg_rules").exists(), "Use a fresh profile."
     repo = bpy.context.preferences.extensions.repos.new(
-        name="VG Rules verification", module="vgr_verification", custom_directory=str(repository))
+        name="VG Rules verification", module=namespace, custom_directory=str(repository))
     repo.use_remote_url = False
     assert Path(repo.directory).resolve() == repository
     assert bpy.ops.extensions.package_install_files(
@@ -148,13 +150,29 @@ try:
         assert bpy.ops.vgr.import_rules(filepath=str(preset)) == {'FINISHED'}
         assert module.export_rules(bpy.context.scene) == expected
         report["checks"].append("JSON preset export/import")
-        runpy.run_path(str(ROOT / 'tests/verify_runtime.py'), init_globals={'addon': module})
+        module.load_rules(bpy.context.scene, {})
+        with patch('socket.create_connection', side_effect=AssertionError('Offline runtime attempted networking')), \
+             patch('urllib.request.urlopen', side_effect=AssertionError('Offline runtime attempted HTTP')):
+            runpy.run_path(str(ROOT / 'tests/verify_addon.py'), init_globals={'addon': module})
+        report['checks'].append('full integration suite in installed extension namespace')
+        assert not hasattr(bpy.types.Scene, 'vgr_settings')
+        assert bpy.ops.preferences.addon_disable(module=module_name) == {'FINISHED'}
+        assert bpy.ops.preferences.addon_enable(module=module_name) == {'FINISHED'}
+        module = sys.modules[module_name]
+        with patch('socket.create_connection', side_effect=AssertionError('Offline runtime attempted networking')), \
+             patch('urllib.request.urlopen', side_effect=AssertionError('Offline runtime attempted HTTP')):
+            runpy.run_path(str(ROOT / 'tests/verify_runtime.py'), init_globals={'addon': module})
+        report['checks'].append('offline flag remains false with Python network entry points blocked')
         report['checks'].append('runtime compliance regressions in installed extension namespace')
         assert bpy.ops.preferences.addon_disable(module=module_name) == {'FINISHED'}
         assert not hasattr(bpy.types.Scene, "vgr_settings")
         assert module.initialize_loaded_scenes not in bpy.app.handlers.load_post
         assert not bpy.app.timers.is_registered(module.initialize_pending_scenes)
         report["checks"].append("disable cleans Scene property, handler and timer")
+        assert bpy.ops.preferences.addon_enable(module=module_name) == {'FINISHED'}
+        assert module.owns_scene_property()
+        assert bpy.ops.preferences.addon_disable(module=module_name) == {'FINISHED'}
+        report['checks'].append('disable/re-enable/disable preserves installation ownership')
         report["status"] = "PASS"
     report['checks'].append('enable, operations, worker, export and disable with enforced read-only installation')
 finally:

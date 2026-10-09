@@ -14,10 +14,11 @@ from mathutils import Matrix
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = Path(os.environ["VGR_TEST_ARTIFACT_DIR"]).resolve()
-assert ARTIFACTS.is_relative_to(ROOT / "tests/.artifacts")
+assert ARTIFACTS.is_relative_to(Path(os.environ["VGR_TEST_RUN_ROOT"]).resolve())
 ARTIFACTS.mkdir(parents=True, exist_ok=True)
-sys.path.insert(0, str(ROOT))
-import vg_rules as addon
+if "addon" not in globals():
+    sys.path.insert(0, str(ROOT))
+    import vg_rules as addon
 
 
 def reset():
@@ -87,7 +88,8 @@ def raw_settings_snapshot(settings):
     )
 
 
-addon.register()
+if not addon.owns_scene_property():
+    addon.register()
 assert hasattr(bpy.types.Scene, "vgr_settings")
 assert addon.export_rules(bpy.context.scene) == {}
 assert not bpy.context.scene.vgr_settings.log
