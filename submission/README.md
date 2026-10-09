@@ -12,7 +12,10 @@ has not yet been submitted for platform review.
 | [images/apply.png](images/apply.png) | Genuine Apply Rule result from the same synthetic scene |
 | [capture.json](capture.json) | Packaged-extension SHA-256, Blender version, preset, before/after weights and image hashes |
 | [COMPLIANCE.md](COMPLIANCE.md) | Actual platform and GUI results, release scope and final archive hashes |
+| [compliance.json](compliance.json) | Machine-readable release gate output from the passing hosted run |
+| [verification-results.json](verification-results.json) | Every recorded stage from the eleven passing hosted jobs |
 | [gui-results.json](gui-results.json) | Native warning, Cancel/Continue, Undo and migration evidence on three Windows versions |
+| [QUICK_START.txt](QUICK_START.txt) | Rendered extension quick start, extracted unchanged from the final ZIP |
 
 Read the compliance report before submitting. All eleven supported hosted
 platform/version pairs and the local GUI checks must pass against the final ZIP.
