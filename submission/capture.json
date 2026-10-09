@@ -1,0 +1,361 @@
+{
+  "status": "PASS",
+  "blender": "4.2.23 LTS",
+  "extension_version": "0.1.2",
+  "zip": "dist/blender_extensions/vg_rules-0.1.2.zip",
+  "zip_sha256": "3454614c9f5da84f29e0a378fd1e9663d983ab979587b0864f08322bc2249701",
+  "scene": "VG Rules Synthetic Demo",
+  "images": {
+    "preview": {
+      "path": "submission/images/preview.png",
+      "sha256": "82ec16b173747b6638926e82b76bc9e60f3f3ac4fb923a19dd1d1785ef2a7116",
+      "editor_size": [
+        1800,
+        1059
+      ],
+      "sidebar_width": 639,
+      "panel": "VG Rules"
+    },
+    "apply": {
+      "path": "submission/images/apply.png",
+      "sha256": "ec12c4c05d27114f450d9706799d6164faddbb8bb62b1e28415192153d090dc9",
+      "editor_size": [
+        1800,
+        1059
+      ],
+      "sidebar_width": 639,
+      "panel": "VG Rules"
+    },
+    "thumbnail": {
+      "path": "submission/images/thumbnail.png",
+      "sha256": "21047f3d94413fee5949e5eada902b6c3d31e572d837d233753da3680ff2632e",
+      "source": "existing VG Rules cube icon, reused unchanged"
+    }
+  },
+  "preset": {
+    "Demo Shell": {
+      "keep_only_prefixes": [
+        "DEF-"
+      ],
+      "keep_exact": [
+        "cloth_pin"
+      ],
+      "delete_prefixes": [
+        "MCH-"
+      ],
+      "delete_contains": [
+        "_backup"
+      ],
+      "assign_all_vertices": [
+        {
+          "group": "DEF-Demo",
+          "side": "AUTO",
+          "mirror": true
+        }
+      ]
+    }
+  },
+  "namespace": "bl_ext.vgr_capture.vg_rules",
+  "before": {
+    "DEF-Demo.L": [
+      [
+        0,
+        0.25
+      ],
+      [
+        1,
+        0.25
+      ],
+      [
+        2,
+        0.25
+      ],
+      [
+        3,
+        0.25
+      ],
+      [
+        4,
+        0.25
+      ],
+      [
+        5,
+        0.25
+      ],
+      [
+        6,
+        0.25
+      ],
+      [
+        7,
+        0.25
+      ]
+    ],
+    "DEF-Demo.R": [
+      [
+        0,
+        0.25
+      ],
+      [
+        1,
+        0.25
+      ],
+      [
+        2,
+        0.25
+      ],
+      [
+        3,
+        0.25
+      ],
+      [
+        4,
+        0.25
+      ],
+      [
+        5,
+        0.25
+      ],
+      [
+        6,
+        0.25
+      ],
+      [
+        7,
+        0.25
+      ]
+    ],
+    "cloth_pin": [
+      [
+        0,
+        0.25
+      ],
+      [
+        1,
+        0.25
+      ],
+      [
+        2,
+        0.25
+      ],
+      [
+        3,
+        0.25
+      ],
+      [
+        4,
+        0.25
+      ],
+      [
+        5,
+        0.25
+      ],
+      [
+        6,
+        0.25
+      ],
+      [
+        7,
+        0.25
+      ]
+    ],
+    "MCH-temp": [
+      [
+        0,
+        0.25
+      ],
+      [
+        1,
+        0.25
+      ],
+      [
+        2,
+        0.25
+      ],
+      [
+        3,
+        0.25
+      ],
+      [
+        4,
+        0.25
+      ],
+      [
+        5,
+        0.25
+      ],
+      [
+        6,
+        0.25
+      ],
+      [
+        7,
+        0.25
+      ]
+    ],
+    "weights_backup": [
+      [
+        0,
+        0.25
+      ],
+      [
+        1,
+        0.25
+      ],
+      [
+        2,
+        0.25
+      ],
+      [
+        3,
+        0.25
+      ],
+      [
+        4,
+        0.25
+      ],
+      [
+        5,
+        0.25
+      ],
+      [
+        6,
+        0.25
+      ],
+      [
+        7,
+        0.25
+      ]
+    ]
+  },
+  "preview": "Previewed 1 rule(s): 2 deletion(s), 1 assignment(s), 0 warning(s).",
+  "preview_results": [
+    [
+      "INFO",
+      "Demo Shell: 2 group(s) to delete; 1 full-weight assignment(s)."
+    ],
+    [
+      "DELETE",
+      "Demo Shell: delete MCH-temp"
+    ],
+    [
+      "DELETE",
+      "Demo Shell: delete weights_backup"
+    ],
+    [
+      "ASSIGN",
+      "Demo Shell: DEF-Demo.L = 1.0 on all 8 vertices (create if missing)."
+    ],
+    [
+      "INFO",
+      "Demo Shell: empty DEF-Demo.R and enable Mirror vertex groups."
+    ]
+  ],
+  "apply": "Applied 1 rule(s): 2 deletion(s), 1 assignment(s), 0 warning(s).",
+  "after": {
+    "DEF-Demo.L": [
+      [
+        0,
+        1.0
+      ],
+      [
+        1,
+        1.0
+      ],
+      [
+        2,
+        1.0
+      ],
+      [
+        3,
+        1.0
+      ],
+      [
+        4,
+        1.0
+      ],
+      [
+        5,
+        1.0
+      ],
+      [
+        6,
+        1.0
+      ],
+      [
+        7,
+        1.0
+      ]
+    ],
+    "DEF-Demo.R": [],
+    "cloth_pin": [
+      [
+        0,
+        0.25
+      ],
+      [
+        1,
+        0.25
+      ],
+      [
+        2,
+        0.25
+      ],
+      [
+        3,
+        0.25
+      ],
+      [
+        4,
+        0.25
+      ],
+      [
+        5,
+        0.25
+      ],
+      [
+        6,
+        0.25
+      ],
+      [
+        7,
+        0.25
+      ]
+    ]
+  },
+  "apply_results": [
+    [
+      "INFO",
+      "Demo Shell: 2 group(s) to delete; 1 full-weight assignment(s)."
+    ],
+    [
+      "DELETE",
+      "Demo Shell: delete MCH-temp"
+    ],
+    [
+      "DELETE",
+      "Demo Shell: delete weights_backup"
+    ],
+    [
+      "ASSIGN",
+      "Demo Shell: DEF-Demo.L = 1.0 on all 8 vertices (create if missing)."
+    ],
+    [
+      "INFO",
+      "Demo Shell: empty DEF-Demo.R and enable Mirror vertex groups."
+    ]
+  ],
+  "mirror_vertex_groups": true,
+  "checks": [
+    "offline fresh profile",
+    "installed ZIP byte parity",
+    "Preview leaves weights unchanged",
+    "Apply removes two groups",
+    "eight source vertices at full weight",
+    "opposite group emptied",
+    "Keep group unchanged",
+    "Mirror vertex groups enabled",
+    "installed files unchanged",
+    "native editor screenshots; no global Blender-logo bar"
+  ]
+}

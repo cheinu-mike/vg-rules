@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.2 (2026-10-08)
+
+- Fix the empty sidebar caused by writing Scene properties during panel drawing.
+  Defer scene initialization, target-name refresh and saved-list migration to an
+  owned timer; draw initialized rules without changing scene data.
+- Add public installation, usage, migration and troubleshooting guides, with
+  GitHub Issues for support. Include an extension-specific quick start in its ZIP.
+- Prepare listing text, the existing cube thumbnail, and genuine Preview/Apply
+  screenshots from the packaged extension using a generated scene. Keep all
+  submission artwork outside the installers.
+
+Verification: 15 packaging checks, source integration and runtime regressions,
+and installed-extension checks passed on Windows with Blender 4.2.23 and 5.2.0.
+Installed checks use enforced read-only directories and verify packaged bytes.
+The final extension passed the official validator. Preview/Apply captures use
+that installed ZIP and verify the synthetic scene's actual weights and groups.
+macOS and Linux verification remains pending.
+
 ## 0.1.1 (2026-10-08)
 
 - Resolve imported names and executable rule targets in the executing scene.

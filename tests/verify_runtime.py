@@ -163,6 +163,29 @@ outside = mesh("Runtime Outside", other)
 values = {"delete_exact": ["Cleanup"], "assign_all_vertices": ["Local Weight"]}
 addon.load_rules(scene, {local.name: values, outside.name: values})
 settings = scene.vgr_settings
+assert not addon.scene_needs_initialization(scene)
+ready_before = addon.snapshot_property_group(settings)
+with patch.object(addon, "update_rule_target", side_effect=AssertionError("Ready scenes must not rewrite target properties")):
+    addon.initialize_scene(scene)
+assert addon.snapshot_property_group(settings) == ready_before
+local.name = "Renamed Runtime Local"
+assert addon.scene_needs_initialization(scene)
+addon.request_scene_initialization()
+addon.request_scene_initialization()
+assert bpy.app.timers.is_registered(addon.initialize_pending_scenes)
+addon.initialize_pending_scenes()
+assert not addon.scene_needs_initialization(scene)
+assert settings.rules[0].object_name == local.name
+# A saved mixed-pattern rule is migrated by the writable initializer.
+legacy = settings.rules[0].patterns.add()
+legacy.kind, legacy.value = "keep_only_prefixes", "Legacy"
+settings.rules[0].pattern_lists_split = False
+assert addon.scene_needs_initialization(scene)
+addon.initialize_pending_scenes()
+assert not addon.scene_needs_initialization(scene)
+assert settings.rules[0].keep_patterns[0].value == "Legacy"
+addon.load_rules(scene, {local.name: values, outside.name: values})
+print("PASS: ready scene initialization does not write properties; deferred initialization refreshes names and migrates saved rules")
 assert settings.rules[0].target == local and settings.rules[1].target is None
 assert addon.target_object(settings.rules[1]) is None
 assert addon.mesh_poll(settings.rules[0], local)

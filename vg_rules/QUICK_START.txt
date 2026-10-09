@@ -1,0 +1,94 @@
+VG RULES - BLENDER EXTENSION
+Version @VERSION@ | Blank Glyph | Requires Blender 4.2 or later
+Copyright (C) 2026 Blank Glyph. SPDX-License-Identifier: GPL-3.0-or-later.
+Editable Python source, NOTICE.txt and the complete GPL in COPYING.txt are included.
+
+INSTALL
+1. Keep vg_rules-@VERSION@.zip compressed.
+2. Preferences > Get Extensions > top-right menu > Install from Disk.
+3. Choose the extension ZIP and enable VG Rules.
+4. In the 3D Viewport, press N and open the VG Rules tab.
+Use one VG Rules installation at a time. This is the extension package;
+the separate Gumroad add-on has a different installer layout.
+
+FIRST RULE
+1. Save current work, then start a new General scene with the default Cube.
+2. Select the Cube in Object Mode. In VG Rules, click Add Selected.
+3. Leave Keep and Delete empty. Under Full Weights - All Vertices, click +.
+4. Enter DemoWeight, choose Exact Name and leave Mirror Weights unchecked.
+5. Preview Rule: expect 0 deletions, 1 assignment and 0 warnings.
+   Preview does not create groups or change weights.
+6. Save a separate .blend copy, then Apply Rule. DemoWeight is created with
+   weight 1.0 on all 8 Cube vertices. Results reports Applied.
+7. Inspect DemoWeight under Object Data Properties > Vertex Groups.
+   Return to Object Mode after inspection before running rules again.
+
+MATCHING AND SCENE TARGETS
+Keep and Delete support Exact, Prefix, Suffix, Contains and Python Regex.
+Matching ignores case unless that section's Case Sensitive checkbox is enabled.
+Keep overrides every Delete match. Keep alone deletes nothing.
+Imported names and targets resolve within the executing scene. The picker shows
+that scene's meshes. An outside-scene pointer stays saved, but its rule is skipped
+with a warning; link the object into this scene or choose a local mesh.
+All stops for duplicate enabled targets or different enabled targets sharing a mesh.
+Invalid rules may be skipped while other valid rules run. Read Results carefully.
+
+FULL-WEIGHT OVERWRITES
+Full Weights assigns weight 1.0 on EVERY vertex, including hidden/unselected vertices.
+Existing weights are replaced even in kept or weight-locked groups. Keep protects
+against deletion only. Group lock flags remain unchanged. Missing groups are created.
+Names have a 63-byte UTF-8 limit, including .L/.R. Non-ASCII text may use multiple bytes.
+
+SIDE AND MIRROR BEHAVIOR
+Exact Name uses the entered name. Left/Right resolves .L/.R. Auto Side uses matching
+rest-pose bones, or an existing X Mirror plane when matching bones are unavailable.
+Ambiguous side detection warns and skips the rule; choose Left or Right explicitly.
+Mirror Weights needs an existing Mirror modifier. It creates the opposite .L/.R
+source group if missing, then empties that group even if kept or weight-locked.
+It enables vertex-group mirroring on existing Mirror modifiers; it does not apply
+modifiers, copy arbitrary weights or create a complete rig.
+
+SHARED OBJECTS AND SCENES
+Changing shared mesh data can affect other objects, including hidden or unlinked
+users. One object linked into several scenes also affects each of those scenes.
+Preview and the Apply confirmation identify affected objects and their scenes.
+Continue permits those effects; Cancel leaves the entire batch untouched.
+Leave Edit Mode on every user of a shared mesh before running rules.
+
+REGEX LIMITS
+Use Python regex syntax. Limits are 4096 characters per pattern and 64 patterns
+per Keep/Delete section. Matching uses Blender's bundled Python with a one-second
+worker deadline per rule. Invalid, slow, missing or failed workers skip the affected
+rule before mutation. Simplify regex or use literal filters; no extra package is needed.
+
+PRESETS AND RECOVERY
+Rules save in the .blend file. Export JSON before changing installations or importing.
+Import validates then REPLACES the list. JSON and literal OBJECT_RULES dictionaries
+in Python files are accepted; Python preset code is not executed.
+Export is atomic and cannot overwrite files in installed VG Rules directories.
+Use Undo during the current session or reopen the saved .blend copy to recover.
+
+UPDATES AND GUMROAD MIGRATION - RESTART REQUIRED
+1. Save a separate .blend copy and export your JSON rules.
+2. Disable/remove the previous VG Rules installation, including the Gumroad add-on
+   when moving to the extension. Do not enable both installations together.
+3. Install the replacement ZIP and enable VG Rules. Save Preferences if needed.
+4. FULLY QUIT AND RESTART BLENDER before using Preview or Apply.
+5. Open the saved .blend, inspect targets and rules, then Preview. Import your JSON
+   backup if needed. Keep both backups until the replacement is verified.
+Blender can retain old modules after reinstalling; restart loads the updated code.
+
+TROUBLESHOOTING AND SUPPORT
+Missing target: choose a mesh in this scene or explicitly edit Fallback Name.
+Outside-scene target: link it here or choose a local target; its saved pointer is retained.
+Shared-data confirmation: inspect all listed scenes before Continue; Cancel is safe.
+Duplicate/shared batch targets: disable extras or run Preview Rule/Apply Rule separately.
+Read-only target: use an editable local object and mesh. Read-only installation folders
+are supported; export presets to a writable user folder outside the installation.
+Regex worker warning: use an official Blender distribution with bundled Python;
+check that installation's interpreter exists. Do not install system Python packages.
+Registration conflict: disable the other VG Rules, remove duplicates, then restart.
+Support: https://github.com/cheinu-mike/vg-rules/issues
+Include OS, Blender/VG Rules versions, installer type, Results text and reproduction
+steps. Use synthetic examples; do not post personal models or confidential projects.
+Docs: https://github.com/cheinu-mike/vg-rules/tree/main/docs

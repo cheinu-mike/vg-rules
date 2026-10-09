@@ -8,9 +8,13 @@ This is the canonical development repository for VG Rules.
 - Assign all vertices to groups at weight 1.0, with optional side and Mirror settings.
 - Save rules in the `.blend` file and exchange JSON presets.
 
-Version **0.1.1**. Requires Blender **4.2 or later**. Tested on Windows with
+Version **0.1.2**. Requires Blender **4.2 or later**. Tested on Windows with
 Blender **4.2.23 LTS** and **5.2.0 LTS**; macOS and Linux verification is pending.
 The extension package has not yet been submitted for Blender platform review.
+
+Public guides: [Installation](docs/installation.md), [Usage](docs/usage.md),
+[Migration and updates](docs/migration.md), and [Troubleshooting](docs/troubleshooting.md).
+Support is through [GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues).
 
 ## Installation
 
@@ -85,15 +89,18 @@ python build_extension.py --blender "C:\Program Files\Blender Foundation\Blender
 
 The builders produce:
 
-- `dist/vg_rules-0.1.1.zip`: the Gumroad add-on, including `bl_info`.
-- `dist/blender_extensions/vg_rules-0.1.1.zip`: the extension, including
-  `blender_manifest.toml` and omitting `bl_info`.
+- `dist/vg_rules-0.1.2.zip`: the Gumroad add-on, including `bl_info`.
+- `dist/blender_extensions/vg_rules-0.1.2.zip`: the extension, including
+  `blender_manifest.toml` and an extension-specific `QUICK_START.txt`, and
+  omitting `bl_info`.
 
 Both packages use the same runtime code. Filenames derive from `bl_info`, and
 the extension build rejects inconsistent manifest metadata. Both builders verify
 their ZIP contents before replacing output. The extension also requires Blender's
 official validation to succeed; missing Blender, validation failures or timeouts
 leave any previous ZIP intact. Generated packages are not committed.
+The installers contain only editable Python, metadata, documentation and license
+text. Submission images are kept separately in [submission/](submission/README.md).
 
 ## Checks
 
@@ -116,3 +123,7 @@ text, and steps describing expected and actual behavior.
 Copyright (C) 2026 Blank Glyph. Licensed under **GPL-3.0-or-later**. Editable
 Python source, the copyright notice and complete GPL text are included in both
 installers. See [LICENSE](LICENSE) and [NOTICE](vg_rules/NOTICE.txt).
+
+The prepared [listing text](submission/LISTING.md) and
+[thumbnail and screenshots](submission/README.md) describe included functionality.
+The screenshots are captured from the installed extension ZIP in a synthetic scene.

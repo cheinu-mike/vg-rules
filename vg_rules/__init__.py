@@ -19,7 +19,7 @@
 bl_info = {
     "name": "VG Rules",
     "author": "Blank Glyph",
-    "version": (0, 1, 1),
+    "version": (0, 1, 2),
     "blender": (4, 2, 0),
     "location": "3D Viewport > Sidebar > VG Rules",
     "description": "Edit object cleanup rules and assign all mesh vertices full group weights",
@@ -705,7 +705,12 @@ class VGR_PT_rules(Panel):
 
     def draw(self, context):
         layout = self.layout
-        initialize_scene(context.scene)
+        # Panel drawing is read-only in Blender. Migrate saved data in the
+        # owned timer instead of writing Scene properties from this callback.
+        if scene_needs_initialization(context.scene):
+            request_scene_initialization()
+            layout.label(text="Preparing saved rules...")
+            return
         settings = context.scene.vgr_settings
         layout.use_property_split = False
         row = layout.row(align=True)
@@ -785,6 +790,22 @@ class VGR_PT_rules(Panel):
                 wrapped_labels(layout, line.message, context.region, wide_text=line.kind == "WARNING")
 
 
+def scene_needs_initialization(scene):
+    settings = scene.vgr_settings
+    return (not settings.initialized or any(
+        not rule.pattern_lists_split or
+        (rule.target is not None and
+         (rule.object_name != rule.target.name or not rule.target_was_set))
+        for rule in settings.rules))
+
+
+def request_scene_initialization():
+    global _owns_timer
+    if owns_scene_property() and not bpy.app.timers.is_registered(initialize_pending_scenes):
+        bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
+        _owns_timer = True
+
+
 def initialize_scene(scene):
     if not scene.vgr_settings.initialized:
         if not scene.vgr_settings.rules:
@@ -792,7 +813,7 @@ def initialize_scene(scene):
         else:
             scene.vgr_settings.initialized = True
     for rule in scene.vgr_settings.rules:
-        if rule.target is not None:
+        if rule.target is not None and (rule.object_name != rule.target.name or not rule.target_was_set):
             update_rule_target(rule, None)
         split_legacy_patterns(rule)
 
@@ -810,6 +831,10 @@ def initialize_pending_scenes():
     # Initialize only once that enable step has finished.
     if owns_scene_property():
         initialize_loaded_scenes(None)
+        for window in bpy.context.window_manager.windows:
+            for area in window.screen.areas:
+                if area.type == 'VIEW_3D':
+                    area.tag_redraw()
     return None
 
 

@@ -20,6 +20,8 @@ from build_addon import FILES, ROOT, cleanup_file, read_metadata
 
 
 MANIFEST = "blender_manifest.toml"
+QUICK_START = "QUICK_START.txt"
+EXTRA_FILES = (MANIFEST, QUICK_START)
 
 
 def extension_init(data):
@@ -112,7 +114,7 @@ def build(root=ROOT, *, blender):
         raise FileNotFoundError(f"Blender executable not found: {blender}")
     package = root / "vg_rules"
     payloads = {}
-    for filename in (*FILES, MANIFEST):
+    for filename in (*FILES, *EXTRA_FILES):
         path = package / filename
         data = path.read_bytes()
         if not data:
@@ -124,6 +126,7 @@ def build(root=ROOT, *, blender):
     manifest = read_manifest(payloads[MANIFEST], metadata)
     payloads["__init__.py"] = extension_init(payloads["__init__.py"])
     version = ".".join(str(part) for part in metadata["version"])
+    payloads[QUICK_START] = payloads[QUICK_START].replace(b"@VERSION@", version.encode("ascii"))
     destination = root / "dist" / "blender_extensions" / f'{manifest["id"]}-{version}.zip'
     destination.parent.mkdir(parents=True, exist_ok=True)
     descriptor, stage_name = tempfile.mkstemp(prefix=f".{destination.stem}.", suffix=".zip",

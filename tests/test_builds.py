@@ -31,7 +31,7 @@ class Builds(unittest.TestCase):
         self.root = Path(self.temporary.name).resolve()
         self.assertTrue(self.root.is_relative_to(artifacts.resolve()))
         (self.root / "vg_rules").mkdir()
-        for name in (*build_addon.FILES, build_extension.MANIFEST):
+        for name in (*build_addon.FILES, *build_extension.EXTRA_FILES):
             shutil.copy2(ROOT / "vg_rules" / name, self.root / "vg_rules" / name)
         self.blender = self.root / "blender.exe"
         self.blender.write_bytes(b"Only used with a mocked subprocess")
@@ -81,9 +81,12 @@ class Builds(unittest.TestCase):
         self.assertTrue(profile.is_relative_to(self.extension.parent))
         self.assertFalse(profile.exists())
         with ZipFile(self.extension) as archive:
-            self.assertEqual(set(archive.namelist()), set(build_addon.FILES) | {build_extension.MANIFEST})
+            self.assertEqual(set(archive.namelist()), set(build_addon.FILES) | set(build_extension.EXTRA_FILES))
             manifest = tomllib.loads(archive.read(build_extension.MANIFEST).decode())
             self.assertEqual(manifest["version"], self.version_text)
+            quick_start = archive.read(build_extension.QUICK_START).decode("utf-8")
+            self.assertIn(f"Version {self.version_text}", quick_start)
+            self.assertNotIn("@VERSION@", quick_start)
             original = ast.parse((self.root / "vg_rules/__init__.py").read_bytes())
             original.body = [node for node in original.body if not (
                 isinstance(node, ast.Assign) and any(isinstance(target, ast.Name) and
@@ -100,6 +103,21 @@ class Builds(unittest.TestCase):
     def test_missing_manifest_preserves_extension(self):
         (self.root / "vg_rules/blender_manifest.toml").unlink()
         self.safe_failure(self.build_extension, FileNotFoundError)
+
+    def test_missing_quick_start_preserves_extension(self):
+        (self.root / "vg_rules" / build_extension.QUICK_START).unlink()
+        self.safe_failure(self.build_extension, FileNotFoundError)
+
+    def test_submission_assets_and_binary_files_are_excluded(self):
+        for filename in ("thumbnail.png", "preview.jpg", "icon.svg", "font.ttf", "module.dll", "demo.blend"):
+            (self.root / "vg_rules" / filename).write_bytes(b"Must never enter an installer")
+        with patch.object(build_extension.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
+            self.build_extension()
+        with ZipFile(self.extension) as archive:
+            self.assertEqual(set(archive.namelist()), set(build_addon.FILES) | set(build_extension.EXTRA_FILES))
+        build_addon.build(self.root)
+        with ZipFile(self.legacy) as archive:
+            self.assertEqual(set(archive.namelist()), {f"vg_rules/{name}" for name in build_addon.FILES})
 
     def test_mismatched_version_fails_before_validation(self):
         manifest = self.root / "vg_rules/blender_manifest.toml"
@@ -146,7 +164,10 @@ class Builds(unittest.TestCase):
         before = (self.legacy.read_bytes(), self.extension.read_bytes())
         self.assertEqual(build_addon.build(self.root), self.root / "dist" / f"vg_rules-{future_text}.zip")
         with patch.object(build_extension.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")):
-            self.assertEqual(self.build_extension(), self.root / "dist/blender_extensions" / f"vg_rules-{future_text}.zip")
+            output = self.build_extension()
+            self.assertEqual(output, self.root / "dist/blender_extensions" / f"vg_rules-{future_text}.zip")
+        with ZipFile(output) as archive:
+            self.assertIn(f"Version {future_text}", archive.read(build_extension.QUICK_START).decode("utf-8"))
         self.assertEqual((self.legacy.read_bytes(), self.extension.read_bytes()), before)
 
     def test_cli_requires_blender(self):
