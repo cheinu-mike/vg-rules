@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.1.3 (2026-10-12, development build)
+
+- Bump add-on and manifest metadata together to 0.1.3. Build separate 0.1.3
+  installers for testing; preserve the published 0.1.2 packages and prior artifacts.
 
 - Simplify registration and unregistration to direct class and Scene-property
   operations. Remove duplicate-installation checks, ownership tracking and
@@ -16,15 +19,24 @@
   checks across installer switches. Verify saved indexes, results and binding
   metadata load unchanged, without running validation or target callbacks.
 
-Verification: 22 packaging/release-gate tests passed, including real Blender
-validator rejection. Full source, runtime, installed-extension (read-only/offline)
-and restart lifecycle checks passed locally on Windows x64 with Blender 4.2.0,
-4.2.23 and 5.2.0 against a disposable candidate extension. Installer-switch checks
-used the preserved 0.1.0 customer ZIP to create actual released-format saved files;
-rules, saved indexes, results and binding metadata loaded without conversion or
-validation. Both registration routines contain no conditionals or exception-handling
-wrappers. The hosted matrix and local GUI checks have not been rerun. The 0.1.2
-release evidence below applies to the historical archive, not this branch.
+Implementation verification before the version bump: 22 packaging/release-gate
+tests, all eleven hosted platform/version combinations and Windows native GUI
+checks on Blender 4.2.0, 4.2.23 and 5.2.0 passed. Checks include Cancel/Continue,
+Ctrl-Z Undo, fresh and unfinished saved rules, disable/re-enable, real published
+0.1.2 replacement with full restart, read-only/offline operation and 0.1.0 saved
+files. These results apply to the earlier candidate ZIP, not the new 0.1.3 hashes.
+
+0.1.3 archive verification: all 22 packaging/release-gate tests passed, including
+real validator rejection. The extension passed Blender's official validator on
+4.2.23. Actual published 0.1.2-to-0.1.3 install/replacement and full-restart checks
+passed on Windows with Blender 4.2.0, 4.2.23 and 5.2.0, including saved rules,
+Preview/Apply and disable/re-enable. The classic add-on installed and passed
+Preview/Apply and disable cleanup on Blender 4.2.23. Both ZIPs have matching 0.1.3
+metadata, and the extension quick start renders 0.1.3 without placeholders.
+
+The complete hosted matrix, native GUI checks and product captures have not been
+refreshed against these archives. This development build is not marked
+submission-ready; the published 0.1.2 evidence below remains historical.
 
 ## 0.1.2 (2026-10-08)
 

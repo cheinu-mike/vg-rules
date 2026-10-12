@@ -8,11 +8,13 @@ This is the canonical development repository for VG Rules.
 - Assign all vertices to groups at weight 1.0, with optional side and Mirror settings.
 - Save rules in the `.blend` file and exchange JSON presets.
 
-Version **0.1.2**. Requires Blender **4.2 or later**. Verified on Windows x64,
-Linux x64 and macOS Apple Silicon with Blender **4.2.0**, **4.2.23** and **5.2.0**.
-macOS Intel is verified on **4.2.0** and **4.2.23**; Blender 5.2.0 has no official
-Intel build and is unsupported there. Local GUI checks cover all three Windows versions.
-The extension package has not yet been submitted for Blender platform review.
+Development build **0.1.3**. Requires Blender **4.2 or later**. This build is for
+testing and has not been published or submitted for Blender platform review.
+The same implementation passed all eleven hosted platform/version combinations
+and local Windows GUI checks before the version bump. Verification of the newly
+versioned archives is recorded in [CHANGELOG](CHANGELOG.md); the committed
+[compliance report](submission/COMPLIANCE.md) describes the historical 0.1.2 release.
+Blender 5.2.0 on macOS Intel remains unsupported because no official Intel build exists.
 
 Public guides: [Installation](docs/installation.md), [Usage](docs/usage.md),
 [Updates and switching installers](docs/migration.md), and [Troubleshooting](docs/troubleshooting.md).
@@ -90,8 +92,8 @@ python build_extension.py --blender "C:\Program Files\Blender Foundation\Blender
 
 The builders produce:
 
-- `dist/vg_rules-0.1.2.zip`: the Gumroad add-on, including `bl_info`.
-- `dist/blender_extensions/vg_rules-0.1.2.zip`: the extension, including
+- `dist/vg_rules-0.1.3.zip`: the Gumroad add-on, including `bl_info`.
+- `dist/blender_extensions/vg_rules-0.1.3.zip`: the extension, including
   `blender_manifest.toml` and an extension-specific `QUICK_START.txt`, and
   omitting `bl_info`.
 

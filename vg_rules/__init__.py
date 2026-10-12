@@ -19,7 +19,7 @@
 bl_info = {
     "name": "VG Rules",
     "author": "Blank Glyph",
-    "version": (0, 1, 2),
+    "version": (0, 1, 3),
     "blender": (4, 2, 0),
     "location": "3D Viewport > Sidebar > VG Rules",
     "description": "Edit object cleanup rules and assign all mesh vertices full group weights",
