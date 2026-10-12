@@ -1,5 +1,23 @@
 # Changelog
 
+## Unreleased
+
+- Simplify registration and unregistration to direct class, Scene-property and
+  load-handler operations. Remove duplicate-installation checks, ownership
+  tracking and partial-registration rollback. Cancel a pending one-shot scene
+  initializer before removing its Scene property.
+- Retain saved-rule initialization, legacy migration and regex execution for
+  separate review. Update lifecycle checks to verify ordinary enable/disable,
+  timer cleanup and saved-rule preservation.
+
+Verification: 22 packaging/release-gate tests passed, including real Blender
+validator rejection. Full source, runtime, installed-extension (read-only/offline)
+and restart lifecycle checks passed locally on Windows x64 with Blender 4.2.0,
+4.2.23 and 5.2.0 against disposable candidate installers. Both registration
+routines contain no conditionals or exception-handling wrappers. The hosted
+matrix and local GUI checks have not been rerun for these changes. The 0.1.2
+release evidence below applies to the historical archive, not this branch.
+
 ## 0.1.2 (2026-10-08)
 
 - Fix the empty sidebar caused by writing Scene properties during panel drawing.

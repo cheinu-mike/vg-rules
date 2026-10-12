@@ -16,8 +16,8 @@ This verifies application behavior; it is not an operating-system network trace.
 Checks cover foreign-scene pointers, unlinking targets, shared objects and meshes
 across scenes, rejected batches, cancelled shared-data operations, groups, locks,
 weights and Mirror settings. They exercise bounded Python regex, actual regex
-timeouts, worker failures, registration conflicts and rollback, atomic preset
-exports, disable/re-enable and uninstall. Separate Blender processes exercise
+timeouts, worker failures, saved rules across enable/disable, pending initializer
+cleanup, atomic preset exports and uninstall. Separate Blender processes exercise
 legacy ZIP installation, generated saved mixed-list rules, JSON backup migration,
 update and restart. The previous extension in the update test is a synthetic
 lower-version package with a marker; the restarted process must load final bytes.

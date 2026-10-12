@@ -57,7 +57,8 @@ def install(archive=ZIP):
     parity(archive, INSTALLED)
     addon = sys.modules[MODULE]
     assert Path(addon.__file__).resolve().parent == INSTALLED and addon.__package__ == MODULE
-    assert addon.owns_scene_property()
+    assert addon.VGR_Settings.is_registered
+    assert bpy.types.Scene.bl_rna.properties['vgr_settings'].fixed_type == addon.VGR_Settings.bl_rna
     return addon
 
 
@@ -165,7 +166,8 @@ elif PHASE == 'updated_restart_uninstall':
     assert bpy.ops.preferences.addon_disable(module=MODULE) == {'FINISHED'}
     assert not hasattr(bpy.types.Scene, 'vgr_settings')
     assert bpy.ops.preferences.addon_enable(module=MODULE) == {'FINISHED'}
-    assert addon.owns_scene_property()
+    assert addon.VGR_Settings.is_registered
+    assert bpy.types.Scene.bl_rna.properties['vgr_settings'].fixed_type == addon.VGR_Settings.bl_rna
     uninstall()
 elif PHASE == 'uninstalled_restart':
     assert not INSTALLED.exists() and MODULE not in bpy.context.preferences.addons

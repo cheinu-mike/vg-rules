@@ -160,7 +160,7 @@ try:
              patch('urllib.request.urlopen', side_effect=AssertionError('Offline runtime attempted HTTP')):
             runpy.run_path(str(ROOT / 'tests/verify_addon.py'), init_globals={'addon': module})
         report['checks'].append('full integration suite in installed extension namespace')
-        assert not hasattr(bpy.types.Scene, 'vgr_settings')
+        assert hasattr(bpy.types.Scene, 'vgr_settings')
         assert bpy.ops.preferences.addon_disable(module=module_name) == {'FINISHED'}
         assert bpy.ops.preferences.addon_enable(module=module_name) == {'FINISHED'}
         module = sys.modules[module_name]
@@ -175,9 +175,10 @@ try:
         assert not bpy.app.timers.is_registered(module.initialize_pending_scenes)
         report["checks"].append("disable cleans Scene property, handler and timer")
         assert bpy.ops.preferences.addon_enable(module=module_name) == {'FINISHED'}
-        assert module.owns_scene_property()
+        assert module.VGR_Settings.is_registered
+        assert bpy.types.Scene.bl_rna.properties['vgr_settings'].fixed_type == module.VGR_Settings.bl_rna
         assert bpy.ops.preferences.addon_disable(module=module_name) == {'FINISHED'}
-        report['checks'].append('disable/re-enable/disable preserves installation ownership')
+        report['checks'].append('disable/re-enable/disable registers and removes classes and Scene property')
         report["status"] = "PASS"
     report['checks'].append('enable, operations, worker, export and disable with enforced read-only installation')
 finally:

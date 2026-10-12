@@ -19,8 +19,8 @@ you have verified the replacement. Import replaces the current list; it does not
 
 Use only one installation. The extension's module namespace differs from the legacy
 add-on, while operator IDs, preset format and saved rule properties remain compatible.
-Registration rejects conflicts before modifying Blender resources. If enabling fails,
-check for duplicate installations, remove the duplicate and restart.
+Disable and remove the previous installation before enabling its replacement.
+If enabling fails, check for duplicate installations, remove the duplicate and restart.
 
 ## Behavior introduced in 0.1.1
 

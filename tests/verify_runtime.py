@@ -3,7 +3,6 @@
 
 """Runtime regressions for shared source and the installed extension namespace."""
 
-import importlib.util
 import json
 import os
 from pathlib import Path
@@ -21,7 +20,7 @@ ARTIFACTS.mkdir(parents=True, exist_ok=True)
 if "addon" not in globals():
     sys.path.insert(0, str(ROOT))
     import vg_rules as addon
-if not addon.owns_scene_property():
+if not addon.VGR_Settings.is_registered:
     addon.register()
 
 
@@ -51,86 +50,17 @@ def expect_error(action, message):
         assert result == {'CANCELLED'}, result
 
 
-def registration_snapshot():
-    return (bpy.types.Scene.bl_rna.properties["vgr_settings"].as_pointer(),
-            tuple(addon.registered_class(cls) for cls in addon.CLASSES),
-            tuple(bpy.app.handlers.load_post),
-            bpy.app.timers.is_registered(addon.initialize_pending_scenes))
-
-
-before = registration_snapshot()
-with patch.object(bpy.utils, "register_class") as register:
-    expect_error(addon.register, "conflicts")
-    register.assert_not_called()
-assert registration_snapshot() == before
-spec = importlib.util.spec_from_file_location("vgr_conflict_test", addon.__file__,
-                                             submodule_search_locations=[str(Path(addon.__file__).parent)])
-conflict = importlib.util.module_from_spec(spec)
-sys.modules[spec.name] = conflict
-spec.loader.exec_module(conflict)
-with patch.object(bpy.utils, "register_class") as register:
-    expect_error(conflict.register, "conflicts")
-    register.assert_not_called()
-conflict.unregister()
-assert registration_snapshot() == before
-print("PASS: duplicate source/extension installations reject before any resource change; foreign unregister is harmless")
-
-addon.unregister()
+def assert_enabled_registration():
+    assert all(cls.is_registered for cls in addon.CLASSES)
+    assert bpy.types.Scene.bl_rna.properties["vgr_settings"].fixed_type == addon.VGR_Settings.bl_rna
+    assert bpy.app.handlers.load_post.count(addon.initialize_loaded_scenes) == 1
 
 
 def assert_clean_registration():
     assert not hasattr(bpy.types.Scene, "vgr_settings")
-    assert all(addon.registered_class(cls) is None for cls in addon.CLASSES)
+    assert all(not cls.is_registered for cls in addon.CLASSES)
     assert addon.initialize_loaded_scenes not in bpy.app.handlers.load_post
     assert not bpy.app.timers.is_registered(addon.initialize_pending_scenes)
-    assert not addon._registered_classes
-
-
-assert_clean_registration()
-original_register = bpy.utils.register_class
-for failed_class in (addon.CLASSES[0], addon.VGR_Settings, addon.CLASSES[-1]):
-    def fail_after_registration(cls):
-        original_register(cls)
-        if cls is failed_class:
-            raise RuntimeError("Injected class registration failure")
-    with patch.object(bpy.utils, "register_class", side_effect=fail_after_registration):
-        expect_error(addon.register, "Injected class")
-    assert_clean_registration()
-original_timer = bpy.app.timers.register
-
-
-def fail_after_timer(*args, **kwargs):
-    original_timer(*args, **kwargs)
-    raise RuntimeError("Injected timer registration failure")
-
-
-with patch.object(bpy.app.timers, "register", side_effect=fail_after_timer):
-    expect_error(addon.register, "Injected timer")
-assert_clean_registration()
-# Catch class/operator collisions even when a prior installation has no Scene property.
-foreign_pattern = type("VGR_Pattern", (bpy.types.PropertyGroup,), {})
-
-
-class ForeignOperator(bpy.types.Operator):
-    bl_idname = "vgr.apply"
-    bl_label = "Foreign operator"
-
-    def execute(self, context):
-        return {'FINISHED'}
-
-
-for foreign in (foreign_pattern, ForeignOperator):
-    original_register(foreign)
-    try:
-        with patch.object(bpy.utils, "register_class") as register:
-            expect_error(addon.register, "conflicts")
-            register.assert_not_called()
-        addon.unregister()
-        assert foreign.is_registered
-    finally:
-        bpy.utils.unregister_class(foreign)
-    assert_clean_registration()
-print("PASS: early/late class and timer failures fully roll back; isolated class/operator conflicts are detected")
 
 
 def foreign_handler(_):
@@ -143,19 +73,31 @@ def foreign_timer():
 
 bpy.app.handlers.load_post.append(foreign_handler)
 bpy.app.timers.register(foreign_timer, first_interval=60.0)
-addon.register()
-bpy.types.Scene.vgr_settings = bpy.props.IntProperty(default=7)
-addon.unregister()
-assert bpy.types.Scene.bl_rna.properties["vgr_settings"].type == 'INT'
-assert bpy.context.scene.vgr_settings == 7
-assert foreign_handler in bpy.app.handlers.load_post and bpy.app.timers.is_registered(foreign_timer)
-del bpy.types.Scene.vgr_settings
+addon.load_rules(bpy.context.scene, {
+    "Saved Registration Rule": {"enabled": False, "delete_exact": ["Cleanup"]},
+})
+saved_settings = addon.snapshot_property_group(bpy.context.scene.vgr_settings)
+for timer_state in ("pending", "completed", "file load"):
+    assert_enabled_registration()
+    assert bpy.app.timers.is_registered(addon.initialize_pending_scenes)
+    if timer_state == "completed":
+        # Model Blender removing a one-shot timer when its callback returns None.
+        assert addon.initialize_pending_scenes() is None
+        bpy.app.timers.unregister(addon.initialize_pending_scenes)
+    elif timer_state == "file load":
+        # Nonpersistent timers are removed when Blender loads another file.
+        bpy.app.timers.unregister(addon.initialize_pending_scenes)
+    addon.unregister()
+    assert_clean_registration()
+    assert foreign_handler in bpy.app.handlers.load_post
+    assert bpy.app.timers.is_registered(foreign_timer)
+    addon.register()
+    assert_enabled_registration()
+    assert addon.snapshot_property_group(bpy.context.scene.vgr_settings) == saved_settings
 bpy.app.handlers.load_post.remove(foreign_handler)
 bpy.app.timers.unregister(foreign_timer)
-assert_clean_registration()
-addon.register()
 addon.initialize_pending_scenes()
-print("PASS: unregister preserves a replacement Scene property and foreign handlers/timers; re-enable works")
+print("PASS: enable/disable preserves saved rules and unrelated callbacks, cleans pending/finished/load-cleared timers, and re-enables cleanly")
 
 scene = bpy.context.scene
 other = bpy.data.scenes.new("Runtime Other Scene")

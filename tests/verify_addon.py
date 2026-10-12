@@ -88,7 +88,7 @@ def raw_settings_snapshot(settings):
     )
 
 
-if not addon.owns_scene_property():
+if not addon.VGR_Settings.is_registered:
     addon.register()
 assert hasattr(bpy.types.Scene, "vgr_settings")
 assert addon.export_rules(bpy.context.scene) == {}
@@ -1848,5 +1848,8 @@ assert not hasattr(bpy.types.Scene, "vgr_settings")
 assert addon.initialize_loaded_scenes not in bpy.app.handlers.load_post
 addon.register()
 addon.unregister()
+addon.register()
+assert addon.VGR_Settings.is_registered
+assert hasattr(bpy.types.Scene, "vgr_settings")
 print("PASS: unregister and re-register cleanly")
 print("ALL ADD-ON INTEGRATION CHECKS PASSED")

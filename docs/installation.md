@@ -28,7 +28,7 @@ Use one installation at a time.
 
 Follow [migration and updates](migration.md), including a **full Blender restart**.
 Save a `.blend` copy and export a JSON backup before changing installations.
-Registration rejects conflicting installations before altering Blender resources.
+Disable and remove the previous VG Rules installation before enabling its replacement.
 
 ## Permissions and support
 

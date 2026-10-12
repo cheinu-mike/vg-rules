@@ -70,9 +70,8 @@ containing a literal `OBJECT_RULES` dictionary. Python files are read without
 executing their code. Export a backup before importing.
 Export writes atomically, preserving existing presets on failure, and refuses
 destinations inside installed VG Rules directories, including disabled copies.
-Runtime operation requires no write access to those directories. Conflicting
-installations are rejected before
-registration changes; failed registration rolls back its owned resources.
+Runtime operation requires no write access to those directories. Disable and
+remove the previous VG Rules installation before enabling its replacement.
 
 ## Build
 

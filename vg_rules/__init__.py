@@ -800,10 +800,14 @@ def scene_needs_initialization(scene):
 
 
 def request_scene_initialization():
-    global _owns_timer
-    if owns_scene_property() and not bpy.app.timers.is_registered(initialize_pending_scenes):
+    if not bpy.app.timers.is_registered(initialize_pending_scenes):
         bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
-        _owns_timer = True
+
+
+def cancel_scene_initialization():
+    # One-shot timers remove themselves after running or when a file is loaded.
+    if bpy.app.timers.is_registered(initialize_pending_scenes):
+        bpy.app.timers.unregister(initialize_pending_scenes)
 
 
 def initialize_scene(scene):
@@ -829,12 +833,11 @@ def initialize_loaded_scenes(_):
 def initialize_pending_scenes():
     # Blender restricts data access while an add-on's register() runs.
     # Initialize only once that enable step has finished.
-    if owns_scene_property():
-        initialize_loaded_scenes(None)
-        for window in bpy.context.window_manager.windows:
-            for area in window.screen.areas:
-                if area.type == 'VIEW_3D':
-                    area.tag_redraw()
+    initialize_loaded_scenes(None)
+    for window in bpy.context.window_manager.windows:
+        for area in window.screen.areas:
+            if area.type == 'VIEW_3D':
+                area.tag_redraw()
     return None
 
 
@@ -847,80 +850,21 @@ CLASSES = (
 )
 
 
-_registered_classes = []
-_scene_property = None
-_owns_handler = False
-_owns_timer = False
-
-
-def registered_class(cls):
-    base = next(base for base in (PropertyGroup, Operator, UIList, Panel) if issubclass(cls, base))
-    identifier = getattr(cls, "bl_idname", cls.__name__)
-    if issubclass(cls, Operator):
-        prefix, name = identifier.split(".", 1)
-        identifier = f"{prefix.upper()}_OT_{name}"
-    return base.bl_rna_get_subclass_py(identifier, None)
-
-
-def owns_scene_property():
-    prop = bpy.types.Scene.bl_rna.properties.get("vgr_settings")
-    return (_scene_property is not None and prop is not None and prop.type == 'POINTER'
-            and prop.as_pointer() == _scene_property and registered_class(VGR_Settings) is VGR_Settings
-            and prop.fixed_type == VGR_Settings.bl_rna)
-
-
 def register():
-    global _scene_property, _owns_handler, _owns_timer
-    if (_registered_classes or hasattr(bpy.types.Scene, "vgr_settings")
-            or any(registered_class(cls) is not None for cls in CLASSES)
-            or initialize_loaded_scenes in bpy.app.handlers.load_post
-            or bpy.app.timers.is_registered(initialize_pending_scenes)):
-        raise RuntimeError("VG Rules installation conflicts with already registered resources. "
-                           "Disable the other installation and restart Blender before enabling this one.")
-    try:
-        for cls in CLASSES:
-            _registered_classes.append(cls)
-            bpy.utils.register_class(cls)
-        bpy.types.Scene.vgr_settings = PointerProperty(type=VGR_Settings)
-        _scene_property = bpy.types.Scene.bl_rna.properties["vgr_settings"].as_pointer()
-        _owns_handler = True
-        bpy.app.handlers.load_post.append(initialize_loaded_scenes)
-        _owns_timer = True
-        # Defer data changes until Blender has finished enabling the add-on.
-        bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
-    except Exception:
-        unregister()
-        raise
+    for cls in CLASSES:
+        bpy.utils.register_class(cls)
+    bpy.types.Scene.vgr_settings = PointerProperty(type=VGR_Settings)
+    bpy.app.handlers.load_post.append(initialize_loaded_scenes)
+    # Defer data changes until Blender has finished enabling the add-on.
+    bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
 
 
 def unregister():
-    global _scene_property, _owns_handler, _owns_timer
-    errors = []
-    try:
-        if _owns_timer and bpy.app.timers.is_registered(initialize_pending_scenes):
-            bpy.app.timers.unregister(initialize_pending_scenes)
-        _owns_timer = False
-    except Exception as error:
-        errors.append(error)
-    if _owns_handler:
-        if initialize_loaded_scenes in bpy.app.handlers.load_post:
-            bpy.app.handlers.load_post.remove(initialize_loaded_scenes)
-        _owns_handler = False
-    try:
-        if owns_scene_property():
-            del bpy.types.Scene.vgr_settings
-        _scene_property = None
-    except Exception as error:
-        errors.append(error)
-    for cls in reversed(_registered_classes.copy()):
-        try:
-            if registered_class(cls) is cls:
-                bpy.utils.unregister_class(cls)
-            _registered_classes.remove(cls)
-        except Exception as error:
-            errors.append(error)
-    if errors:
-        raise RuntimeError(f"Could not unregister all owned VG Rules resources: {errors!r}")
+    cancel_scene_initialization()
+    bpy.app.handlers.load_post.remove(initialize_loaded_scenes)
+    del bpy.types.Scene.vgr_settings
+    for cls in reversed(CLASSES):
+        bpy.utils.unregister_class(cls)
 
 
 if __name__ == "__main__":
