@@ -2,20 +2,28 @@
 
 ## Unreleased
 
-- Simplify registration and unregistration to direct class, Scene-property and
-  load-handler operations. Remove duplicate-installation checks, ownership
-  tracking and partial-registration rollback. Cancel a pending one-shot scene
-  initializer before removing its Scene property.
-- Retain saved-rule initialization, legacy migration and regex execution for
-  separate review. Update lifecycle checks to verify ordinary enable/disable,
-  timer cleanup and saved-rule preservation.
+- Simplify registration and unregistration to direct class and Scene-property
+  operations. Remove duplicate-installation checks, ownership tracking and
+  partial-registration rollback.
+- Read saved Scene rules directly and use property defaults for fresh scenes.
+  Remove load handlers, initialization timers, the sidebar readiness gate,
+  initialization flags and unused mixed-pattern migration. Released 0.1.0 already
+  stored separate Keep/Delete collections and object-binding history.
+- Keep target callbacks and metadata refresh when Preview/Apply uses a rule;
+  display live names without changing saved properties during drawing or loading.
+  Retain preset validation, operation checks and bounded regex execution.
+- Replace unpublished mixed-list fixtures with ordinary saved-rule persistence
+  checks across installer switches. Verify saved indexes, results and binding
+  metadata load unchanged, without running validation or target callbacks.
 
 Verification: 22 packaging/release-gate tests passed, including real Blender
 validator rejection. Full source, runtime, installed-extension (read-only/offline)
 and restart lifecycle checks passed locally on Windows x64 with Blender 4.2.0,
-4.2.23 and 5.2.0 against disposable candidate installers. Both registration
-routines contain no conditionals or exception-handling wrappers. The hosted
-matrix and local GUI checks have not been rerun for these changes. The 0.1.2
+4.2.23 and 5.2.0 against a disposable candidate extension. Installer-switch checks
+used the preserved 0.1.0 customer ZIP to create actual released-format saved files;
+rules, saved indexes, results and binding metadata loaded without conversion or
+validation. Both registration routines contain no conditionals or exception-handling
+wrappers. The hosted matrix and local GUI checks have not been rerun. The 0.1.2
 release evidence below applies to the historical archive, not this branch.
 
 ## 0.1.2 (2026-10-08)

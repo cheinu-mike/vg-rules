@@ -130,7 +130,6 @@ try:
             for name in archive.namelist():
                 assert (repository / "vg_rules" / name).read_bytes() == archive.read(name), name
         report["checks"].append("extension install/enable and installed-byte parity")
-        module.initialize_pending_scenes()
         assert module.export_rules(bpy.context.scene) == {}
         cube = bpy.context.scene.objects["Cube"]
         cube.vertex_groups.new(name="Keep").add([0], 0.25, 'REPLACE')
@@ -171,9 +170,7 @@ try:
         report['checks'].append('runtime compliance regressions in installed extension namespace')
         assert bpy.ops.preferences.addon_disable(module=module_name) == {'FINISHED'}
         assert not hasattr(bpy.types.Scene, "vgr_settings")
-        assert module.initialize_loaded_scenes not in bpy.app.handlers.load_post
-        assert not bpy.app.timers.is_registered(module.initialize_pending_scenes)
-        report["checks"].append("disable cleans Scene property, handler and timer")
+        report["checks"].append("disable cleans Scene property and classes")
         assert bpy.ops.preferences.addon_enable(module=module_name) == {'FINISHED'}
         assert module.VGR_Settings.is_registered
         assert bpy.types.Scene.bl_rna.properties['vgr_settings'].fixed_type == module.VGR_Settings.bl_rna

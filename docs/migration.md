@@ -1,4 +1,4 @@
-# Migration and updates
+# Updates and switching installers
 
 ## Back up first
 
@@ -33,19 +33,29 @@ One object linked into several scenes now requires shared-data confirmation, eve
 when no second object shares its mesh. Review all affected scenes before Continue.
 Preset exports are atomic and refuse installed VG Rules directories.
 
-Saved mixed-pattern lists migrate to the separate Keep/Delete lists when the scene
-is used. Preserve backups of older files and review the migrated rules before Apply.
 See [CHANGELOG](../CHANGELOG.md) for release history.
 
 ## Sidebar fix in 0.1.2
 
-Version 0.1.2 fixes an empty panel caused by scene-property writes during drawing
-in 0.1.1. Saved rules and target-name refresh now initialize through a deferred
-timer. Operator IDs, preset format and saved properties remain compatible.
+The published 0.1.2 fixes an empty panel caused by scene-property writes during
+drawing in 0.1.1 by deferring initialization to a timer.
 Use the restart procedure above when replacing 0.1.1.
+
+## Saved rules in current development
+
+The first release, 0.1.0, already saved separate Keep/Delete collections and
+object-binding history. Files created with released versions need no rule-format
+conversion. The current development source reads saved Scene properties directly
+and uses property defaults for new scenes. Enabling VG Rules, loading a file and
+drawing the sidebar do not initialize or validate rules and schedule no scene timer.
+
+The sidebar displays each live target's current name without rewriting saved data.
+Preview/Apply refresh binding metadata when the rule is used. Preset import and
+export validate their data; Preview/Apply check targets and rule values before
+planning mesh changes. These checks run for the requested operation, not on file load.
 
 ## Support
 
-If a migration fails, reopen the saved copy and report through
+If an update or installer switch fails, reopen the saved copy and report through
 [GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues). Include both versions,
 installer type and Results text. Use a synthetic reproduction instead of personal models.

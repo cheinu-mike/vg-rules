@@ -83,7 +83,7 @@ including disabled copies. Choose a writable user folder.
 
 **Import replaces the rule list after validation**. Export a backup first. JSON and
 Python files with a literal `OBJECT_RULES` dictionary are supported. Python code is
-read as data and never executed. For moves and updates, follow [migration](migration.md).
+read as data and never executed. For moves and updates, follow [updates and switching installers](migration.md).
 
 For help, use [troubleshooting](troubleshooting.md) or
 [GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues).

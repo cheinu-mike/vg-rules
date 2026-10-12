@@ -30,7 +30,6 @@ import json
 import textwrap
 
 import bpy
-from bpy.app.handlers import persistent
 from bpy.props import BoolProperty, CollectionProperty, EnumProperty, IntProperty, PointerProperty, StringProperty
 from bpy.types import Operator, Panel, PropertyGroup, UIList
 from bpy_extras.io_utils import ExportHelper, ImportHelper
@@ -54,26 +53,12 @@ DELETE_ITEMS = (
     ("delete_regex", "Delete Regex", "Delete groups matching a Python regex search unless a Keep rule matches; use ^/$ to anchor. Regex matching has a one-second worker deadline per rule"),
 )
 
-# Preserve the original enum values when reading old saved .blend data.
-LEGACY_PATTERN_ITEMS = (
-    ("keep_only_prefixes", "Keep Prefix", "", 0),
-    ("delete_exact", "Delete Exact", "", 1),
-    ("delete_prefixes", "Delete Prefix", "", 2),
-    ("delete_contains", "Delete Contains", "", 3),
-)
-
 SIDE_ITEMS = (
     ("EXACT", "Exact Name", "Use the group name exactly as entered"),
     ("AUTO", "Auto Side", "Choose .L/.R from matching rest-pose bones or the X Mirror plane"),
     ("L", "Left (.L)", "Assign the .L group"),
     ("R", "Right (.R)", "Assign the .R group"),
 )
-
-
-class VGR_Pattern(PropertyGroup):
-    """Legacy mixed list, retained only to migrate saved rules."""
-    kind: EnumProperty(name="Match", items=LEGACY_PATTERN_ITEMS)
-    value: StringProperty(name="Text")
 
 
 class VGR_KeepPattern(PropertyGroup):
@@ -115,9 +100,6 @@ class VGR_ObjectRule(PropertyGroup):
     object_name: StringProperty(name="Object Name", description="Edit to explicitly resolve an unselected target by name", update=update_fallback_name)
     # Keep this after target/name so raw rollback restores history after callbacks.
     target_was_set: BoolProperty(default=False, options={'HIDDEN'})
-    patterns: CollectionProperty(type=VGR_Pattern)
-    pattern_index: IntProperty(default=0)
-    pattern_lists_split: BoolProperty(default=False)
     keep_patterns: CollectionProperty(type=VGR_KeepPattern)
     keep_pattern_index: IntProperty(default=0)
     keep_case_sensitive: BoolProperty(name="Case Sensitive", default=False, description="Match letter case for all Keep filters; unchecked ignores case")
@@ -134,7 +116,6 @@ class VGR_LogLine(PropertyGroup):
 
 
 class VGR_Settings(PropertyGroup):
-    initialized: BoolProperty(default=False)
     rules: CollectionProperty(type=VGR_ObjectRule)
     rule_index: IntProperty(default=0)
     log: CollectionProperty(type=VGR_LogLine)
@@ -168,25 +149,7 @@ def rule_name(rule, scene=None):
     return obj.name if obj is not None else rule.object_name or "Choose an object"
 
 
-def split_legacy_patterns(rule):
-    if rule.pattern_lists_split:
-        return
-    for index, old in enumerate(rule.patterns):
-        is_keep = old.kind in engine.KEEP_KEYS
-        collection = rule.keep_patterns if is_keep else rule.delete_patterns
-        entry = collection.add()
-        entry.kind, entry.value = old.kind, old.value
-        if index == rule.pattern_index:
-            if is_keep:
-                rule.keep_pattern_index = len(collection) - 1
-            else:
-                rule.delete_pattern_index = len(collection) - 1
-    rule.patterns.clear()
-    rule.pattern_lists_split = True
-
-
 def rule_dictionary(rule):
-    split_legacy_patterns(rule)
     result = {key: [] for key in engine.PATTERN_KEYS}
     for pattern in (*rule.keep_patterns, *rule.delete_patterns):
         if not pattern.value.strip():
@@ -216,7 +179,7 @@ def rule_dictionary(rule):
 
 
 def snapshot_property_group(group):
-    """Keep raw RNA data, including unfinished rows and legacy UI state."""
+    """Keep raw RNA data, including unfinished rows and UI state."""
     values = {}
     for prop in group.bl_rna.properties:
         if prop.type == 'COLLECTION':
@@ -240,7 +203,6 @@ def restore_property_group(group, values):
 def populate_rules(collection, rules, scene):
     for object_name, values in rules.items():
         rule = collection.add()
-        rule.pattern_lists_split = True
         rule.enabled = values.get("enabled", True)
         for key in engine.CASE_KEYS:
             setattr(rule, key, values.get(key, False))
@@ -270,7 +232,6 @@ def load_rules(scene, rules):
     try:
         settings.rules.clear()
         populate_rules(settings.rules, rules, scene)
-        settings.initialized = True
         settings.rule_index = 0
         settings.log.clear()
         settings.status = (f"Loaded {len(settings.rules)} object rules. Preview before applying."
@@ -281,7 +242,6 @@ def load_rules(scene, rules):
 
 
 def export_rules(scene):
-    initialize_scene(scene)
     result = {}
     for rule in scene.vgr_settings.rules:
         obj = rule.target if rule.target is not None else target_object(rule, scene)
@@ -310,7 +270,6 @@ class VGR_OT_add_rule(Operator):
 
     def execute(self, context):
         settings = context.scene.vgr_settings
-        settings.initialized = True
         objects = [obj for obj in context.selected_objects
                    if obj.type == 'MESH' and object_in_scene(obj, context.scene)] if self.selected else [None]
         added = 0
@@ -321,7 +280,6 @@ class VGR_OT_add_rule(Operator):
                 settings.rule_index = existing
                 continue
             rule = settings.rules.add()
-            rule.pattern_lists_split = True
             if obj is not None:
                 rule.target = obj
                 rule.object_name = obj.name
@@ -346,7 +304,6 @@ class VGR_OT_edit_list(Operator):
             owner = active_rule(context.scene)
             if owner is None:
                 return {'CANCELLED'}
-            split_legacy_patterns(owner)
             name, index_name = {
                 'KEEP': ("keep_patterns", "keep_pattern_index"),
                 'DELETE': ("delete_patterns", "delete_pattern_index"),
@@ -355,9 +312,7 @@ class VGR_OT_edit_list(Operator):
         collection = getattr(owner, name)
         index = getattr(owner, index_name)
         if self.action == 'ADD':
-            entry = collection.add()
-            if self.list_name == 'RULE':
-                entry.pattern_lists_split = True
+            collection.add()
             setattr(owner, index_name, len(collection) - 1)
         elif 0 <= index < len(collection):
             if self.action == 'REMOVE':
@@ -372,7 +327,6 @@ class VGR_OT_edit_list(Operator):
 
 
 def scoped_rules(scene, scope):
-    initialize_scene(scene)
     settings = scene.vgr_settings
     if scope == 'ALL':
         rules = [rule for rule in settings.rules if rule.enabled]
@@ -705,12 +659,6 @@ class VGR_PT_rules(Panel):
 
     def draw(self, context):
         layout = self.layout
-        # Panel drawing is read-only in Blender. Migrate saved data in the
-        # owned timer instead of writing Scene properties from this callback.
-        if scene_needs_initialization(context.scene):
-            request_scene_initialization()
-            layout.label(text="Preparing saved rules...")
-            return
         settings = context.scene.vgr_settings
         layout.use_property_split = False
         row = layout.row(align=True)
@@ -790,59 +738,8 @@ class VGR_PT_rules(Panel):
                 wrapped_labels(layout, line.message, context.region, wide_text=line.kind == "WARNING")
 
 
-def scene_needs_initialization(scene):
-    settings = scene.vgr_settings
-    return (not settings.initialized or any(
-        not rule.pattern_lists_split or
-        (rule.target is not None and
-         (rule.object_name != rule.target.name or not rule.target_was_set))
-        for rule in settings.rules))
-
-
-def request_scene_initialization():
-    if not bpy.app.timers.is_registered(initialize_pending_scenes):
-        bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
-
-
-def cancel_scene_initialization():
-    # One-shot timers remove themselves after running or when a file is loaded.
-    if bpy.app.timers.is_registered(initialize_pending_scenes):
-        bpy.app.timers.unregister(initialize_pending_scenes)
-
-
-def initialize_scene(scene):
-    if not scene.vgr_settings.initialized:
-        if not scene.vgr_settings.rules:
-            load_rules(scene, {})
-        else:
-            scene.vgr_settings.initialized = True
-    for rule in scene.vgr_settings.rules:
-        if rule.target is not None and (rule.object_name != rule.target.name or not rule.target_was_set):
-            update_rule_target(rule, None)
-        split_legacy_patterns(rule)
-
-
-@persistent
-def initialize_loaded_scenes(_):
-    # Other scenes initialize when their UI or operators are used.
-    scene = getattr(bpy.context, "scene", None)
-    if scene is not None:
-        initialize_scene(scene)
-
-
-def initialize_pending_scenes():
-    # Blender restricts data access while an add-on's register() runs.
-    # Initialize only once that enable step has finished.
-    initialize_loaded_scenes(None)
-    for window in bpy.context.window_manager.windows:
-        for area in window.screen.areas:
-            if area.type == 'VIEW_3D':
-                area.tag_redraw()
-    return None
-
-
 CLASSES = (
-    VGR_Pattern, VGR_KeepPattern, VGR_DeletePattern, VGR_Assignment,
+    VGR_KeepPattern, VGR_DeletePattern, VGR_Assignment,
     VGR_ObjectRule, VGR_LogLine, VGR_Settings,
     VGR_OT_add_rule, VGR_OT_edit_list, VGR_OT_preview,
     VGR_OT_apply, VGR_OT_import, VGR_OT_export,
@@ -854,14 +751,9 @@ def register():
     for cls in CLASSES:
         bpy.utils.register_class(cls)
     bpy.types.Scene.vgr_settings = PointerProperty(type=VGR_Settings)
-    bpy.app.handlers.load_post.append(initialize_loaded_scenes)
-    # Defer data changes until Blender has finished enabling the add-on.
-    bpy.app.timers.register(initialize_pending_scenes, first_interval=0.0)
 
 
 def unregister():
-    cancel_scene_initialization()
-    bpy.app.handlers.load_post.remove(initialize_loaded_scenes)
     del bpy.types.Scene.vgr_settings
     for cls in reversed(CLASSES):
         bpy.utils.unregister_class(cls)

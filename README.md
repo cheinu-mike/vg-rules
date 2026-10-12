@@ -15,7 +15,7 @@ Intel build and is unsupported there. Local GUI checks cover all three Windows v
 The extension package has not yet been submitted for Blender platform review.
 
 Public guides: [Installation](docs/installation.md), [Usage](docs/usage.md),
-[Migration and updates](docs/migration.md), and [Troubleshooting](docs/troubleshooting.md).
+[Updates and switching installers](docs/migration.md), and [Troubleshooting](docs/troubleshooting.md).
 Support is through [GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues).
 
 ## Installation
@@ -112,7 +112,7 @@ python tests/run_blender.py --blender /path/to/blender
 
 Build both installers first. The runner uses temporary offline profiles and
 generated meshes, presets and scenes. It runs the full source and installed ZIP
-suites with enforced read-only permissions, then separate processes for migration,
+suites with enforced read-only permissions, then separate processes for installer switches,
 update, restart and uninstall. GitHub Actions tests eleven required platform/version
 pairs using one candidate archive. See [Verification](docs/verification.md), the
 [archive-bound compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).

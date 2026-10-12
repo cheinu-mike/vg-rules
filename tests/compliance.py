@@ -31,7 +31,7 @@ INSTALLED = {
     'full integration suite in installed extension namespace',
     'runtime compliance regressions in installed extension namespace',
     'offline flag remains false with Python network entry points blocked',
-    'disable/re-enable/disable preserves installation ownership',
+    'disable/re-enable/disable registers and removes classes and Scene property',
     'enable, operations, worker, export and disable with enforced read-only installation',
 }
 
@@ -179,7 +179,7 @@ def collect(root, evidence):
             'scope': ['Headless checks on every required hosted platform; local GUI checks on Windows only',
                       'Update uses a synthetic previous-version package with a marker, followed by a real process restart',
                       'Runtime tests are offline and block Python socket/URL entry points; not an OS firewall trace',
-                      'Legacy migration uses generated saved mixed-list rules and JSON, not personal projects',
+                      'Installer-switch checks use generated saved separate Keep/Delete rules and JSON, not personal projects',
                       'Platform upload and moderation are subsequent release steps']}
 
 

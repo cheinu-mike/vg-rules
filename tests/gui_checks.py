@@ -58,7 +58,7 @@ def launch():
         (output / 'legacy.stdout.txt').write_text(fixture.stdout, encoding='utf-8')
         (output / 'legacy.stderr.txt').write_text(fixture.stderr, encoding='utf-8')
         if fixture.returncode:
-            raise RuntimeError(f'GUI migration fixture failed; see {output}')
+            raise RuntimeError(f'GUI saved-rule fixture failed; see {output}')
         options = {}
         if os.name == 'nt':
             startup = subprocess.STARTUPINFO()
@@ -77,7 +77,7 @@ def launch():
         report = json.loads((output / 'result.json').read_text())
         if report['status'] != 'PASS' or 'Traceback (most recent call last)' in (output / 'stderr.txt').read_text():
             raise RuntimeError(f'GUI checks reported failure; see {output}')
-        print('PASS: actual dialog Cancel/Continue, Undo, warning layout and legacy .blend/JSON migration', flush=True)
+        print('PASS: actual dialog Cancel/Continue, Undo, warning layout and saved .blend/JSON transfer between installers', flush=True)
 
 
 def inside():
@@ -150,9 +150,7 @@ def inside():
 
     def prepare_scene():
         addon = sys.modules[module_name]
-        addon.initialize_pending_scenes()
         assert addon.export_rules(bpy.context.scene) == original['rules']
-        assert all(r.pattern_lists_split for r in bpy.context.scene.vgr_settings.rules)
         check('legacy_saved_blend_migration')
         addon.load_rules(bpy.context.scene, {})
         assert bpy.ops.vgr.import_rules(filepath=str(profile / 'saved_rules.json')) == {'FINISHED'}

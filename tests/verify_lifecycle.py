@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 Blank Glyph
 
-"""Real install, legacy migration, update/restart and uninstall/restart phases."""
+"""Real installer switch, saved-rule persistence and update/uninstall restarts."""
 
 import hashlib
 import json
 import os
 from pathlib import Path
 import sys
+from unittest.mock import patch
 from zipfile import ZipFile
 
 import bpy
@@ -73,8 +74,10 @@ def uninstall():
 def check_saved(addon):
     state = json.loads(STATE.read_text())
     assert digest(BLEND) == state['blend_sha256'] and digest(BACKUP) == state['json_sha256']
-    assert bpy.ops.wm.open_mainfile(filepath=str(BLEND)) == {'FINISHED'}
-    addon.initialize_pending_scenes()
+    with patch.object(addon.presets, 'validate_rules', side_effect=AssertionError('File loading must not validate saved rules')), \
+         patch.object(addon, 'update_rule_target', side_effect=AssertionError('File loading must not rewrite saved targets')):
+        assert bpy.ops.wm.open_mainfile(filepath=str(BLEND)) == {'FINISHED'}
+    assert metadata() == state['metadata']
     assert addon.export_rules(bpy.context.scene) == state['rules']
     assert not bpy.context.scene.vgr_settings.rules[1].enabled
     assert bpy.context.scene.vgr_settings.rules[0].target == bpy.context.scene.objects['Migration Cube']
@@ -95,6 +98,16 @@ def snapshot():
                        [[(i.group, i.weight) for i in v.groups] for v in obj.data.vertices],
                        [(m.name, m.type, m.use_mirror_vertex_groups) for m in obj.modifiers if m.type == 'MIRROR'])
             for obj in bpy.context.scene.objects if obj.type == 'MESH'}
+
+
+def metadata():
+    settings = bpy.context.scene.vgr_settings
+    return {'rule_index': settings.rule_index, 'status': settings.status,
+            'show_log': settings.show_log, 'log_index': settings.log_index,
+            'log': [[line.kind, line.message] for line in settings.log],
+            'bindings': [[rule.object_name, rule.target_was_set] for rule in settings.rules],
+            'indexes': [[rule.keep_pattern_index, rule.delete_pattern_index, rule.assignment_index]
+                        for rule in settings.rules]}
 
 
 if PHASE == 'legacy':
@@ -123,17 +136,17 @@ if PHASE == 'legacy':
         disabled.name: {'enabled': False, 'assign_all_vertices': ['DisabledWeight']}})
     expected = addon.export_rules(bpy.context.scene)
     assert bpy.ops.vgr.export_rules(filepath=str(BACKUP)) == {'FINISHED'}
-    # Save an older mixed-list representation to exercise .blend data migration.
-    rule = bpy.context.scene.vgr_settings.rules[0]
-    rule.keep_patterns.clear()
-    rule.delete_patterns.clear()
-    for kind, text in (('keep_only_prefixes', 'Keep'), ('delete_exact', 'RemoveTemp')):
-        entry = rule.patterns.add()
-        entry.kind, entry.value = kind, text
-    rule.pattern_lists_split = False
+    # Released versions already store separate Keep/Delete lists and binding history.
+    # Save their actual rule representation; no schema conversion is needed.
+    settings = bpy.context.scene.vgr_settings
+    settings.rules[0].object_name = 'Saved fallback label before a rename'
+    settings.rule_index, settings.log_index, settings.show_log = 1, 0, False
+    settings.status = 'Saved status must survive file loading'
+    line = settings.log.add()
+    line.kind, line.message = 'INFO', 'Saved result must survive file loading'
     assert bpy.ops.wm.save_as_mainfile(filepath=str(BLEND), check_existing=False) == {'FINISHED'}
     STATE.write_text(json.dumps({'rules': expected, 'blend_sha256': digest(BLEND),
-                                'json_sha256': digest(BACKUP)}, indent=2), encoding='utf-8')
+                                'json_sha256': digest(BACKUP), 'metadata': metadata()}, indent=2), encoding='utf-8')
     assert bpy.ops.preferences.addon_disable(module='vg_rules') == {'FINISHED'}
     # Blender's removal operator redraws an editor even in background mode.
     window = next(iter(bpy.context.window_manager.windows))

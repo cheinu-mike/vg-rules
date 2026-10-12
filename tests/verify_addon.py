@@ -70,17 +70,16 @@ def assert_full(obj, name):
 
 
 def raw_settings_snapshot(settings):
-    """Read editable fields directly; exporting would migrate incomplete legacy rows."""
-    rule_fields = ("enabled", "target", "object_name", "target_was_set", "pattern_index", "pattern_lists_split",
+    """Read editable fields directly, including unfinished rows that cannot export."""
+    rule_fields = ("enabled", "target", "object_name", "target_was_set",
                    "keep_pattern_index", "keep_case_sensitive", "delete_pattern_index",
                    "delete_case_sensitive", "assignment_index")
     return (
         tuple(getattr(settings, name) for name in
-              ("initialized", "rule_index", "log_index", "status", "show_log")),
+              ("rule_index", "log_index", "status", "show_log")),
         tuple((line.kind, line.message) for line in settings.log),
         tuple((
             tuple(getattr(rule, name) for name in rule_fields),
-            tuple((entry.kind, entry.value) for entry in rule.patterns),
             tuple((entry.kind, entry.value) for entry in rule.keep_patterns),
             tuple((entry.kind, entry.value) for entry in rule.delete_patterns),
             tuple((entry.group_name, entry.side, entry.mirror) for entry in rule.assignments),
@@ -93,13 +92,10 @@ if not addon.VGR_Settings.is_registered:
 assert hasattr(bpy.types.Scene, "vgr_settings")
 assert addon.export_rules(bpy.context.scene) == {}
 assert not bpy.context.scene.vgr_settings.log
-assert bpy.context.scene.vgr_settings.initialized
 assert addon.VGR_PT_rules.is_registered
 fresh_scene = bpy.data.scenes.new("Fresh Scene")
 for _ in range(2):
-    addon.initialize_loaded_scenes(None)
     assert addon.export_rules(fresh_scene) == {}
-    assert fresh_scene.vgr_settings.initialized
     assert not fresh_scene.vgr_settings.log
 assert bpy.ops.vgr.preview(scope='ALL') == {'CANCELLED'}
 assert bpy.ops.vgr.apply(scope='ALL') == {'CANCELLED'}
@@ -335,7 +331,6 @@ for failure_name, expression, compiler_error, reason in regex_compile_cases:
         cleared = settings.rules.add()
         cleared.target, cleared.enabled = earlier, False
         cleared.target = None
-        cleared.pattern_lists_split = True
         assert cleared.target_was_set
         settings.rule_index, settings.log_index, settings.show_log = 1, 1, False
         preserved_raw = raw_settings_snapshot(settings)
@@ -527,36 +522,6 @@ bpy.ops.vgr.edit_list(list_name='DELETE', action='REMOVE')
 assert [(entry.kind, entry.value) for entry in rule.keep_patterns] == keep_before
 assert rule.delete_patterns[0].value == "Shell"
 print("PASS: independent Keep/Delete collections, menus, selection, add/remove and reorder controls")
-
-reset()
-obj = mesh_object("Legacy Saved Rule")
-addon.load_rules(bpy.context.scene, {obj.name: {"assign_all_vertices": ["Saved Weight"]}})
-rule = addon.active_rule(bpy.context.scene)
-rule.enabled = False
-rule.pattern_lists_split = False
-# Old .blend rules predate binding history; a live pointer must establish it.
-rule.target_was_set = False
-obj.name = "Renamed Legacy Saved Rule"
-legacy_values = (
-    ("keep_only_prefixes", "DEF-"), ("delete_exact", "Shell"),
-    ("delete_prefixes", "Bad"), ("delete_contains", "Jaw"),
-)
-for number, (kind, value) in enumerate(legacy_values):
-    entry = rule.patterns.add()
-    entry.kind, entry.value = kind, value
-    assert entry["kind"] == number
-rule.pattern_index = 2
-for _ in range(2):
-    addon.initialize_loaded_scenes(None)
-    assert len(rule.patterns) == 0 and rule.pattern_lists_split
-    assert [(entry.kind, entry.value) for entry in rule.keep_patterns] == list(legacy_values[:1])
-    assert [(entry.kind, entry.value) for entry in rule.delete_patterns] == list(legacy_values[1:])
-    assert rule.delete_pattern_index == 1
-    assert rule.target == obj and not rule.enabled
-    assert rule.target_was_set and rule.object_name == obj.name
-    assert rule.assignments[0].group_name == "Saved Weight"
-    assert not rule.keep_case_sensitive and not rule.delete_case_sensitive
-print("PASS: old enum values and mixed saved rules migrate once without losing targets, disabled flags, assignments or selection; renamed live legacy pointers acquire binding history")
 
 reset()
 obj = mesh_object("Rules Test")
@@ -811,7 +776,7 @@ for kind, message in (("INFO", "Preserve this result"), ("WARNING", "Preserve th
     entry.kind, entry.message = kind, message
 preserved_config = addon.export_rules(bpy.context.scene)
 preserved_targets = [rule.target for rule in settings.rules]
-preserved_state = (settings.initialized, settings.rule_index, settings.status, settings.show_log,
+preserved_state = (settings.rule_index, settings.status, settings.show_log,
                    settings.log_index, [(line.kind, line.message) for line in settings.log])
 preserved_meshes = (snapshot(obj), snapshot(second))
 
@@ -819,7 +784,7 @@ preserved_meshes = (snapshot(obj), snapshot(second))
 def assert_nul_import_preserves_state(label):
     assert addon.export_rules(bpy.context.scene) == preserved_config, label
     assert [rule.target for rule in settings.rules] == preserved_targets, label
-    assert (settings.initialized, settings.rule_index, settings.status, settings.show_log,
+    assert (settings.rule_index, settings.status, settings.show_log,
             settings.log_index, [(line.kind, line.message) for line in settings.log]) == preserved_state, label
     assert (snapshot(obj), snapshot(second)) == preserved_meshes, label
 
@@ -895,21 +860,22 @@ for target in (obj, second):
     add_group(target, "Other Weight", 0.6, indices=[1])
 addon.load_rules(bpy.context.scene, {obj.name: {}, second.name: {}})
 settings = bpy.context.scene.vgr_settings
-legacy, incomplete = settings.rules
-legacy.enabled, legacy.object_name, legacy.pattern_lists_split = False, "Stale Legacy Object Label", False
-legacy.keep_case_sensitive, legacy.delete_case_sensitive = True, True
-legacy.pattern_index, legacy.keep_pattern_index, legacy.delete_pattern_index, legacy.assignment_index = 1, 2, 3, 1
-for kind, value in (("keep_only_prefixes", "DEF-"), ("delete_exact", "")):
-    entry = legacy.patterns.add()
-    entry.kind, entry.value = kind, value
-entry = legacy.keep_patterns.add()
-entry.kind, entry.value = "keep_exact", "Unsplit Existing Keep"
-entry = legacy.delete_patterns.add()
+edited, incomplete = settings.rules
+edited.enabled, edited.object_name = False, "Stale Object Label"
+edited.keep_case_sensitive, edited.delete_case_sensitive = True, True
+edited.keep_pattern_index, edited.delete_pattern_index, edited.assignment_index = 2, 3, 1
+entry = edited.keep_patterns.add()
+entry.kind, entry.value = "keep_only_prefixes", "DEF-"
+entry = edited.delete_patterns.add()
+entry.kind, entry.value = "delete_exact", ""
+entry = edited.keep_patterns.add()
+entry.kind, entry.value = "keep_exact", "Existing Keep"
+entry = edited.delete_patterns.add()
 entry.kind, entry.value = "delete_regex", "["
-assignment = legacy.assignments.add()
+assignment = edited.assignments.add()
 assignment.group_name, assignment.side, assignment.mirror = "", "L", True
 incomplete.target, incomplete.object_name = None, "Missing Incomplete Target"
-incomplete.pattern_lists_split, incomplete.keep_case_sensitive = True, True
+incomplete.keep_case_sensitive = True
 incomplete.keep_pattern_index, incomplete.delete_pattern_index, incomplete.assignment_index = 4, 5, 6
 entry = incomplete.keep_patterns.add()
 entry.kind, entry.value = "keep_contains", ""
@@ -919,10 +885,9 @@ assignment.group_name, assignment.side, assignment.mirror = "", "AUTO", True
 cleared_binding = settings.rules.add()
 cleared_binding.target = obj
 cleared_binding.target = None
-cleared_binding.pattern_lists_split = True
 assert cleared_binding.target_was_set and cleared_binding.object_name == obj.name
-settings.initialized, settings.rule_index, settings.log_index, settings.show_log = False, 1, 1, False
-settings.status = "Preserve incomplete and legacy editing work"
+settings.rule_index, settings.log_index, settings.show_log = 1, 1, False
+settings.status = "Preserve incomplete editing work"
 for kind, message in (("INFO", "Saved result before import"), ("WARNING", "Selected saved warning")):
     entry = settings.log.add()
     entry.kind, entry.message = kind, message
@@ -983,7 +948,7 @@ for label, object_name, invalid_values in surrogate_cases:
             assert_surrogate_import_preserves_state(label + suffix)
         finally:
             path.unlink()
-print("PASS: lone high/low surrogates in object keys, all ten filters, string/dictionary assignments, unknown keys and side values reject direct load and actual JSON/literal-Python imports before replacement with safe diagnostics, preserving raw incomplete/legacy fields, pointers, indexes, results, groups, weights, locks and Mirror flags")
+print("PASS: lone high/low surrogates in object keys, all ten filters, string/dictionary assignments, unknown keys and side values reject direct load and actual JSON/literal-Python imports before replacement with safe diagnostics, preserving raw incomplete fields, pointers, indexes, results, groups, weights, locks and Mirror flags")
 
 # A failure after replacement starts must also restore unfinished editing work.
 replacement = {
@@ -1000,7 +965,7 @@ for suffix in (None, ".json", ".py"):
         populated_rows.extend(rule.object_name for rule in collection)
         settings.log.clear()
         settings.status = "Partially loaded"
-        settings.initialized, settings.rule_index, settings.log_index, settings.show_log = True, 0, 0, True
+        settings.rule_index, settings.log_index, settings.show_log = 0, 0, True
         raise TypeError("Injected partial population failure")
 
     addon.populate_rules = fail_partial_population
@@ -1033,7 +998,7 @@ for suffix in (None, ".json", ".py"):
         addon.populate_rules = original_populate
         if path is not None:
             path.unlink()
-print("PASS: injected TypeError after one new rule is populated rejects direct load and JSON/literal-Python imports; transaction restores raw nonexportable incomplete/legacy rules, pointers, all indexes/flags/status/results, groups, weights and Mirror flags")
+print("PASS: injected TypeError after one new rule is populated rejects direct load and JSON/literal-Python imports; transaction restores raw nonexportable incomplete rules, pointers, all indexes/flags/status/results, groups, weights and Mirror flags")
 
 safe_values = {key: ["Weight 🙂"] for key in addon.engine.PATTERN_KEYS}
 safe_values["assign_all_vertices"] = ["Weight 🙂", {"group": "Pair 🙂", "side": "L", "mirror": True}]
@@ -1483,7 +1448,7 @@ for operation, arguments in ((bpy.ops.vgr.preview, {}), (bpy.ops.vgr.apply, {}),
                (shared.data.name, shared.name, hidden_owner.name))
     assert "No rules ran" in settings.status
 extra = settings.rules.add()
-extra.target, extra.object_name, extra.pattern_lists_split = shared, shared.name, True
+extra.target, extra.object_name = shared, shared.name
 for operation, opt_in in ((bpy.ops.vgr.preview, False), (bpy.ops.vgr.apply, True)):
     arguments = {"scope": 'ALL'}
     if opt_in:
@@ -1518,7 +1483,6 @@ settings.rules[2].object_name = second.name
 assert addon.target_object(settings.rules[2]) == second
 missing_bound = linked_copy(first, "Deleted Linked Batch Target")
 missing_rule = settings.rules.add()
-missing_rule.pattern_lists_split = True
 missing_rule.target = missing_bound
 missing_rule.object_name = first.name
 bpy.data.objects.remove(missing_bound, do_unlink=True)
@@ -1743,11 +1707,9 @@ try:
         assert snapshot(placeholder) == before_export_mesh
 
     blank_rule = settings.rules.add()
-    blank_rule.pattern_lists_split = True
     assert_export_rejected("Choose an object or enter a name")
     settings.rules.remove(1)
     duplicate_rule = settings.rules.add()
-    duplicate_rule.pattern_lists_split = True
     duplicate_rule.target = placeholder
     for enabled in (True, False):
         duplicate_rule.enabled = enabled
@@ -1845,7 +1807,6 @@ print("PASS: Python import reads user-supplied literal rules without executing c
 
 addon.unregister()
 assert not hasattr(bpy.types.Scene, "vgr_settings")
-assert addon.initialize_loaded_scenes not in bpy.app.handlers.load_post
 addon.register()
 addon.unregister()
 addon.register()

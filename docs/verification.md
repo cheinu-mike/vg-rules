@@ -16,10 +16,11 @@ This verifies application behavior; it is not an operating-system network trace.
 Checks cover foreign-scene pointers, unlinking targets, shared objects and meshes
 across scenes, rejected batches, cancelled shared-data operations, groups, locks,
 weights and Mirror settings. They exercise bounded Python regex, actual regex
-timeouts, worker failures, saved rules across enable/disable, pending initializer
-cleanup, atomic preset exports and uninstall. Separate Blender processes exercise
-legacy ZIP installation, generated saved mixed-list rules, JSON backup migration,
-update and restart. The previous extension in the update test is a synthetic
+timeouts, worker failures, saved rules across enable/disable, immediate sidebar
+drawing without data changes, atomic preset exports and uninstall. Separate Blender
+processes exercise traditional add-on ZIP installation, saved separate Keep/Delete
+rules, loading without validation or metadata rewrites, JSON backups, installer
+switches, update and restart. The previous extension in the update test is a synthetic
 lower-version package with a marker; the restarted process must load final bytes.
 
 All generated scenes, profiles, intermediate ZIPs and presets use disposable
@@ -42,8 +43,8 @@ Without that environment variable, that one test is explicitly skipped.
 Local GUI verification runs the final installed ZIP in disposable Windows
 sessions on all three pinned versions. It inspects the actual warning layout,
 clicks native Cancel and Continue, and uses Ctrl-Z to verify Undo restores all
-shared groups, weights and Mirror modifiers. Legacy .blend and JSON migration
-are checked in the GUI session too. Screenshot hashes and results are recorded
+shared groups, weights and Mirror modifiers. Saved .blend and JSON transfer between
+installers are checked in the GUI session too. Screenshot hashes and results are recorded
 in submission/gui-results.json. GUI behavior on macOS/Linux has not been tested.
 
 ```sh

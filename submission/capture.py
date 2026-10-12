@@ -138,7 +138,6 @@ def capture_in_blender():
         session["installed"] = installed
         session["package_before"] = {p.relative_to(installed): p.read_bytes()
                                      for p in installed.rglob("*") if p.is_file()}
-        module.initialize_pending_scenes()
         bpy.context.scene.name = state["scene"]
         bpy.ops.object.select_all(action='SELECT')
         bpy.ops.object.delete(use_global=False)
@@ -233,7 +232,6 @@ def capture_in_blender():
         viewport = area()
         ui = next(r for r in viewport.regions if r.type == 'UI')
         assert ui.width >= 600 and ui.active_panel_category == 'VG Rules', "Sidebar must remain readable"
-        assert not sys.modules[state["namespace"]].scene_needs_initialization(bpy.context.scene)
         state["images"][label] = {"path": f"submission/images/{label}.png", "sha256": sha256(destination),
                                   "editor_size": [viewport.width, viewport.height], "sidebar_width": ui.width,
                                   "panel": ui.active_panel_category}

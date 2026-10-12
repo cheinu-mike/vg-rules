@@ -8,7 +8,8 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import MagicMock, patch
 
 import bpy
 
@@ -53,14 +54,11 @@ def expect_error(action, message):
 def assert_enabled_registration():
     assert all(cls.is_registered for cls in addon.CLASSES)
     assert bpy.types.Scene.bl_rna.properties["vgr_settings"].fixed_type == addon.VGR_Settings.bl_rna
-    assert bpy.app.handlers.load_post.count(addon.initialize_loaded_scenes) == 1
 
 
 def assert_clean_registration():
     assert not hasattr(bpy.types.Scene, "vgr_settings")
     assert all(not cls.is_registered for cls in addon.CLASSES)
-    assert addon.initialize_loaded_scenes not in bpy.app.handlers.load_post
-    assert not bpy.app.timers.is_registered(addon.initialize_pending_scenes)
 
 
 def foreign_handler(_):
@@ -77,27 +75,23 @@ addon.load_rules(bpy.context.scene, {
     "Saved Registration Rule": {"enabled": False, "delete_exact": ["Cleanup"]},
 })
 saved_settings = addon.snapshot_property_group(bpy.context.scene.vgr_settings)
-for timer_state in ("pending", "completed", "file load"):
+saved_handlers = tuple(bpy.app.handlers.load_post)
+for _ in range(3):
     assert_enabled_registration()
-    assert bpy.app.timers.is_registered(addon.initialize_pending_scenes)
-    if timer_state == "completed":
-        # Model Blender removing a one-shot timer when its callback returns None.
-        assert addon.initialize_pending_scenes() is None
-        bpy.app.timers.unregister(addon.initialize_pending_scenes)
-    elif timer_state == "file load":
-        # Nonpersistent timers are removed when Blender loads another file.
-        bpy.app.timers.unregister(addon.initialize_pending_scenes)
     addon.unregister()
     assert_clean_registration()
-    assert foreign_handler in bpy.app.handlers.load_post
+    assert tuple(bpy.app.handlers.load_post) == saved_handlers
     assert bpy.app.timers.is_registered(foreign_timer)
-    addon.register()
+    with patch.object(bpy.app.timers, "register", side_effect=AssertionError("Enable must not schedule scene work")), \
+         patch.object(addon.presets, "validate_rules", side_effect=AssertionError("Enable must not validate saved rules")), \
+         patch.object(addon, "update_rule_target", side_effect=AssertionError("Enable must not rewrite saved targets")):
+        addon.register()
     assert_enabled_registration()
+    assert tuple(bpy.app.handlers.load_post) == saved_handlers
     assert addon.snapshot_property_group(bpy.context.scene.vgr_settings) == saved_settings
 bpy.app.handlers.load_post.remove(foreign_handler)
 bpy.app.timers.unregister(foreign_timer)
-addon.initialize_pending_scenes()
-print("PASS: enable/disable preserves saved rules and unrelated callbacks, cleans pending/finished/load-cleared timers, and re-enables cleanly")
+print("PASS: enable/disable preserves saved rules and unrelated callbacks without handlers, timers, validation or target rewrites")
 
 scene = bpy.context.scene
 other = bpy.data.scenes.new("Runtime Other Scene")
@@ -106,29 +100,22 @@ outside = mesh("Runtime Outside", other)
 values = {"delete_exact": ["Cleanup"], "assign_all_vertices": ["Local Weight"]}
 addon.load_rules(scene, {local.name: values, outside.name: values})
 settings = scene.vgr_settings
-assert not addon.scene_needs_initialization(scene)
 ready_before = addon.snapshot_property_group(settings)
-with patch.object(addon, "update_rule_target", side_effect=AssertionError("Ready scenes must not rewrite target properties")):
-    addon.initialize_scene(scene)
-assert addon.snapshot_property_group(settings) == ready_before
 local.name = "Renamed Runtime Local"
-assert addon.scene_needs_initialization(scene)
-addon.request_scene_initialization()
-addon.request_scene_initialization()
-assert bpy.app.timers.is_registered(addon.initialize_pending_scenes)
-addon.initialize_pending_scenes()
-assert not addon.scene_needs_initialization(scene)
+layout = MagicMock()
+with patch.object(bpy.app.timers, "register", side_effect=AssertionError("Drawing must not schedule scene work")), \
+     patch.object(addon.presets, "validate_rules", side_effect=AssertionError("Drawing must not validate saved rules")), \
+     patch.object(addon, "update_rule_target", side_effect=AssertionError("Drawing must not rewrite saved targets")):
+    addon.VGR_PT_rules.draw(SimpleNamespace(layout=layout), bpy.context)
+    assert addon.rule_name(settings.rules[0]) == local.name
+    assert addon.target_object(settings.rules[0]) == local
+assert layout.row.return_value.template_list.called
+assert addon.snapshot_property_group(settings) == ready_before
+assert tuple(bpy.app.handlers.load_post) == tuple(handler for handler in saved_handlers if handler is not foreign_handler)
+assert bpy.ops.vgr.preview(scope='ACTIVE') == {'FINISHED'}
 assert settings.rules[0].object_name == local.name
-# A saved mixed-pattern rule is migrated by the writable initializer.
-legacy = settings.rules[0].patterns.add()
-legacy.kind, legacy.value = "keep_only_prefixes", "Legacy"
-settings.rules[0].pattern_lists_split = False
-assert addon.scene_needs_initialization(scene)
-addon.initialize_pending_scenes()
-assert not addon.scene_needs_initialization(scene)
-assert settings.rules[0].keep_patterns[0].value == "Legacy"
 addon.load_rules(scene, {local.name: values, outside.name: values})
-print("PASS: ready scene initialization does not write properties; deferred initialization refreshes names and migrates saved rules")
+print("PASS: the sidebar reads saved rules and live names immediately without mutation; Preview refreshes binding metadata on use")
 assert settings.rules[0].target == local and settings.rules[1].target is None
 assert addon.target_object(settings.rules[1]) is None
 assert addon.mesh_poll(settings.rules[0], local)
