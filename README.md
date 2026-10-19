@@ -10,10 +10,12 @@ This is the canonical development repository for VG Rules.
 
 Development build **0.1.3**. Requires Blender **4.2 or later**. This build is for
 testing and has not been published or submitted for Blender platform review.
-The same implementation passed all eleven hosted platform/version combinations
-and local Windows GUI checks before the version bump. Verification of the newly
-versioned archives is recorded in [CHANGELOG](CHANGELOG.md); the committed
-[compliance report](submission/COMPLIANCE.md) describes the historical 0.1.2 release.
+The final 0.1.3 installers passed all eleven hosted platform/version combinations,
+local Windows GUI checks and the submission-readiness gate. See
+[CHANGELOG](CHANGELOG.md) and the hash-bound
+[compliance report](submission/COMPLIANCE.md) for results and verification limits.
+The published release remains 0.1.2; its submission evidence is preserved in
+[history](submission/history/0.1.2/COMPLIANCE.md).
 Blender 5.2.0 on macOS Intel remains unsupported because no official Intel build exists.
 
 Public guides: [Installation](docs/installation.md), [Usage](docs/usage.md),

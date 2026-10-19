@@ -34,9 +34,24 @@ Preview/Apply and disable/re-enable. The classic add-on installed and passed
 Preview/Apply and disable cleanup on Blender 4.2.23. Both ZIPs have matching 0.1.3
 metadata, and the extension quick start renders 0.1.3 without placeholders.
 
-The complete hosted matrix, native GUI checks and product captures have not been
-refreshed against these archives. This development build is not marked
-submission-ready; the published 0.1.2 evidence below remains historical.
+Final archive verification (2026-10-19): all eleven supported hosted combinations
+passed against the CI-produced 0.1.3 installers. Native Windows GUI checks passed
+on Blender 4.2.0, 4.2.23 and 5.2.0 against that exact extension ZIP, including
+visually reviewed shared-data warnings, actual Cancel/Continue, Ctrl-Z Undo and
+saved .blend/JSON transfer between installers. Fresh synthetic Preview/Apply
+captures passed on Blender 4.2.23 with installed-byte parity and verified weights;
+the existing cube thumbnail is unchanged. The release gate reports zero blockers.
+See the hash-bound [compliance report](submission/COMPLIANCE.md) and portable
+hosted/GUI records. Historical 0.1.2 submission evidence is preserved under
+`submission/history/0.1.2/`; all historical installers remain preserved.
+
+Verification limits: GUI behavior is verified on Windows only. Hosted update
+checks use a synthetic previous-version package followed by a fresh-process
+restart; offline checks are application-level, not an OS network trace. Blender
+5.2.0 on macOS Intel remains unsupported; both pinned 4.2 versions passed there.
+0.1.3 is submission-ready for preparation purposes, but remains an unpublished
+development build. The published release remains 0.1.2; platform upload and
+moderation are separate subsequent steps.
 
 ## 0.1.2 (2026-10-08)
 

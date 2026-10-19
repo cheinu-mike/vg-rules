@@ -1,11 +1,13 @@
 {
-  "method": "Actual native warning visually reviewed, Cancel/Continue clicked with Blender event simulation, then Ctrl-Z; synthetic scene and isolated offline Windows profiles",
+  "generated_utc": "2026-10-19T18:55:11.528883+00:00",
+  "extension_version": "0.1.3",
+  "method": "Actual native warning visually reviewed from Blender editor screenshots; Cancel/Continue clicked with Blender event simulation, then Ctrl-Z; synthetic saved-rule scene and isolated offline Windows profiles",
   "results": [
     {
       "status": "PASS",
       "blender": "4.2.0",
       "platform": "windows-x64",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -49,7 +51,7 @@
         },
         "cancelled": {
           "file": "submission/verification-images/4.2.0/cancelled.png",
-          "sha256": "602a94882a18a1bff438349f202d76df937bd05e3b463c4ce4bbe2bbb223cfa0",
+          "sha256": "8d51d4d34aa734e4d4be604dab4d47fd59942ac0fb894cc606e4b696b947d388",
           "area": [
             0,
             18,
@@ -93,7 +95,7 @@
       "status": "PASS",
       "blender": "4.2.23",
       "platform": "windows-x64",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -181,7 +183,7 @@
       "status": "PASS",
       "blender": "5.2.0",
       "platform": "windows-x64",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",

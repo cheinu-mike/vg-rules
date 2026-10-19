@@ -1,81 +1,81 @@
 {
-  "workflow_run": "https://github.com/cheinu-mike/vg-rules/actions/runs/37868570738",
+  "workflow_run": "https://github.com/cheinu-mike/vg-rules/actions/runs/39305319282",
   "results": [
     {
       "status": "PASS",
       "platform": "linux-x64",
       "expected_blender": "4.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 0.42,
+          "seconds": 0.31,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.43,
+          "seconds": 0.26,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 14.9,
+          "seconds": 13.61,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.64,
+          "seconds": 0.4,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 15.23,
+          "seconds": 13.8,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.41,
+          "seconds": 0.27,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.55,
+          "seconds": 0.4,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.67,
+          "seconds": 0.43,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.54,
+          "seconds": 0.37,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.54,
+          "seconds": 0.36,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.37,
+          "seconds": 0.27,
           "exit_code": 0
         }
       ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
       "blender": "4.2.0",
       "blender_architecture": "x86_64",
       "installed_checks": [
@@ -85,8 +85,8 @@
         "full integration suite in installed extension namespace",
         "offline flag remains false with Python network entry points blocked",
         "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
         "enable, operations, worker, export and disable with enforced read-only installation"
       ]
     },
@@ -94,77 +94,77 @@
       "status": "PASS",
       "platform": "linux-x64",
       "expected_blender": "4.2.23",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 0.64,
+          "seconds": 0.3,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.37,
+          "seconds": 0.3,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 14.38,
+          "seconds": 13.68,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.56,
+          "seconds": 0.42,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 14.65,
+          "seconds": 13.8,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.37,
+          "seconds": 0.28,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.5,
+          "seconds": 0.38,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.59,
+          "seconds": 0.44,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.49,
+          "seconds": 0.37,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.48,
+          "seconds": 0.38,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.33,
+          "seconds": 0.27,
           "exit_code": 0
         }
       ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
       "blender": "4.2.23",
       "blender_architecture": "x86_64",
       "installed_checks": [
@@ -174,8 +174,8 @@
         "full integration suite in installed extension namespace",
         "offline flag remains false with Python network entry points blocked",
         "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
         "enable, operations, worker, export and disable with enforced read-only installation"
       ]
     },
@@ -183,77 +183,77 @@
       "status": "PASS",
       "platform": "linux-x64",
       "expected_blender": "5.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 2.14,
+          "seconds": 2.3,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.67,
+          "seconds": 0.71,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 15.43,
+          "seconds": 15.5,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.89,
+          "seconds": 0.92,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 15.72,
+          "seconds": 15.77,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.7,
+          "seconds": 0.73,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.76,
+          "seconds": 0.81,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.99,
+          "seconds": 0.93,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.84,
+          "seconds": 0.8,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.83,
+          "seconds": 0.79,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.61,
+          "seconds": 0.65,
           "exit_code": 0
         }
       ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
       "blender": "5.2.0",
       "blender_architecture": "x86_64",
       "installed_checks": [
@@ -263,8 +263,8 @@
         "full integration suite in installed extension namespace",
         "offline flag remains false with Python network entry points blocked",
         "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
         "enable, operations, worker, export and disable with enforced read-only installation"
       ]
     },
@@ -272,31 +272,31 @@
       "status": "PASS",
       "platform": "macos-arm64",
       "expected_blender": "4.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 1.53,
+          "seconds": 2.42,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.7,
+          "seconds": 1.2,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 14.87,
+          "seconds": 15.55,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.69,
+          "seconds": 1.0,
           "exit_code": 0
         },
         {
@@ -308,464 +308,19 @@
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.58,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
           "seconds": 0.63,
           "exit_code": 0
         },
         {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 0.7,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 0.59,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 0.61,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 0.48,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
-      "blender": "4.2.0",
-      "blender_architecture": "arm64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "macos-arm64",
-      "expected_blender": "4.2.23",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 2.1,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 1.09,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 15.87,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 1.5,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 16.49,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 0.98,
-          "exit_code": 0
-        },
-        {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.96,
+          "seconds": 0.68,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.95,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 0.93,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 1.02,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 0.67,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
-      "blender": "4.2.23",
-      "blender_architecture": "arm64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "macos-arm64",
-      "expected_blender": "5.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 1.98,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 0.95,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 15.38,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 1.19,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 16.8,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 1.36,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
-          "seconds": 1.16,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 1.12,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 1.25,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 1.03,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 0.99,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
-      "blender": "5.2.0",
-      "blender_architecture": "arm64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "macos-x64",
-      "expected_blender": "4.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 4.02,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 2.27,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 20.4,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 2.22,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 18.73,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 1.71,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
-          "seconds": 1.93,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 2.1,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 1.98,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 2.18,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 1.61,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
-      "blender": "4.2.0",
-      "blender_architecture": "x86_64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "macos-x64",
-      "expected_blender": "4.2.23",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 3.25,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 2.26,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 20.24,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 2.61,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 20.47,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 2.17,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
-          "seconds": 2.34,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 2.77,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 2.28,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 2.51,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 2.02,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
-      "blender": "4.2.23",
-      "blender_architecture": "x86_64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "windows-x64",
-      "expected_blender": "4.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 2.84,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 0.72,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 17.28,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 0.94,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 24.2,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 0.53,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
-          "seconds": 0.77,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 0.92,
+          "seconds": 0.8,
           "exit_code": 0
         },
         {
@@ -777,19 +332,19 @@
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.74,
+          "seconds": 0.76,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.47,
+          "seconds": 0.58,
           "exit_code": 0
         }
       ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
       "blender": "4.2.0",
-      "blender_architecture": "AMD64",
+      "blender_architecture": "arm64",
       "installed_checks": [
         "extension install/enable and installed-byte parity",
         "Preview preserves data; regex Keep/Delete and full weights Apply",
@@ -797,34 +352,390 @@
         "full integration suite in installed extension namespace",
         "offline flag remains false with Python network entry points blocked",
         "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "macos-arm64",
+      "expected_blender": "4.2.23",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 2.49,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 1.33,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 15.98,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 1.18,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 16.4,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 1.04,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 1.57,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 1.53,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 1.18,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 1.02,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 0.85,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
+      "blender": "4.2.23",
+      "blender_architecture": "arm64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "macos-arm64",
+      "expected_blender": "5.2.0",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 3.6,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 1.19,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 15.92,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 1.16,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 16.09,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 1.05,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 0.98,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 1.13,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 1.13,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 1.2,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 0.93,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
+      "blender": "5.2.0",
+      "blender_architecture": "arm64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "macos-x64",
+      "expected_blender": "4.2.0",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 3.79,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 3.23,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 22.19,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 4.59,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 27.54,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 2.72,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 3.62,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 3.68,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 5.02,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 3.54,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 2.65,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
+      "blender": "4.2.0",
+      "blender_architecture": "x86_64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "macos-x64",
+      "expected_blender": "4.2.23",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 4.66,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 3.85,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 23.33,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 4.46,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 28.77,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 4.12,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 3.07,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 3.15,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 3.3,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 3.3,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 3.54,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
+      "blender": "4.2.23",
+      "blender_architecture": "x86_64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
         "enable, operations, worker, export and disable with enforced read-only installation"
       ]
     },
     {
       "status": "PASS",
       "platform": "windows-x64",
-      "expected_blender": "4.2.23",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
+      "expected_blender": "4.2.0",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 3.64,
+          "seconds": 3.75,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.69,
+          "seconds": 0.62,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 16.42,
+          "seconds": 16.17,
           "exit_code": 0
         },
         {
@@ -836,19 +747,19 @@
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 22.19,
+          "seconds": 25.0,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.44,
+          "seconds": 0.45,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.62,
+          "seconds": 0.64,
           "exit_code": 0
         },
         {
@@ -860,23 +771,112 @@
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.58,
+          "seconds": 0.61,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.59,
+          "seconds": 0.62,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.41,
+          "seconds": 0.44,
           "exit_code": 0
         }
       ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
+      "blender": "4.2.0",
+      "blender_architecture": "AMD64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "windows-x64",
+      "expected_blender": "4.2.23",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 3.88,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 0.7,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 17.0,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 0.97,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 30.77,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 0.59,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 0.8,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 0.91,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 0.75,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 0.75,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 0.55,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
       "blender": "4.2.23",
       "blender_architecture": "AMD64",
       "installed_checks": [
@@ -886,8 +886,8 @@
         "full integration suite in installed extension namespace",
         "offline flag remains false with Python network entry points blocked",
         "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
         "enable, operations, worker, export and disable with enforced read-only installation"
       ]
     },
@@ -895,77 +895,77 @@
       "status": "PASS",
       "platform": "windows-x64",
       "expected_blender": "5.2.0",
-      "archive_sha256": "c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e",
-      "legacy_sha256": "7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc",
+      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 3.45,
+          "seconds": 6.61,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.84,
+          "seconds": 0.62,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 18.09,
+          "seconds": 16.03,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 1.19,
+          "seconds": 0.81,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 24.62,
+          "seconds": 22.2,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.86,
+          "seconds": 0.58,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 1.02,
+          "seconds": 0.73,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 1.22,
+          "seconds": 0.89,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 1.02,
+          "seconds": 0.72,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.95,
+          "seconds": 0.7,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.78,
+          "seconds": 0.58,
           "exit_code": 0
         }
       ],
-      "github_sha": "45855317a601bb9445ac725ea82ccb592373eebb",
+      "github_sha": "021ff4571e7f3eaba2486c433344315f54edfc94",
       "blender": "5.2.0",
       "blender_architecture": "AMD64",
       "installed_checks": [
@@ -975,8 +975,8 @@
         "full integration suite in installed extension namespace",
         "offline flag remains false with Python network entry points blocked",
         "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property, handler and timer",
-        "disable/re-enable/disable preserves installation ownership",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
         "enable, operations, worker, export and disable with enforced read-only installation"
       ]
     }

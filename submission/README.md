@@ -1,6 +1,7 @@
 # VG Rules submission materials
 
-Prepared for version **0.1.2**. Upload the extension ZIP built under
+Prepared for version **0.1.3**, an unpublished development build. The published
+release remains **0.1.2**. Upload the verified extension ZIP under
 `dist/blender_extensions/` with these separate listing materials. The package
 has not yet been submitted for platform review.
 
@@ -14,13 +15,15 @@ has not yet been submitted for platform review.
 | [COMPLIANCE.md](COMPLIANCE.md) | Actual platform and GUI results, release scope and final archive hashes |
 | [compliance.json](compliance.json) | Machine-readable release gate output from the passing hosted run |
 | [verification-results.json](verification-results.json) | Every recorded stage from the eleven passing hosted jobs |
-| [gui-results.json](gui-results.json) | Native warning, Cancel/Continue, Undo and migration evidence on three Windows versions |
+| [gui-results.json](gui-results.json) | Native warning, Cancel/Continue, Undo and saved-rule transfer evidence on three Windows versions |
 | [QUICK_START.txt](QUICK_START.txt) | Rendered extension quick start, extracted unchanged from the final ZIP |
 
 Read the compliance report before submitting. All eleven supported hosted
 platform/version pairs and the local GUI checks must pass against the final ZIP.
 Blender 5.2.0 on Intel macOS is unsupported; both pinned 4.2 versions cover Intel.
 Upload and moderation follow preparation and verification.
+Historical 0.1.2 reports, results, listing materials and screenshots are preserved
+under [history/0.1.2](history/0.1.2/ARCHIVE.md); they certify that older release only.
 
 ## Screenshot captions
 

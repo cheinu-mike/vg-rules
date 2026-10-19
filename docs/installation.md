@@ -1,9 +1,11 @@
 # Install VG Rules
 
 Requires Blender **4.2 or later**. Version **0.1.3** is a development build for
-testing. See [CHANGELOG](../CHANGELOG.md) for its verification scope. The existing
-[verification report](../submission/COMPLIANCE.md) describes the historical 0.1.2
-release. Blender 5.2.0 on macOS Intel remains unsupported; no official build exists.
+testing. The final installers passed the submission-readiness checks; see
+[CHANGELOG](../CHANGELOG.md) and the
+[verification report](../submission/COMPLIANCE.md) for their scope. The published
+release remains 0.1.2. Blender 5.2.0 on macOS Intel remains unsupported; no official
+build exists.
 
 ## Extension package
 

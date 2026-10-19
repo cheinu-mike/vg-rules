@@ -1,12 +1,12 @@
 # VG Rules compliance report
 
-Version: **0.1.2**. Submission-ready: **YES**.
-Generated UTC: 2026-10-09T01:14:28.907284+00:00
+Version: **0.1.3**. Submission-ready: **YES**.
+Generated UTC: 2026-10-19T18:55:22.187271+00:00
 
-Extension SHA-256: `c8bc7418e4e7b625e6bd251ff494736a1efe9ab60b1ac71a198f0bb6924d6b2e`
-Gumroad SHA-256: `7a7776f093f4bc224cc80d73c84ec5ad61a4600800b6b2713aa331e9659c76cc`
+Extension SHA-256: `a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af`
+Gumroad SHA-256: `2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6`
 
-[Hosted verification run](https://github.com/cheinu-mike/vg-rules/actions/runs/37868570738)
+[Hosted verification run](https://github.com/cheinu-mike/vg-rules/actions/runs/39305319282)
 
 | Platform | Blender | Actual result |
 | --- | --- | --- |
@@ -39,5 +39,5 @@ Verification scope:
 - Headless checks on every required hosted platform; local GUI checks on Windows only
 - Update uses a synthetic previous-version package with a marker, followed by a real process restart
 - Runtime tests are offline and block Python socket/URL entry points; not an OS firewall trace
-- Legacy migration uses generated saved mixed-list rules and JSON, not personal projects
+- Installer-switch checks use generated saved separate Keep/Delete rules and JSON, not personal projects
 - Platform upload and moderation are subsequent release steps

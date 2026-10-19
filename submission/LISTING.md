@@ -51,7 +51,7 @@ or migrating. **Fully quit and restart Blender after replacing an installation.*
 [Troubleshooting](https://github.com/cheinu-mike/vg-rules/blob/main/docs/troubleshooting.md) ·
 [Support: GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues)
 
-Version 0.1.2 is verified on Windows x64, Linux x64 and macOS Apple Silicon with
+Version 0.1.3 is verified on Windows x64, Linux x64 and macOS Apple Silicon with
 Blender 4.2.0, 4.2.23 and 5.2.0, and on macOS Intel with 4.2.0 and 4.2.23.
 Blender 5.2.0 has no official macOS Intel build and is unsupported there.
 [Verification results](https://github.com/cheinu-mike/vg-rules/blob/main/submission/COMPLIANCE.md).

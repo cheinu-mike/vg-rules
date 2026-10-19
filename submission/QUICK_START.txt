@@ -1,10 +1,10 @@
 VG RULES - BLENDER EXTENSION
-Version 0.1.2 | Blank Glyph | Requires Blender 4.2 or later
+Version 0.1.3 | Blank Glyph | Requires Blender 4.2 or later
 Copyright (C) 2026 Blank Glyph. SPDX-License-Identifier: GPL-3.0-or-later.
 Editable Python source, NOTICE.txt and the complete GPL in COPYING.txt are included.
 
 INSTALL
-1. Keep vg_rules-0.1.2.zip compressed.
+1. Keep vg_rules-0.1.3.zip compressed.
 2. Preferences > Get Extensions > top-right menu > Install from Disk.
 3. Choose the extension ZIP and enable VG Rules.
 4. In the 3D Viewport, press N and open the VG Rules tab.
