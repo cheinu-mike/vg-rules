@@ -1,6 +1,7 @@
 # Release policy
 
-The development build is **0.1.3**; the published release remains **0.1.2**.
+The development build is **0.1.4**; the published release remains **0.1.2**.
+The minimum supported Blender version is **4.2.1**.
 Preserve historical **0.1.0**, **0.1.1** and **0.1.2** artifacts.
 Derive installer filenames from `vg_rules/__init__.py`'s `bl_info` version and
 require matching `blender_manifest.toml` metadata.
@@ -9,7 +10,7 @@ Record release changes and verification limits in `CHANGELOG.md`.
 Require all eleven supported hosted platform/version combinations and local
 Windows GUI checks to pass against the final archive hash before marking it
 submission-ready. Blender 5.2.0 on macOS Intel is unsupported; verify Intel on
-4.2.0 and 4.2.23. Missing, failed or stale evidence is a release blocker.
+4.2.1 and 4.2.23. Missing, failed or stale evidence is a release blocker.
 Keep generated fixtures in disposable temporary directories. Preserve portable
 results and screenshots separately from the installers.
 

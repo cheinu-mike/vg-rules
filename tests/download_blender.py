@@ -65,7 +65,7 @@ def download(version, directory):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--version', required=True, choices=('4.2.0', '4.2.23', '5.2.0'))
+    parser.add_argument('--version', required=True, choices=('4.2.1', '4.2.23', '5.2.0'))
     parser.add_argument('--directory', required=True, type=Path)
     args = parser.parse_args()
     executable = download(args.version, args.directory)

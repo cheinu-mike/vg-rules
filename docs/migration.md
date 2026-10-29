@@ -41,7 +41,7 @@ The published 0.1.2 fixes an empty panel caused by scene-property writes during
 drawing in 0.1.1 by deferring initialization to a timer.
 Use the restart procedure above when replacing 0.1.1.
 
-## Saved rules in the 0.1.3 development build
+## Saved rules in 0.1.3 and later development builds
 
 The first release, 0.1.0, already saved separate Keep/Delete collections and
 object-binding history. Files created with released versions need no rule-format

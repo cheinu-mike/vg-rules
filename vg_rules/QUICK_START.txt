@@ -1,5 +1,5 @@
 VG RULES - BLENDER EXTENSION
-Version @VERSION@ | Blank Glyph | Requires Blender 4.2 or later
+Version @VERSION@ | Blank Glyph | Requires Blender 4.2.1 or later
 Copyright (C) 2026 Blank Glyph. SPDX-License-Identifier: GPL-3.0-or-later.
 Editable Python source, NOTICE.txt and the complete GPL in COPYING.txt are included.
 

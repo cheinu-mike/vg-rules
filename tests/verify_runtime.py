@@ -288,8 +288,25 @@ for code, output in ((1, ""), (0, "not JSON"), (0, "[1]"), (0, "[]")):
 guard._cached_matches.cache_clear()
 with patch.object(guard.subprocess, "run", wraps=subprocess.run) as worker:
     assert bpy.ops.vgr.preview(scope='ACTIVE') == {'FINISHED'}
-    assert worker.call_args.args[0][:3] == [str(bundled), "-I", "-B"]
+    assert worker.call_args.args[0] == [
+        str(bundled), *bpy.app.python_args, "-B", "-c", guard._WORKER_BOOTSTRAP,
+        str(guard._worker_path("Delete Regex")),
+    ]
 assert snapshot(regex_obj) == before
+
+# Forward Blender's Python arguments exactly, including an empty tuple.
+for python_args in (("-E", "-s"), ()):
+    worker_bpy = SimpleNamespace(app=SimpleNamespace(python_args=python_args),
+                                utils=bpy.utils)
+    with patch.dict(sys.modules, {"bpy": worker_bpy}), \
+         patch.object(guard.subprocess, "run",
+                      return_value=subprocess.CompletedProcess([], 0, "[true]", "")) as worker:
+        assert guard._run_matches((), (("^Cleanup$", 0),), ("Cleanup",),
+                                  ((False, False),)) == (True,)
+        assert worker.call_args.args[0] == [
+            str(bundled), *python_args, "-B", "-c", guard._WORKER_BOOTSTRAP,
+            str(guard._worker_path("Delete Regex")),
+        ]
 valid = mesh("Valid Rule With Failed Worker", scene)
 addon.load_rules(scene, {regex_obj.name: regex_values,
                          valid.name: {"assign_all_vertices": ["Other Valid Weight"]}})

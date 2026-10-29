@@ -33,6 +33,16 @@ MAX_PATTERNS_PER_SECTION = 64
 _MAX_CACHED_GROUPS = 4096
 _MAX_CACHED_CHARACTERS = 65536
 
+_WORKER_BOOTSTRAP = (
+    "import importlib.util\n"
+    "import sys\n"
+    "spec = importlib.util.spec_from_file_location('_vgr_regex_worker', sys.argv[1])\n"
+    "module = importlib.util.module_from_spec(spec)\n"
+    "sys.modules[spec.name] = module\n"
+    "spec.loader.exec_module(module)\n"
+    "module._worker()\n"
+)
+
 
 def compile_patterns(expressions, case_sensitive, section):
     expressions = tuple(expressions)
@@ -89,6 +99,8 @@ def _bundled_interpreter(label):
 
 
 def _run_matches(keep, delete, names, literals):
+    import bpy
+
     label = _label(keep, delete)
     interpreter = _bundled_interpreter(label)
     payload = json.dumps({"keep": keep, "delete": delete, "names": names, "literals": literals})
@@ -98,8 +110,10 @@ def _run_matches(keep, delete, names, literals):
         options["creationflags"] = subprocess.CREATE_NO_WINDOW
     try:
         # run() kills and waits for the child on timeout. No regex search runs here.
-        result = subprocess.run([str(interpreter), "-I", "-B", str(_worker_path(label))],
-                                input=payload, **options)
+        result = subprocess.run(
+            [str(interpreter), *bpy.app.python_args, "-B", "-c", _WORKER_BOOTSTRAP,
+             str(_worker_path(label))],
+            input=payload, **options)
     except subprocess.TimeoutExpired:
         raise _failure(label, f"Matching exceeded the {MATCH_TIMEOUT_SECONDS:g}-second time limit") from None
     except (OSError, subprocess.SubprocessError, UnicodeError):
@@ -165,7 +179,3 @@ def _worker():
         protected = protected or any(pattern.search(name) is not None for pattern in keep)
         decisions.append(not protected and (selected or any(pattern.search(name) is not None for pattern in delete)))
     print(json.dumps(decisions, separators=(",", ":")))
-
-
-if __name__ == "__main__":
-    _worker()

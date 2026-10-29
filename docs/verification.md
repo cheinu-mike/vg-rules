@@ -1,7 +1,7 @@
 # Verification and release gate
 
 GitHub Actions tests the same candidate ZIP on Windows x64, Linux x64, macOS
-Intel and macOS Apple Silicon using pinned official Blender 4.2.0, 4.2.23 and
+Intel and macOS Apple Silicon using pinned official Blender 4.2.1, 4.2.23 and
 5.2.0 distributions with SHA-256 checks. macOS Intel runs both 4.2 versions;
 Blender 5.2.0 has no official Intel build and is unsupported there. This is an
 explicitly accepted exception, giving eleven required platform/version pairs.
@@ -33,7 +33,7 @@ To reproduce a pinned run after building both installers:
 
 ```sh
 python -B -m unittest discover -s tests -p 'test_*.py'
-python -B tests/run_blender.py --blender /path/to/blender --expect-version 4.2.0
+python -B tests/run_blender.py --blender /path/to/blender --expect-version 4.2.1
 ```
 
 Set VGR_TEST_BLENDER to an official Blender executable for the packaging test
@@ -58,9 +58,10 @@ It must not receive an automatic PASS for an unreviewed warning.
 The release gate requires all eleven hosted results, all three local GUI results,
 exact installer hashes, package/source parity, licenses, public guides, listing
 and final-archive product captures. Missing, failed or stale evidence blocks release.
-The authoritative actual results are in [the compliance report](../submission/COMPLIANCE.md)
-and the linked public Actions run. Workflow artifacts retain detailed diagnostics
-for 30 days; the committed report preserves the compact release evidence.
+The existing [compliance report](../submission/COMPLIANCE.md) and linked Actions
+run record earlier archive hashes. Verification of the revised candidate is
+pending; previous passes do not certify its final installers. Workflow artifacts
+retain detailed diagnostics for 30 days.
 
 ```sh
 python -B tests/compliance.py --evidence /path/to/downloaded/actions/results --output submission --require-ready

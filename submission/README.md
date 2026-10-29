@@ -1,9 +1,14 @@
 # VG Rules submission materials
 
-Prepared for version **0.1.3**, an unpublished development build. The published
+Prepared for version **0.1.4**, an unpublished development build. The published
 release remains **0.1.2**. Upload the verified extension ZIP under
 `dist/blender_extensions/` with these separate listing materials. The package
 has not yet been submitted for platform review.
+
+The revised candidate requires Blender **4.2.1 or later** and new verification.
+Existing reports, screenshots and the rendered quick start describe earlier
+archive hashes. Preserve those records; regenerate submission materials from
+the final packaged extension, then rerun the release gate.
 
 | Material | Use |
 | --- | --- |

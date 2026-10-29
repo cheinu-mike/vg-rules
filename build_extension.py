@@ -149,7 +149,7 @@ def build(root=ROOT, *, blender):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--blender", type=Path, required=True,
-                        help="Path to Blender 4.2 or newer; official validation is required")
+                        help="Path to Blender 4.2.1 or newer; official validation is required")
     arguments = parser.parse_args()
     try:
         destination = build(blender=arguments.blender)

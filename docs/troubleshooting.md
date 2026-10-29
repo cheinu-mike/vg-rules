@@ -2,7 +2,7 @@
 
 | Symptom | What to check |
 | --- | --- |
-| No VG Rules tab | Enable the extension, open a 3D Viewport, press N and select VG Rules. Check that Blender is 4.2 or later. |
+| No VG Rules tab | Enable the extension, open a 3D Viewport, press N and select VG Rules. Check that Blender is 4.2.1 or later. |
 | Empty panel in 0.1.1 | Update to 0.1.2 and fully restart Blender. This fixes scene-property writes during sidebar drawing. |
 | Installation or registration conflict | Disable/remove duplicate VG Rules installations, then fully restart Blender. Use one installer type at a time. |
 | Object not found | Select a mesh in this scene. After clearing/deleting a bound target, reselect it or explicitly edit Fallback Name. |
@@ -32,8 +32,9 @@ Include:
 - Results text, warning/error messages and a screenshot if helpful.
 - A small synthetic mesh and preset if needed. Remove personal/confidential data first.
 
-The full source and installed-extension suites, including read-only directories,
-pass on Windows x64, Linux x64 and macOS Apple Silicon with Blender 4.2.0,
-4.2.23 and 5.2.0, and macOS Intel with 4.2.0 and 4.2.23. Blender 5.2.0 on Intel
+Required source and installed-extension checks, including read-only directories,
+cover Windows x64, Linux x64 and macOS Apple Silicon with Blender 4.2.1,
+4.2.23 and 5.2.0, and macOS Intel with 4.2.1 and 4.2.23. Blender 5.2.0 on Intel
 macOS is unsupported because there is no official build. Local GUI checks cover
-Windows only. See [actual results and scope](../submission/COMPLIANCE.md).
+Windows only. Verification of the revised candidate is pending. The existing
+[results and scope](../submission/COMPLIANCE.md) cover earlier archive hashes.

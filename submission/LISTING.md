@@ -40,7 +40,7 @@ Final group names allow 63 UTF-8 bytes including `.L`/`.R`.
 
 ## Installation and help
 
-Requires Blender 4.2 or later. Install from Preferences > Get Extensions > menu >
+Requires Blender 4.2.1 or later. Install from Preferences > Get Extensions > menu >
 Install from Disk, enable VG Rules, then open its 3D Viewport sidebar tab with N.
 Use one installation at a time. Export JSON and save a `.blend` copy before updating
 or migrating. **Fully quit and restart Blender after replacing an installation.**
@@ -51,8 +51,10 @@ or migrating. **Fully quit and restart Blender after replacing an installation.*
 [Troubleshooting](https://github.com/cheinu-mike/vg-rules/blob/main/docs/troubleshooting.md) ·
 [Support: GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues)
 
-Version 0.1.3 is verified on Windows x64, Linux x64 and macOS Apple Silicon with
-Blender 4.2.0, 4.2.23 and 5.2.0, and on macOS Intel with 4.2.0 and 4.2.23.
+Required verification targets Windows x64, Linux x64 and macOS Apple Silicon with
+Blender 4.2.1, 4.2.23 and 5.2.0, and macOS Intel with 4.2.1 and 4.2.23.
+Verification of the 0.1.4 candidate is pending; the linked results cover
+earlier archive hashes.
 Blender 5.2.0 has no official macOS Intel build and is unsupported there.
 [Verification results](https://github.com/cheinu-mike/vg-rules/blob/main/submission/COMPLIANCE.md).
 The runtime needs only file permission for presets;

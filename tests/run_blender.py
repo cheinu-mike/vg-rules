@@ -40,7 +40,7 @@ def main():
     release = tomllib.loads((ROOT / 'vg_rules/blender_manifest.toml').read_text(encoding='utf-8'))
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--blender', type=Path, required=True)
-    parser.add_argument('--expect-version', choices=('4.2.0', '4.2.23', '5.2.0'))
+    parser.add_argument('--expect-version', choices=('4.2.1', '4.2.23', '5.2.0'))
     parser.add_argument('--archive', type=Path, default=ROOT / f'dist/blender_extensions/vg_rules-{release["version"]}.zip')
     parser.add_argument('--legacy-archive', type=Path, default=ROOT / f'dist/vg_rules-{release["version"]}.zip')
     parser.add_argument('--output-dir', type=Path)

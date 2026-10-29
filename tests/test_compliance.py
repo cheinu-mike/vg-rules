@@ -30,6 +30,17 @@ class GateTests(unittest.TestCase):
         self.assertEqual(len(self.records), 11)
         self.assertEqual(self.errors(), [])
 
+    def test_previous_minimum_evidence_cannot_satisfy_current_matrix(self):
+        records = copy.deepcopy(self.records)
+        gui = copy.deepcopy(self.gui)
+        for record in records:
+            if record['blender'] == '4.2.1':
+                record['blender'] = record['expected_blender'] = '4.2.0'
+        for record in gui:
+            if record['blender'] == '4.2.1':
+                record['blender'] = '4.2.0'
+        self.assertTrue(self.errors(records=records, gui=gui))
+
     def test_missing_or_duplicate_platform_is_blocker(self):
         self.assertTrue(self.errors(self.records[:-1]))
         self.assertTrue(self.errors(self.records + [self.records[0]]))

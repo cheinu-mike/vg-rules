@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 import build_addon
 import build_extension
 
-VERSIONS = ('4.2.0', '4.2.23', '5.2.0')
+VERSIONS = ('4.2.1', '4.2.23', '5.2.0')
 PLATFORMS = ('windows-x64', 'linux-x64', 'macos-x64', 'macos-arm64')
 REQUIRED = {(p, v) for p in PLATFORMS for v in VERSIONS if (p, v) != ('macos-x64', '5.2.0')}
 STAGES = {'version', 'official_validation', 'verify_addon', 'verify_runtime', 'verify_extension',
@@ -174,7 +174,7 @@ def collect(root, evidence):
             'gumroad': {'path': legacy.relative_to(root).as_posix(), 'sha256': legacy_hash},
             'workflow_run': run_url, 'matrix': matrix, 'local_gui': local, 'static_checks': static,
             'unsupported': [{'platform': 'macos-x64', 'blender': '5.2.0',
-                             'reason': 'No official Intel distribution; user accepted Intel checks on 4.2.0 and 4.2.23'}],
+                             'reason': 'No official Intel distribution; Intel checks use Blender 4.2.1 and 4.2.23'}],
             'blockers': blockers,
             'scope': ['Headless checks on every required hosted platform; local GUI checks on Windows only',
                       'Update uses a synthetic previous-version package with a marker, followed by a real process restart',

@@ -1,15 +1,15 @@
 # Install VG Rules
 
-Requires Blender **4.2 or later**. Version **0.1.3** is a development build for
-testing. The final installers passed the submission-readiness checks; see
-[CHANGELOG](../CHANGELOG.md) and the
-[verification report](../submission/COMPLIANCE.md) for their scope. The published
+Requires Blender **4.2.1 or later**. Version **0.1.4** is a development build for
+testing. The revised candidate requires new submission-readiness checks against
+its final installer hashes; see [CHANGELOG](../CHANGELOG.md). The existing
+[verification report](../submission/COMPLIANCE.md) covers earlier archives. The published
 release remains 0.1.2. Blender 5.2.0 on macOS Intel remains unsupported; no official
 build exists.
 
 ## Extension package
 
-1. Use the extension ZIP `vg_rules-0.1.3.zip` supplied with the development build, or
+1. Use the extension ZIP `vg_rules-0.1.4.zip` supplied with the development build, or
    [build it](../README.md#build). Keep it compressed. The extension builder writes
    `dist/blender_extensions/`; its output is separate from the Gumroad installer.
 2. Open **Preferences > Get Extensions > top-right menu > Install from Disk**.

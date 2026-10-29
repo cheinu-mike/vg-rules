@@ -19,8 +19,8 @@
 bl_info = {
     "name": "VG Rules",
     "author": "Blank Glyph",
-    "version": (0, 1, 3),
-    "blender": (4, 2, 0),
+    "version": (0, 1, 4),
+    "blender": (4, 2, 1),
     "location": "3D Viewport > Sidebar > VG Rules",
     "description": "Edit object cleanup rules and assign all mesh vertices full group weights",
     "category": "Rigging",
@@ -757,7 +757,3 @@ def unregister():
     del bpy.types.Scene.vgr_settings
     for cls in reversed(CLASSES):
         bpy.utils.unregister_class(cls)
-
-
-if __name__ == "__main__":
-    register()
