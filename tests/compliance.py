@@ -124,7 +124,9 @@ def collect(root, evidence):
             if name.endswith('.py'):
                 assert b'SPDX-License-Identifier: GPL-3.0-or-later' in (source / name).read_bytes()
                 assert b'Copyright (C) 2026 Blank Glyph' in (source / name).read_bytes()
-        static.append('PASS: exact source parity, matching metadata/credits, GPL notices, files-only permission; eight text files in extension, six in legacy installer; no bundled artwork/fonts/binaries')
+        static.append('PASS: exact source parity, matching metadata/credits, GPL notices, files-only permission; '
+                      f'{len(build_addon.FILES) + len(build_extension.EXTRA_FILES)} text files in extension, '
+                      f'{len(build_addon.FILES)} in legacy installer; no bundled artwork/fonts/binaries')
     except (AssertionError, ValueError, OSError) as error:
         blockers.append(f'Package/source/licensing verification: {error}')
     records = []

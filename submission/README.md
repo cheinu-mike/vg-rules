@@ -64,7 +64,7 @@ No scene binaries are committed. See the public [guides](../docs/installation.md
 
 ## Copyright, credits and packaging
 
-The four runtime Python modules carry `Copyright (C) 2026 Blank Glyph` and
+The five bundled Python files carry `Copyright (C) 2026 Blank Glyph` and
 `SPDX-License-Identifier: GPL-3.0-or-later`. The manifest credits `2026 Blank Glyph`
 and the same GPL license; its maintainer agrees with `bl_info`'s author.
 `NOTICE.txt` supplies the copyright and warranty notice; `COPYING.txt` contains
@@ -74,7 +74,7 @@ The thumbnail is the existing project-supplied cube icon, reused unchanged for
 the listing. No new CC0 grant is asserted for that supplied image. The screenshots
 use only generated geometry and the application's own interface. These separate
 submission images are excluded from both installers; no fonts or binary assets
-are bundled. The extension ZIP contains only four Python modules, the manifest,
+are bundled. The extension ZIP contains only five Python files, the manifest,
 quick start and two license/notice text files.
 
 Any future assets included inside an extension must have documented CC0 rights

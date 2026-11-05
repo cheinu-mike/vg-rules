@@ -4,6 +4,7 @@
 """Packaging integrity and failure checks, using generated temporary inputs."""
 
 import ast
+import json
 import os
 from pathlib import Path
 import shutil
@@ -100,6 +101,33 @@ class Builds(unittest.TestCase):
         (self.root / "vg_rules/engine.py").unlink()
         self.safe_failure(lambda: build_addon.build(self.root), FileNotFoundError)
         self.safe_failure(self.build_extension, FileNotFoundError)
+
+    def test_missing_worker_preserves_both_outputs(self):
+        (self.root / "vg_rules/regex_worker.py").unlink()
+        self.safe_failure(lambda: build_addon.build(self.root), FileNotFoundError)
+        self.safe_failure(self.build_extension, FileNotFoundError)
+
+    def test_worker_runs_directly_from_both_installer_layouts(self):
+        build_addon.build(self.root)
+        with patch.object(build_extension.subprocess, "run",
+                          return_value=subprocess.CompletedProcess([], 0, "", "")):
+            self.build_extension()
+        payload = json.dumps({
+            "keep": [["^Keep", 0]], "delete": [["^Delete", 0]],
+            "names": ["KeepDelete", "Deleteé", "Other", "Literal", "DeleteProtected"],
+            "literals": [[False, True], [False, False], [False, False], [False, True], [True, False]],
+        })
+        for archive_path, worker_path in ((self.legacy, "vg_rules/regex_worker.py"),
+                                          (self.extension, "regex_worker.py")):
+            with self.subTest(installer=archive_path.parent.name):
+                installed = self.root / f"installed {archive_path.parent.name}"
+                with ZipFile(archive_path) as archive:
+                    archive.extractall(installed)
+                result = subprocess.run([sys.executable, "-I", "-B", str(installed / worker_path)],
+                                        input=payload, capture_output=True, text=True,
+                                        encoding="utf-8", timeout=5)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(json.loads(result.stdout), [False, True, False, True, False])
 
     def test_missing_manifest_preserves_extension(self):
         (self.root / "vg_rules/blender_manifest.toml").unlink()

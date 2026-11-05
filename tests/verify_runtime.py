@@ -219,7 +219,8 @@ for function in ("fdopen", "fsync", "replace"):
 assert bpy.ops.vgr.export_rules(filepath=str(destination)) == {'FINISHED'}
 assert json.loads(destination.read_text()) == addon.export_rules(scene)
 package = Path(addon.__file__).resolve().parent
-for path in (package / "__init__.py", package / "regex_guard.py", package / "COPYING.txt",
+for path in (package / "__init__.py", package / "regex_guard.py", package / "regex_worker.py",
+             package / "COPYING.txt",
              package / "new_preset.json", package / ".." / package.name / "__init__.py"):
     before = path.read_bytes() if path.exists() else None
     with patch.object(addon.presets.tempfile, "mkstemp") as stage:
@@ -270,7 +271,9 @@ for executable in (str(ARTIFACTS / "missing_python.exe"), str(external), ""):
         assert snapshot(regex_obj) == before and len(settings.log) == 1
         assert "Blender's Python interpreter" in settings.log[0].message
         worker.assert_not_called()
-with patch.object(guard, "__file__", str(ARTIFACTS / "missing_worker.py")), \
+missing_worker_guard = ARTIFACTS / "regex_guard.py"
+missing_worker_guard.write_bytes(b"Synthetic guard module; its sibling worker is absent")
+with patch.object(guard, "__file__", str(missing_worker_guard)), \
      patch.object(guard.subprocess, "run") as worker:
     assert bpy.ops.vgr.apply(scope='ACTIVE') == {'FINISHED'}
     assert snapshot(regex_obj) == before and "worker is unavailable" in settings.log[0].message
@@ -289,8 +292,7 @@ guard._cached_matches.cache_clear()
 with patch.object(guard.subprocess, "run", wraps=subprocess.run) as worker:
     assert bpy.ops.vgr.preview(scope='ACTIVE') == {'FINISHED'}
     assert worker.call_args.args[0] == [
-        str(bundled), *bpy.app.python_args, "-B", "-c", guard._WORKER_BOOTSTRAP,
-        str(guard._worker_path("Delete Regex")),
+        str(bundled), *bpy.app.python_args, "-B", str(package / "regex_worker.py"),
     ]
 assert snapshot(regex_obj) == before
 
@@ -304,8 +306,7 @@ for python_args in (("-E", "-s"), ()):
         assert guard._run_matches((), (("^Cleanup$", 0),), ("Cleanup",),
                                   ((False, False),)) == (True,)
         assert worker.call_args.args[0] == [
-            str(bundled), *python_args, "-B", "-c", guard._WORKER_BOOTSTRAP,
-            str(guard._worker_path("Delete Regex")),
+            str(bundled), *python_args, "-B", str(package / "regex_worker.py"),
         ]
 valid = mesh("Valid Rule With Failed Worker", scene)
 addon.load_rules(scene, {regex_obj.name: regex_values,

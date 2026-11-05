@@ -33,16 +33,6 @@ MAX_PATTERNS_PER_SECTION = 64
 _MAX_CACHED_GROUPS = 4096
 _MAX_CACHED_CHARACTERS = 65536
 
-_WORKER_BOOTSTRAP = (
-    "import importlib.util\n"
-    "import sys\n"
-    "spec = importlib.util.spec_from_file_location('_vgr_regex_worker', sys.argv[1])\n"
-    "module = importlib.util.module_from_spec(spec)\n"
-    "sys.modules[spec.name] = module\n"
-    "spec.loader.exec_module(module)\n"
-    "module._worker()\n"
-)
-
 
 def compile_patterns(expressions, case_sensitive, section):
     expressions = tuple(expressions)
@@ -111,8 +101,7 @@ def _run_matches(keep, delete, names, literals):
     try:
         # run() kills and waits for the child on timeout. No regex search runs here.
         result = subprocess.run(
-            [str(interpreter), *bpy.app.python_args, "-B", "-c", _WORKER_BOOTSTRAP,
-             str(_worker_path(label))],
+            [str(interpreter), *bpy.app.python_args, "-B", str(_worker_path(label))],
             input=payload, **options)
     except subprocess.TimeoutExpired:
         raise _failure(label, f"Matching exceeded the {MATCH_TIMEOUT_SECONDS:g}-second time limit") from None
@@ -138,7 +127,7 @@ def _cached_matches(keep, delete, names, literals):
 
 def _worker_path(label):
     try:
-        path = Path(__file__).resolve()
+        path = Path(__file__).with_name("regex_worker.py").resolve()
         if path.is_file():
             return path
     except (OSError, ValueError, RuntimeError):
@@ -168,14 +157,3 @@ def match_groups(keep_patterns, delete_patterns, names, literal_matches):
     if len(names) > _MAX_CACHED_GROUPS or character_count > _MAX_CACHED_CHARACTERS:
         return _run_matches(keep, delete, names, literals)
     return _cached_matches(keep, delete, names, literals)
-
-
-def _worker():
-    request = json.load(sys.stdin)
-    keep = [re.compile(expression, flags) for expression, flags in request["keep"]]
-    delete = [re.compile(expression, flags) for expression, flags in request["delete"]]
-    decisions = []
-    for name, (protected, selected) in zip(request["names"], request["literals"]):
-        protected = protected or any(pattern.search(name) is not None for pattern in keep)
-        decisions.append(not protected and (selected or any(pattern.search(name) is not None for pattern in delete)))
-    print(json.dumps(decisions, separators=(",", ":")))

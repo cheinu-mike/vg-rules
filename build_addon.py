@@ -20,7 +20,8 @@ def zip_info(filename):
     info.external_attr = 0o100644 << 16
     info.compress_type = ZIP_DEFLATED
     return info
-FILES = ("__init__.py", "engine.py", "regex_guard.py", "presets.py", "NOTICE.txt", "COPYING.txt")
+FILES = ("__init__.py", "engine.py", "regex_guard.py", "regex_worker.py", "presets.py",
+         "NOTICE.txt", "COPYING.txt")
 
 
 def read_metadata(data):
@@ -53,7 +54,7 @@ def verify_archive(path, expected_files, expected_metadata):
     """Reject incomplete, unexpected or changed installer content before commit."""
     names = [f"vg_rules/{filename}" for filename in FILES]
     if set(expected_files) != set(names):
-        raise ValueError("Expected source inputs must contain exactly the six add-on files.")
+        raise ValueError(f"Expected source inputs must contain exactly the {len(FILES)} add-on files.")
     with ZipFile(path) as archive:
         entries = archive.infolist()
         if any(entry.orig_filename != entry.filename for entry in entries):
@@ -61,7 +62,8 @@ def verify_archive(path, expected_files, expected_metadata):
         actual_names = [entry.filename for entry in entries]
         # Exact names and count also reject duplicates, directories and unsafe paths.
         if len(actual_names) != len(names) or set(actual_names) != set(names):
-            raise ValueError("Installer must contain exactly the six add-on files, without duplicate or unexpected paths.")
+            raise ValueError(f"Installer must contain exactly the {len(FILES)} add-on files, "
+                             "without duplicate or unexpected paths.")
         if any(entry.flag_bits & 1 for entry in entries):
             raise ValueError("Installer entries must not be encrypted.")
         for entry in entries:

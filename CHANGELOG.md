@@ -2,6 +2,31 @@
 
 ## 0.1.4 (2026-10-29, development build)
 
+Worker simplification (2026-11-05):
+
+- Move regex matching into a bundled, standard-library-only regex_worker.py
+  script. Launch it directly with Blender's Python and bpy.app.python_args;
+  remove the inline bootstrap, manual module loading and sys.modules assignment.
+- Keep the worker out of Blender's add-on imports. Preserve the JSON protocol,
+  one-second timeout, Keep/Delete precedence, cache and failure handling.
+- Include the same worker source in both installers. Update packaging checks and
+  runtime regressions for the additional file and direct script invocation.
+
+Local verification: all 25 packaging/release-gate unit tests passed, including
+standalone worker execution from both ZIP layouts, missing-worker rejection and
+real validator rejection. Temporary candidate packages passed official extension
+validation on Blender 4.2.23. All eleven local headless stages passed on Windows
+with Blender 4.2.23 and 5.2.0 against those candidate hashes, including source and
+installed suites, read-only/offline operation and installer-switch/restart checks.
+The candidates contain nine text files in the extension and seven in the classic
+add-on. Portable results are stored separately; temporary fixtures were removed.
+
+Verification limits: the 2026-10-29 installer hashes and results below describe
+the earlier bootstrap-based build. Existing installers and evidence remain
+preserved; the new worker is currently a source change. Rebuilt final installers
+still require all eleven hosted combinations, Windows GUI checks and refreshed
+submission captures against their final hashes before being submission-ready.
+
 - Package the reviewer fixes under a new version so the installers are distinct
   from the previously verified 0.1.3 build and Blender can recognize the update.
 - Set matching add-on and extension metadata to 0.1.4; keep Blender 4.2.1 as the
