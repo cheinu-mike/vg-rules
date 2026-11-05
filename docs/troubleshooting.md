@@ -5,6 +5,7 @@
 | No VG Rules tab | Enable the extension, open a 3D Viewport, press N and select VG Rules. Check that Blender is 4.2.1 or later. |
 | Empty panel in 0.1.1 | Update to 0.1.2 and fully restart Blender. This fixes scene-property writes during sidebar drawing. |
 | Installation or registration conflict | Disable/remove duplicate VG Rules installations, then fully restart Blender. Use one installer type at a time. |
+| Move/Remove affects the wrong entry | Click the pattern text or assignment name to select its row; double-click to edit. Check the highlighted row before using the arrows or Remove. The ZIP built on 2026-10-29 predates the list-selection fix; rebuild and reinstall the current source. |
 | Object not found | Select a mesh in this scene. After clearing/deleting a bound target, reselect it or explicitly edit Fallback Name. |
 | Outside-scene warning | The saved pointer is retained. Link that object into this scene or select a local mesh. |
 | Edit Mode warning | Leave Edit Mode on the target and every object sharing its mesh. |
@@ -14,8 +15,8 @@
 | Keep does not prevent a weight change | Keep prevents deletion only. Full Weights overwrites existing weights, including kept/locked groups. |
 | Opposite Mirror group is empty | This is intended: Mirror Weights empties the opposite source group and enables modifier vertex-group mirroring. |
 | Auto Side cannot decide | Choose Left or Right explicitly. Check matching bones or an X Mirror plane and avoid zero-scale reference transforms. |
-| Regex error or timeout | Simplify patterns or use literal matching. Maximum 4096 characters/pattern, 64/section and one second of matching per rule. |
-| Missing/failed regex worker | Use an official Blender distribution with bundled Python. Check that its interpreter is present/readable. No system Python or package installation is required. |
+| Regex error or timeout | Simplify patterns or use literal matching. Maximum 4096 characters/pattern and 64/section. Each worker request has a one-second timeout; worker startup and batches can add time. |
+| Missing/failed regex worker | Reinstall the complete VG Rules ZIP, including `regex_worker.py`, and use an official Blender distribution with bundled Python. Check that both the worker and interpreter are present/readable. No system Python or package installation is required. |
 | Group name too long | Shorten it to 63 UTF-8 bytes including side suffix; non-ASCII characters may use multiple bytes. |
 | Import rejected | Correct invalid or unsupported fields, blank rows, malformed names or regex. Previous settings are preserved on validation failure. |
 | Export rejected | Pick a writable user folder outside installed VG Rules directories. Existing presets survive failed writes/replacement. |

@@ -5,7 +5,8 @@
 1. Save current work and start a fresh General scene. Select the Cube in Object Mode.
 2. Open **VG Rules** in the 3D Viewport sidebar and click **Add Selected**.
 3. Leave **Keep** and **Delete** empty. Under **Full Weights - All Vertices**, click **+**.
-4. Enter `DemoWeight`, set **Side** to **Exact Name**, and leave **Mirror Weights** off.
+4. Double-click the assignment name to enter `DemoWeight`, set **Side** to
+   **Exact Name**, and leave **Mirror Weights** off.
 5. Click **Preview Rule**. Results should show 0 deletions, 1 assignment and 0 warnings.
    Preview leaves groups and weights untouched.
 6. Save a separate `.blend` copy and click **Apply Rule**. `DemoWeight` now has
@@ -21,6 +22,11 @@ duplicating existing targets. The picker and imported names resolve in the execu
 scene. Outside-scene pointers remain saved but are skipped with a warning. Link the
 object into the scene or select a local mesh. Editing **Fallback Name** explicitly
 opts back into name resolution after a cleared/deleted target.
+
+For Keep/Delete patterns and Full Weights assignments, click the pattern text or
+assignment name to select its row. Double-click to edit the text; the row remains
+selected while editing. The up/down arrows and Remove button act on that selected
+row. Check the highlighted row before moving or removing an entry.
 
 **Preview Rule / Apply Rule** run the selected rule, including a disabled rule chosen
 explicitly. **Preview All / Apply All** use enabled rules only. All blocks duplicate
@@ -71,8 +77,9 @@ each scene. Preview and the Apply dialog list affected objects and their scenes.
 
 Regex uses Python syntax and search semantics. Use `^`/`$` when you need anchors.
 Limits are **4096 characters per pattern**, **64 patterns per Keep/Delete section**
-and a **one-second matching worker deadline per rule**. The worker exclusively uses
-Blender's bundled Python. Invalid, slow, missing or failed workers skip the affected
+and a **one-second timeout for each matching worker request**. Worker startup and
+processing several rules can add time to an operation. The worker uses Blender's
+bundled Python. Invalid, slow, missing or failed workers skip the affected
 rule before mutation. Use simpler regex or literal filters; install no extra packages.
 
 ## Presets

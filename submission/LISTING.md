@@ -20,6 +20,8 @@ Preview lists the intended changes before Apply.
   mirroring. It does not apply modifiers or build a complete rig.
 - Rules saved in the `.blend`, plus JSON import/export and nonexecuting import of
   literal `OBJECT_RULES` dictionaries from Python files. Import replaces the list.
+- Select Keep/Delete patterns or assignments by clicking their text; double-click
+  to edit. Move and Remove act on the selected entry.
 - Targets resolved within the executing scene. Saved outside-scene pointers are
   retained and their rules skipped with a warning.
 - Confirmation for shared mesh users and objects linked into multiple scenes.
@@ -34,7 +36,8 @@ All blocks duplicate enabled targets and different enabled targets sharing a mes
 invalid rules may be skipped while valid rules run. Leave Edit Mode on all shared users.
 
 Regex limits: 4096 characters per pattern, 64 patterns per Keep/Delete section and
-a one-second matching worker deadline per rule. Blender's bundled Python is required;
+a one-second timeout per matching worker request. Startup and batch processing can
+add time. Blender's bundled Python is required;
 invalid, slow, missing or failed workers skip the affected rule before mutation.
 Final group names allow 63 UTF-8 bytes including `.L`/`.R`.
 
@@ -45,10 +48,10 @@ Install from Disk, enable VG Rules, then open its 3D Viewport sidebar tab with N
 Use one installation at a time. Export JSON and save a `.blend` copy before updating
 or migrating. **Fully quit and restart Blender after replacing an installation.**
 
-[Installation](https://github.com/cheinu-mike/vg-rules/blob/main/docs/installation.md) ·
-[Usage](https://github.com/cheinu-mike/vg-rules/blob/main/docs/usage.md) ·
-[Migration](https://github.com/cheinu-mike/vg-rules/blob/main/docs/migration.md) ·
-[Troubleshooting](https://github.com/cheinu-mike/vg-rules/blob/main/docs/troubleshooting.md) ·
+[Installation](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/installation.md) ·
+[Usage](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/usage.md) ·
+[Migration](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/migration.md) ·
+[Troubleshooting](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/troubleshooting.md) ·
 [Support: GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues)
 
 Required verification targets Windows x64, Linux x64 and macOS Apple Silicon with
@@ -56,7 +59,7 @@ Blender 4.2.1, 4.2.23 and 5.2.0, and macOS Intel with 4.2.1 and 4.2.23.
 Verification of the 0.1.4 candidate is pending; the linked results cover
 earlier archive hashes.
 Blender 5.2.0 has no official macOS Intel build and is unsupported there.
-[Verification results](https://github.com/cheinu-mike/vg-rules/blob/main/submission/COMPLIANCE.md).
+[Verification requirements and current scope](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/verification.md).
 The runtime needs only file permission for presets;
 it has no external dependencies, network calls, registration requirement or custom updater.
 

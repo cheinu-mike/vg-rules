@@ -2,6 +2,26 @@
 
 ## 0.1.4 (2026-10-29, development build)
 
+Documentation refresh (2026-11-05):
+
+- Update the README, installation guide and submission index to distinguish the
+  combined source fixes from the older 0.1.4 ZIPs built on 2026-10-29.
+- Document text-click row selection, double-click editing, worker installation
+  requirements and the per-request scope of the regex timeout in the guides and
+  packaged quick-start template.
+- Record the separate unit, worker-candidate and source-UI verification scopes.
+  Label preserved submission reports, captures and rendered quick start as
+  historical 0.1.3 evidence. Development documentation links point to this branch.
+
+Documentation checks: 42 local Markdown links/anchors resolved. The quick-start
+template rendered 0.1.4 and the Blender 4.2.1 minimum from the package metadata
+with no unresolved version placeholders.
+
+Verification limits: this is a documentation-only update. Implementation and
+historical evidence are unchanged; no final installers were rebuilt. The updated
+quick-start template will be included in a future build, whose new hashes require
+the full release verification described below.
+
 Worker simplification (2026-11-05):
 
 - Move regex matching into a bundled, standard-library-only regex_worker.py
@@ -48,6 +68,8 @@ this fix; submission readiness remains blocked pending final-archive evidence.
 Combined branch verification (2026-11-05): all 25 packaging/release-gate unit
 tests passed after integrating both fixes, including real validator rejection.
 The combined source has not been rebuilt into final release installers.
+
+Original 0.1.4 package (2026-10-29):
 
 - Package the reviewer fixes under a new version so the installers are distinct
   from the previously verified 0.1.3 build and Blender can recognize the update.

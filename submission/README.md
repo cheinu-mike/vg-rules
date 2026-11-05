@@ -8,20 +8,26 @@ has not yet been submitted for platform review.
 The revised candidate requires Blender **4.2.1 or later** and new verification.
 Existing reports, screenshots and the rendered quick start describe earlier
 archive hashes. Preserve those records; regenerate submission materials from
-the final packaged extension, then rerun the release gate.
+the final packaged extension, then rerun the release gate. The 0.1.4 ZIPs built
+on 2026-10-29 predate the standalone worker and rule-row selection fixes too.
+Rebuild both installers before checking the combined candidate.
+
+The development listing and quick start link to guides on `blender-review-fixes`
+so reviewers see documentation matching this source. When publishing, make those
+guides available on the release branch and update the links accordingly.
 
 | Material | Use |
 | --- | --- |
 | [LISTING.md](LISTING.md) | Public description, included features, limitations, installation and support links |
 | [images/thumbnail.png](images/thumbnail.png) | Existing cube icon, reused unchanged; 1920 × 1920 PNG |
-| [images/preview.png](images/preview.png) | Genuine Preview Rule capture from the installed extension |
-| [images/apply.png](images/apply.png) | Genuine Apply Rule result from the same synthetic scene |
-| [capture.json](capture.json) | Packaged-extension SHA-256, Blender version, preset, before/after weights and image hashes |
-| [COMPLIANCE.md](COMPLIANCE.md) | Actual platform and GUI results, release scope and final archive hashes |
-| [compliance.json](compliance.json) | Machine-readable release gate output from the passing hosted run |
-| [verification-results.json](verification-results.json) | Every recorded stage from the eleven passing hosted jobs |
-| [gui-results.json](gui-results.json) | Native warning, Cancel/Continue, Undo and saved-rule transfer evidence on three Windows versions |
-| [QUICK_START.txt](QUICK_START.txt) | Rendered extension quick start, extracted unchanged from the final ZIP |
+| [images/preview.png](images/preview.png) | Historical 0.1.3 Preview Rule capture; refresh from the final candidate |
+| [images/apply.png](images/apply.png) | Historical 0.1.3 Apply Rule capture; refresh from the same final candidate |
+| [capture.json](capture.json) | Historical 0.1.3 packaged-extension hash, scene results and image hashes |
+| [COMPLIANCE.md](COMPLIANCE.md) | Historical 0.1.3 platform/GUI report; its passing status applies only to its recorded hashes |
+| [compliance.json](compliance.json) | Machine-readable historical 0.1.3 release-gate result |
+| [verification-results.json](verification-results.json) | Historical 0.1.3 hosted stage records; these do not cover the current source |
+| [gui-results.json](gui-results.json) | Historical 0.1.3 warning, Cancel/Continue, Undo and saved-rule transfer evidence |
+| [QUICK_START.txt](QUICK_START.txt) | Historical 0.1.3 rendered quick start; extract a fresh copy from the final ZIP |
 
 Read the compliance report before submitting. All eleven supported hosted
 platform/version pairs and the local GUI checks must pass against the final ZIP.
@@ -30,7 +36,10 @@ Upload and moderation follow preparation and verification.
 Historical 0.1.2 reports, results, listing materials and screenshots are preserved
 under [history/0.1.2](history/0.1.2/ARCHIVE.md); they certify that older release only.
 
-## Screenshot captions
+## Historical screenshot captions
+
+These captions describe the preserved 0.1.3 captures. Recreate Preview/Apply
+captures from the final combined package before using them for submission.
 
 **Preview:** A synthetic eight-vertex Demo Shell with an X Mirror modifier.
 Keep protects `DEF-` groups and `cloth_pin`. Delete matches `MCH-` and `_backup`.
@@ -69,6 +78,11 @@ The five bundled Python files carry `Copyright (C) 2026 Blank Glyph` and
 and the same GPL license; its maintainer agrees with `bl_info`'s author.
 `NOTICE.txt` supplies the copyright and warranty notice; `COPYING.txt` contains
 the complete GPL text. No third-party runtime modules or bundled media are used.
+
+The current source packages contain nine text files in the extension and seven
+in the classic add-on. `regex_worker.py` is a required runtime script launched
+directly by Blender's Python with `bpy.app.python_args`; normal add-on imports
+do not execute it. It uses only the standard library and communicates with JSON.
 
 The thumbnail is the existing project-supplied cube icon, reused unchanged for
 the listing. No new CC0 grant is asserted for that supplied image. The screenshots

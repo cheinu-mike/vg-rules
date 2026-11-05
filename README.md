@@ -10,10 +10,13 @@ This is the canonical development repository for VG Rules.
 
 Development build **0.1.4**. Requires Blender **4.2.1 or later**. This build is for
 testing and has not been published or submitted for Blender platform review.
+Current source includes the standalone regex worker and list-row selection fixes.
+The 0.1.4 ZIPs built on 2026-10-29 predate both changes; rebuild from this branch
+to test the latest source. See [Build](#build) and [Verification](docs/verification.md).
 The revised candidate requires all eleven hosted platform/version combinations,
 local Windows GUI checks and the submission-readiness gate to pass against its
 final installer hashes. See [CHANGELOG](CHANGELOG.md). The existing
-[compliance report](submission/COMPLIANCE.md) records earlier archive hashes;
+[historical 0.1.3 compliance report](submission/COMPLIANCE.md) records earlier archive hashes;
 it does not verify this revised candidate.
 The published release remains 0.1.2; its submission evidence is preserved in
 [history](submission/history/0.1.2/COMPLIANCE.md).
@@ -38,13 +41,16 @@ installation, install the replacement, and fully restart Blender.
 
 1. In a new General scene, select the Cube in Object Mode and click **Add Selected**.
 2. Leave Keep and Delete empty. Under **Full Weights - All Vertices**, add an
-   assignment, choose **Exact Name**, and enter `DemoWeight`.
+   assignment, choose **Exact Name**, and double-click its name to enter `DemoWeight`.
 3. **Preview Rule** should report zero deletions and one assignment without
    changing the mesh. **Apply Rule** creates the group with weight 1.0 on all vertices.
 
 Save a separate `.blend` copy before cleanup or weight changes. Keep matches
 override every Delete match; Keep alone deletes nothing. Matching is case
 insensitive unless the corresponding section's **Case Sensitive** checkbox is set.
+
+Click a Keep/Delete pattern's text or an assignment name to select that row;
+double-click to edit it. The arrow and Remove buttons act on the selected row.
 
 Imported names and executable targets resolve in the current scene. The picker
 shows its meshes. If a saved target is outside that scene, its pointer remains
@@ -64,8 +70,9 @@ Invalid rules are skipped
 with warnings, while other valid rules may run. Review Results and use Undo or
 your saved copy to recover.
 
-Regex uses Python syntax and a one-second worker deadline per rule, with up to
-64 patterns per section and 4096 characters per pattern. Slow or invalid regex
+Regex uses Python syntax, with up to 64 patterns per section and 4096 characters
+per pattern. Each matching worker request has a one-second timeout; process startup
+and batches of rules can take additional time. Slow or invalid regex
 skips the affected rule before changes. The worker uses Blender's bundled Python;
 a missing interpreter or failed worker also skips the affected rule. Vertex
 group names allow at most 63 UTF-8 bytes, including a `.L`/`.R` suffix.
@@ -100,8 +107,11 @@ The builders produce:
   `blender_manifest.toml` and an extension-specific `QUICK_START.txt`, and
   omitting `bl_info`.
 
-Both packages use the same runtime code. Filenames derive from `bl_info`, and
-the extension build rejects inconsistent manifest metadata. Both builders verify
+Both packages use the same five Python files, including the standalone
+`regex_worker.py`. Keep the complete installation together; the worker is launched
+directly by Blender's bundled Python and is not imported into Blender.
+Filenames derive from `bl_info`, and the extension build rejects inconsistent
+manifest metadata. Both builders verify
 their ZIP contents before replacing output. The extension also requires Blender's
 official validation to succeed; missing Blender, validation failures or timeouts
 leave any previous ZIP intact. Generated packages are not committed.
@@ -120,7 +130,7 @@ generated meshes, presets and scenes. It runs the full source and installed ZIP
 suites with enforced read-only permissions, then separate processes for installer switches,
 update, restart and uninstall. GitHub Actions tests eleven required platform/version
 pairs using one candidate archive. See [Verification](docs/verification.md), the
-[archive-bound compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).
+[historical compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).
 Missing, failed or stale results block submission readiness.
 
 ## Support and license
@@ -133,6 +143,7 @@ Copyright (C) 2026 Blank Glyph. Licensed under **GPL-3.0-or-later**. Editable
 Python source, the copyright notice and complete GPL text are included in both
 installers. See [LICENSE](LICENSE) and [NOTICE](vg_rules/NOTICE.txt).
 
-The prepared [listing text](submission/LISTING.md) and
-[thumbnail and screenshots](submission/README.md) describe included functionality.
-The screenshots are captured from the installed extension ZIP in a synthetic scene.
+The prepared [listing text](submission/LISTING.md) describes the current source.
+The existing [thumbnail, screenshots and reports](submission/README.md) belong to
+earlier archives. Refresh Preview/Apply captures from the final packaged extension
+before submitting the combined fixes; keep the existing cube thumbnail.

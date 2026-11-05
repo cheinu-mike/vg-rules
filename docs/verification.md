@@ -1,5 +1,17 @@
 # Verification and release gate
 
+The current branch combines the standalone regex worker and rule-row selection
+fixes. The 0.1.4 installers built on 2026-10-29 predate those changes. Rebuild both
+installers from the current source before verifying or submitting a new candidate.
+The [changelog](../CHANGELOG.md) records these separate verification scopes:
+
+| Check | Latest recorded result | Scope |
+| --- | --- | --- |
+| Packaging/release-gate unit tests | 25 passed, including real validator rejection | Combined source after both fixes were integrated |
+| Full headless source, installed-extension and restart suites | All eleven stages passed on Windows with Blender 4.2.23 and 5.2.0 | Temporary worker-based candidate ZIPs, before the row-selection fix was merged |
+| Rule-row selection GUI checks | Passed on Windows with Blender 4.2.23 | Source UI session; no rebuilt final archive |
+| Final combined candidate | Pending | All eleven hosted pairs, three Windows GUI runs and refreshed Preview/Apply captures against the final archive hashes |
+
 GitHub Actions tests the same candidate ZIP on Windows x64, Linux x64, macOS
 Intel and macOS Apple Silicon using pinned official Blender 4.2.1, 4.2.23 and
 5.2.0 distributions with SHA-256 checks. macOS Intel runs both 4.2 versions;
@@ -22,6 +34,12 @@ processes exercise traditional add-on ZIP installation, saved separate Keep/Dele
 rules, loading without validation or metadata rewrites, JSON backups, installer
 switches, update and restart. The previous extension in the update test is a synthetic
 lower-version package with a marker; the restarted process must load final bytes.
+
+Packaging regressions execute `regex_worker.py` directly from both installer
+layouts and reject a missing worker without replacing existing ZIPs. Runtime
+checks cover forwarded Blender Python arguments, the worker timeout, missing or
+failed workers, invalid results and cached decisions. The worker is a bundled
+runtime script using only the standard library; normal add-on imports do not run it.
 
 All generated scenes, profiles, intermediate ZIPs and presets use disposable
 temporary directories. Hosted runs use RUNNER_TEMP; local runs use temporary
@@ -58,6 +76,8 @@ It must not receive an automatic PASS for an unreviewed warning.
 The release gate requires all eleven hosted results, all three local GUI results,
 exact installer hashes, package/source parity, licenses, public guides, listing
 and final-archive product captures. Missing, failed or stale evidence blocks release.
+Include the pattern/assignment text-selection and editing checks in final GUI
+verification so the combined package is checked for the row-selection fix too.
 The existing [compliance report](../submission/COMPLIANCE.md) and linked Actions
 run record earlier archive hashes. Verification of the revised candidate is
 pending; previous passes do not certify its final installers. Workflow artifacts

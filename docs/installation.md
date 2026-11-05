@@ -7,17 +7,24 @@ its final installer hashes; see [CHANGELOG](../CHANGELOG.md). The existing
 release remains 0.1.2. Blender 5.2.0 on macOS Intel remains unsupported; no official
 build exists.
 
+The 0.1.4 ZIPs built on 2026-10-29 do not include the current standalone worker
+and list-row selection fixes. Build from the current branch for those changes;
+the version number alone does not distinguish these source revisions.
+
 ## Extension package
 
-1. Use the extension ZIP `vg_rules-0.1.4.zip` supplied with the development build, or
-   [build it](../README.md#build). Keep it compressed. The extension builder writes
-   `dist/blender_extensions/`; its output is separate from the Gumroad installer.
+1. [Build the extension ZIP](../README.md#build) from the current source, or use a
+   ZIP verified against that source. Keep `vg_rules-0.1.4.zip` compressed.
+   The extension builder writes `dist/blender_extensions/`; its output is separate
+   from the Gumroad installer.
 2. Open **Preferences > Get Extensions > top-right menu > Install from Disk**.
 3. Select the ZIP and enable **VG Rules**.
 4. In the 3D Viewport, press **N** and open **VG Rules**.
 
 The installed folder contains `QUICK_START.txt`. The public [usage guide](usage.md)
 covers the same workflow. This development build has not been submitted for platform review.
+Keep all installed files together, including `regex_worker.py`. If the worker is
+missing, reinstall the complete ZIP.
 
 ## Gumroad add-on package
 
