@@ -2,6 +2,24 @@
 
 ## 0.1.4 (2026-10-29, development build)
 
+Rule selection fix (2026-11-05):
+
+- Use Blender's native selectable list text for Keep/Delete patterns and
+  assignment names. Clicking the text selects its row; double-clicking edits
+  the text with that row selected, so Move/Remove targets the intended entry.
+- Verified source UI behavior in a disposable Windows Blender 4.2.23 scene:
+  text-click selection, editing and committing a Keep pattern, selecting a
+  Delete pattern by double-clicking, cancelling its edit, moving/removing the
+  selected pattern, and selecting an assignment through its name all passed.
+  All 23 existing packaging/release-gate unit tests passed, including real
+  validator rejection. Portable results and a screenshot are stored separately
+  under the ignored tests/.artifacts/rule-row-selection directory.
+
+Verification limits for this fix: no installers were rebuilt. These source UI
+checks do not certify a final archive or replace the eleven hosted combinations
+and local Windows GUI release checks. The earlier archive hashes below predate
+this fix; submission readiness remains blocked pending final-archive evidence.
+
 - Package the reviewer fixes under a new version so the installers are distinct
   from the previously verified 0.1.3 build and Blender can recognize the update.
 - Set matching add-on and extension metadata to 0.1.4; keep Blender 4.2.1 as the

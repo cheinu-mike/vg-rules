@@ -607,13 +607,14 @@ class VGR_UL_patterns(UIList):
         row = layout.row(align=True)
         split = row.split(factor=0.5)
         split.prop(item, "kind", text="")
-        split.prop(item, "value", text="")
+        # Native list text fields select their row when clicked or edited.
+        split.prop(item, "value", text="", emboss=False)
 
 
 class VGR_UL_assignments(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         row = layout.row(align=True)
-        row.prop(item, "group_name", text="", icon='GROUP_VERTEX')
+        row.prop(item, "group_name", text="", icon='GROUP_VERTEX', emboss=False)
         row.label(text="1.0")
 
 
