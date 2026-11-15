@@ -10,9 +10,12 @@ This is the canonical development repository for VG Rules.
 
 Development build **0.1.4**. Requires Blender **4.2.1 or later**. This build is for
 testing and has not been published or submitted for Blender platform review.
-Current source includes the standalone regex worker and list-row selection fixes.
-The 0.1.4 ZIPs built on 2026-10-29 predate both changes; rebuild from this branch
-to test the latest source. See [Build](#build) and [Verification](docs/verification.md).
+Current source includes the standalone regex worker, list-row selection fixes
+and Delete Prefix as the first and default Delete match type.
+Both local 0.1.4 installers were rebuilt from this branch on 2026-11-15 with
+these changes. Earlier 0.1.4 ZIPs are preserved under `dist/history/0.1.4/`.
+See [Build](#build), [Verification](docs/verification.md) and the hashes in
+[CHANGELOG](CHANGELOG.md).
 The revised candidate requires all eleven hosted platform/version combinations,
 local Windows GUI checks and the submission-readiness gate to pass against its
 final installer hashes. See [CHANGELOG](CHANGELOG.md). The existing

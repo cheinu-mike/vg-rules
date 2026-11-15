@@ -46,11 +46,12 @@ KEEP_ITEMS = (
 )
 
 DELETE_ITEMS = (
-    ("delete_exact", "Delete Exact", "Delete groups whose names match exactly unless a Keep rule matches"),
-    ("delete_prefixes", "Delete Prefix", "Delete groups beginning with this text unless a Keep rule matches"),
-    ("delete_contains", "Delete Contains", "Delete groups containing this text anywhere unless a Keep rule matches"),
-    ("delete_suffixes", "Delete Suffix", "Delete groups ending with this text unless a Keep rule matches"),
-    ("delete_regex", "Delete Regex", "Delete groups matching a Python regex search unless a Keep rule matches; use ^/$ to anchor. Regex matching has a one-second worker deadline per rule"),
+    # Preserve stored enum values when changing the menu order for saved files.
+    ("delete_prefixes", "Delete Prefix", "Delete groups beginning with this text unless a Keep rule matches", 1),
+    ("delete_exact", "Delete Exact", "Delete groups whose names match exactly unless a Keep rule matches", 0),
+    ("delete_contains", "Delete Contains", "Delete groups containing this text anywhere unless a Keep rule matches", 2),
+    ("delete_suffixes", "Delete Suffix", "Delete groups ending with this text unless a Keep rule matches", 3),
+    ("delete_regex", "Delete Regex", "Delete groups matching a Python regex search unless a Keep rule matches; use ^/$ to anchor. Regex matching has a one-second worker deadline per rule", 4),
 )
 
 SIDE_ITEMS = (
@@ -67,7 +68,7 @@ class VGR_KeepPattern(PropertyGroup):
 
 
 class VGR_DeletePattern(PropertyGroup):
-    kind: EnumProperty(name="Match", items=DELETE_ITEMS)
+    kind: EnumProperty(name="Match", items=DELETE_ITEMS, default="delete_prefixes")
     value: StringProperty(name="Text", description="Vertex group match text or regular expression")
 
 

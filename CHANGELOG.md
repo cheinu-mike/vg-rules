@@ -2,6 +2,71 @@
 
 ## 0.1.4 (2026-10-29, development build)
 
+Delete rule default update (2026-11-15):
+
+- Make Delete Prefix the default for new Delete rows and place it above Delete
+  Exact, matching the Keep menu order.
+- Preserve the original stored enum values so existing saved Delete rules keep
+  their match types. Existing rows without an explicitly stored match use the
+  new Delete Prefix default.
+- Rebuild both 0.1.4 installer formats and preserve the previous local rebuild
+  under `dist/history/0.1.4/2026-11-15-before-delete-prefix/`.
+
+Verification: all 25 packaging/release-gate unit tests passed, including real
+validator rejection. The rebuilt extension passed Blender 4.2.23's official
+validator before replacing its ZIP. The full source add-on integration suite
+passed on Windows with Blender 4.2.23. Checks using both final archives verified
+the default, menu order, operator-created rows and JSON presets, plus loading
+all five explicit Delete match types from a .blend saved by the previous
+archive. An unstored old default correctly adopts Delete Prefix. All historical
+archives retain their original hashes. Fixtures used disposable directories.
+
+- Extension SHA-256: `543593e6f6aba5e6ecb70d20bab2add80d0d35a25129af96b264733ce4d62f42`
+- Classic add-on SHA-256: `6dd30eb3215446e0d2c0d38691d45b27e0c1fadea6c6d6481f575b6a71b1eead`
+
+Portable results and logs are stored separately under the ignored
+`tests/.artifacts/delete-prefix-default-0.1.4-2026-11-15/` directory.
+
+Verification limits: these are Windows headless checks on Blender 4.2.23.
+The full installed-extension/runtime/restart suites were not rerun for this
+update. All eleven supported hosted combinations, local Windows GUI checks and
+final-ZIP captures must match these rebuilt hashes before submission readiness.
+The published release remains 0.1.2; earlier archive evidence does not certify
+this development build.
+
+Local installer rebuild (2026-11-15):
+
+- Rebuild both 0.1.4 installers from `blender-review-fixes` commit `418c41f`,
+  including the standalone regex worker and rule-row selection fix.
+- Preserve the earlier 0.1.4 installers under
+  `dist/history/0.1.4/2026-10-29/`. All eight 0.1.0 through 0.1.3 installers
+  retain their original hashes.
+
+Build verification: all 25 packaging/release-gate unit tests passed, including
+real validator rejection. The rebuilt extension passed Blender 4.2.23's official
+validator before replacing its ZIP. Exact source parity, selectable pattern and
+assignment text, the bundled worker, matching 0.1.4/Blender 4.2.1 metadata,
+rendered quick start, licenses and text-only package contents were checked.
+
+All eleven local headless stages passed on Windows with Blender 4.2.23 and
+5.2.0 against these rebuilt hashes, including installed read-only/offline
+operation and all installer-switch/restart lifecycle checks. Initial sandboxed
+runs could not enforce the read-only permission probe; complete reruns outside
+the sandbox passed using disposable profiles. The failed attempts are preserved
+with the successful rerun evidence.
+
+- Extension SHA-256: `76a36a2602dd9d768d3eb6b5c5e5f571d0219e2ceed0c71b3c114793aa7a29b4`
+- Classic add-on SHA-256: `7d642c0159c1f1befa931d0971eedf3bba2f3d194ee136d35a698162a3b6ec1f`
+
+Portable build results and logs are stored separately under the ignored
+`tests/.artifacts/rebuild-0.1.4-2026-11-15-418c41f/` directory.
+
+Verification limits: this is a development rebuild. All eleven supported hosted
+platform/version combinations, local Windows GUI checks and refreshed final-ZIP
+Preview/Apply captures must match these hashes before submission readiness.
+Earlier evidence is not assumed to certify them. The published release remains
+0.1.2; submission readiness remains blocked pending final-archive evidence.
+
 Documentation refresh (2026-11-05):
 
 - Update the README, installation guide and submission index to distinguish the

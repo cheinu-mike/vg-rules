@@ -1,16 +1,19 @@
 # Verification and release gate
 
-The current branch combines the standalone regex worker and rule-row selection
-fixes. The 0.1.4 installers built on 2026-10-29 predate those changes. Rebuild both
-installers from the current source before verifying or submitting a new candidate.
+The current branch combines the standalone regex worker, rule-row selection
+fixes and Delete Prefix default/menu order update. Both local 0.1.4 installers
+were rebuilt on 2026-11-15 with those changes. Earlier 0.1.4 ZIPs are preserved
+under `dist/history/0.1.4/`.
 The [changelog](../CHANGELOG.md) records these separate verification scopes:
 
 | Check | Latest recorded result | Scope |
 | --- | --- | --- |
-| Packaging/release-gate unit tests | 25 passed, including real validator rejection | Combined source after both fixes were integrated |
-| Full headless source, installed-extension and restart suites | All eleven stages passed on Windows with Blender 4.2.23 and 5.2.0 | Temporary worker-based candidate ZIPs, before the row-selection fix was merged |
+| Packaging/release-gate unit tests | 25 passed on 2026-11-15, including real validator rejection | Combined source used for the rebuilt installers |
+| Source add-on integration suite | Passed on Windows with Blender 4.2.23 on 2026-11-15 | Latest source including the Delete Prefix default change |
+| Packaged Delete match checks | Passed on Windows with Blender 4.2.23 | Both latest archives: default, menu order, operator-created rows, saved explicit enum values and JSON presets |
+| Full headless source, installed-extension and restart suites | All eleven stages passed on Windows with Blender 4.2.23 and 5.2.0 on 2026-11-15 | Earlier rebuild before the Delete Prefix default change; historical hashes in CHANGELOG |
 | Rule-row selection GUI checks | Passed on Windows with Blender 4.2.23 | Source UI session; no rebuilt final archive |
-| Final combined candidate | Pending | All eleven hosted pairs, three Windows GUI runs and refreshed Preview/Apply captures against the final archive hashes |
+| Final combined candidate | Rebuilt locally on 2026-11-15; submission verification pending | All eleven hosted pairs, three Windows GUI runs and refreshed Preview/Apply captures must match the rebuilt archive hashes |
 
 GitHub Actions tests the same candidate ZIP on Windows x64, Linux x64, macOS
 Intel and macOS Apple Silicon using pinned official Blender 4.2.1, 4.2.23 and

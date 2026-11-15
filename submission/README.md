@@ -10,7 +10,9 @@ Existing reports, screenshots and the rendered quick start describe earlier
 archive hashes. Preserve those records; regenerate submission materials from
 the final packaged extension, then rerun the release gate. The 0.1.4 ZIPs built
 on 2026-10-29 predate the standalone worker and rule-row selection fixes too.
-Rebuild both installers before checking the combined candidate.
+Both local installers were rebuilt on 2026-11-15 with those fixes and the Delete
+Prefix default/menu order update; verify their hashes against
+[CHANGELOG](../CHANGELOG.md) before checking the combined candidate.
 
 The development listing and quick start link to guides on `blender-review-fixes`
 so reviewers see documentation matching this source. When publishing, make those

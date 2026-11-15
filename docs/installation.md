@@ -7,9 +7,12 @@ its final installer hashes; see [CHANGELOG](../CHANGELOG.md). The existing
 release remains 0.1.2. Blender 5.2.0 on macOS Intel remains unsupported; no official
 build exists.
 
-The 0.1.4 ZIPs built on 2026-10-29 do not include the current standalone worker
-and list-row selection fixes. Build from the current branch for those changes;
-the version number alone does not distinguish these source revisions.
+The local 0.1.4 ZIPs rebuilt on 2026-11-15 include the standalone worker and
+list-row selection fixes, plus Delete Prefix as the first and default Delete
+match type. Earlier 0.1.4 ZIPs are preserved under `dist/history/0.1.4/`.
+Compare the hashes in
+[CHANGELOG](../CHANGELOG.md); the version number alone does not distinguish
+these source revisions.
 
 ## Extension package
 
