@@ -2,6 +2,34 @@
 
 ## 0.1.4 (2026-10-29, development build)
 
+Resubmission candidate (2026-11-19):
+
+- Point the extension quick start and listing to the guides on `main`. Build
+  both installers in [GitHub Actions](https://github.com/cheinu-mike/vg-rules/actions/runs/44666038856).
+  Validate the hosted extension again with Blender 4.2.23 on Windows and keep
+  those exact archive bytes in `dist`.
+- Pass all eleven supported hosted platform/version combinations and Windows
+  GUI checks on Blender 4.2.1, 4.2.23 and 5.2.0. All three GUI runs verified the
+  shared-data warning, Cancel, Continue, native Ctrl-Z and saved `.blend`/JSON
+  transfer across installers. Blender 4.2.23 also passed all seven list checks,
+  covering text selection, editing, edit cancellation, Move/Remove and Delete
+  Prefix default/menu order.
+- Refresh Preview and Apply from the final installed extension in the synthetic
+  Demo Shell scene on Blender 4.2.23. Reuse the existing cube thumbnail. The
+  [compliance report](submission/COMPLIANCE.md) records the passing gate.
+
+- Extension SHA-256: `6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481`
+- Classic add-on SHA-256: `ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871`
+
+Verification limits: native GUI checks ran on Windows x64. Blender 5.2.0 on
+Intel macOS is unsupported. Blender 5.3.0 coverage below applies to the earlier
+archive hashes. The first sandboxed Blender 4.2.1 GUI launch crashed before the
+dialog. An out-of-sandbox retry with a disposable profile passed all seven
+checks. Portable records and screenshots are in `submission/`; detailed logs
+are in `tests/.artifacts/resubmission-0.1.4/`. The earlier 0.1.4 ZIPs are retained
+under `dist/history/0.1.4/2026-11-19-before-resubmission/`. The published release
+remains 0.1.2.
+
 Blender 5.3 local verification and documentation (2026-11-16):
 
 - Verify the 2026-11-15 rebuilt archives with the installed Windows x64 Blender

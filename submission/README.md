@@ -5,19 +5,10 @@ release remains **0.1.2**. Upload the verified extension ZIP under
 `dist/blender_extensions/` with these separate listing materials. The package
 has not yet been submitted for platform review.
 
-The revised candidate requires Blender **4.2.1 or later** and new verification.
-Existing reports, screenshots and the rendered quick start describe earlier
-archive hashes. Preserve those records; regenerate submission materials from
-the final packaged extension, then rerun the release gate. The 0.1.4 ZIPs built
-on 2026-10-29 predate the standalone worker and rule-row selection fixes too.
-Both local installers were rebuilt on 2026-11-15 with those fixes and the Delete
-Prefix default/menu order update; verify their hashes against
-[CHANGELOG](../CHANGELOG.md) before checking the combined candidate.
-
-The rebuilt archives passed additional local Windows x64 testing with Blender
-5.3.0 on 2026-11-16. See the [5.3 report](../docs/blender-5.3.md). Its logs and
-screenshots are stored separately under ignored `tests/.artifacts/`; they do not
-replace the historical materials below or satisfy the eleven-pair hosted gate.
+The resubmission candidate requires Blender **4.2.1 or later**. Both ZIPs came
+from the [hosted verification run](https://github.com/cheinu-mike/vg-rules/actions/runs/44666038856).
+All eleven hosted checks, three Windows GUI runs and the local release gate
+passed for those exact installer hashes. See the [compliance report](COMPLIANCE.md).
 
 The listing and bundled quick start link to the guides on the canonical `main`
 branch.
@@ -26,14 +17,14 @@ branch.
 | --- | --- |
 | [LISTING.md](LISTING.md) | Public description, included features, limitations, installation and support links |
 | [images/thumbnail.png](images/thumbnail.png) | Existing cube icon, reused unchanged; 1920 × 1920 PNG |
-| [images/preview.png](images/preview.png) | Historical 0.1.3 Preview Rule capture; refresh from the final candidate |
-| [images/apply.png](images/apply.png) | Historical 0.1.3 Apply Rule capture; refresh from the same final candidate |
-| [capture.json](capture.json) | Historical 0.1.3 packaged-extension hash, scene results and image hashes |
-| [COMPLIANCE.md](COMPLIANCE.md) | Historical 0.1.3 platform/GUI report; its passing status applies only to its recorded hashes |
-| [compliance.json](compliance.json) | Machine-readable historical 0.1.3 release-gate result |
-| [verification-results.json](verification-results.json) | Historical 0.1.3 hosted stage records; these do not cover the current source |
-| [gui-results.json](gui-results.json) | Historical 0.1.3 warning, Cancel/Continue, Undo and saved-rule transfer evidence |
-| [QUICK_START.txt](QUICK_START.txt) | Historical 0.1.3 rendered quick start; extract a fresh copy from the final ZIP |
+| [images/preview.png](images/preview.png) | Preview Rule from the installed final extension |
+| [images/apply.png](images/apply.png) | Apply Rule from the same installed extension |
+| [capture.json](capture.json) | Extension hash, synthetic scene results and screenshot hashes |
+| [COMPLIANCE.md](COMPLIANCE.md) | Passing platform/GUI report with both final installer hashes |
+| [compliance.json](compliance.json) | Machine-readable release-gate result |
+| [verification-results.json](verification-results.json) | Eleven hosted stage records |
+| [gui-results.json](gui-results.json) | Three Windows GUI records with checkpoint screenshot hashes |
+| [QUICK_START.txt](QUICK_START.txt) | Rendered quick start extracted from the final extension ZIP |
 
 Read the compliance report before submitting. All eleven supported hosted
 platform/version pairs and the local GUI checks must pass against the final ZIP.
@@ -42,10 +33,7 @@ Upload and moderation follow preparation and verification.
 Historical 0.1.2 reports, results, listing materials and screenshots are preserved
 under [history/0.1.2](history/0.1.2/ARCHIVE.md); they certify that older release only.
 
-## Historical screenshot captions
-
-These captions describe the preserved 0.1.3 captures. Recreate Preview/Apply
-captures from the final combined package before using them for submission.
+## Screenshot captions
 
 **Preview:** A synthetic eight-vertex Demo Shell with an X Mirror modifier.
 Keep protects `DEF-` groups and `cloth_pin`. Delete matches `MCH-` and `_backup`.

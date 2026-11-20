@@ -102,11 +102,13 @@ def inside():
     output = Path(os.environ['VGR_GUI_OUTPUT'])
     profile = Path(os.environ['VGR_EXTENSION_TEST_DIR'])
     archive = Path(os.environ['VGR_TEST_ARCHIVE'])
+    legacy_archive = Path(os.environ['VGR_TEST_LEGACY_ARCHIVE'])
     namespace = os.environ['VGR_TEST_NAMESPACE']
     module_name = f'bl_ext.{namespace}.vg_rules'
     original = json.loads((profile / 'lifecycle.json').read_text())
     report = {'status': 'FAIL', 'blender': '.'.join(map(str, bpy.app.version)), 'platform': 'windows-x64',
-              'archive_sha256': digest(archive), 'checks': [], 'images': {}}
+              'archive_sha256': digest(archive), 'legacy_sha256': digest(legacy_archive),
+              'checks': [], 'images': {}}
     session = {}
     for library in list(bpy.context.preferences.filepaths.asset_libraries):
         bpy.context.preferences.filepaths.asset_libraries.remove(library)

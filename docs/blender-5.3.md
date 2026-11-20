@@ -1,9 +1,8 @@
 # Blender 5.3 local verification
 
 The rebuilt **VG Rules 0.1.4** archives passed the checks below on **Windows
-x64 with the installed Blender 5.3.0** on **2026-11-16**. No add-on runtime or
-installer changes were needed. This is local compatibility evidence; the
-development build remains unpublished and is **not submission-ready**.
+x64 with the installed Blender 5.3.0** on **2026-11-16**. This report covers the
+earlier 0.1.4 installer hashes listed below.
 
 Blender reported release branch `blender-v5.3-release`, build hash
 `02f0899d78e3`, built 2026-11-10. The executable was
@@ -15,8 +14,8 @@ Testing used the 2026-11-15 Delete Prefix rebuilds:
 | Extension, `dist/blender_extensions/vg_rules-0.1.4.zip` | `543593e6f6aba5e6ecb70d20bab2add80d0d35a25129af96b264733ce4d62f42` |
 | Classic add-on, `dist/vg_rules-0.1.4.zip` | `6dd30eb3215446e0d2c0d38691d45b27e0c1fadea6c6d6481f575b6a71b1eead` |
 
-The installers retain their existing hashes. Their version and Blender minimum
-metadata remain 0.1.4 and 4.2.1. The published release remains 0.1.2.
+The tested installers are preserved under
+`dist/history/0.1.4/2026-11-19-before-resubmission/`.
 
 ## Results
 
@@ -81,8 +80,5 @@ production scenes. The classic installer has lifecycle coverage; the full
 installed regression suites and GUI checks use the extension, whose shared
 runtime is verified against the source.
 
-The required eleven hosted combinations on 4.2.1, 4.2.23 and 5.2.0, the three
-pinned Windows GUI runs and refreshed submission Preview/Apply captures still
-need evidence matching the final hashes. Existing submission reports and images
-remain historical. Local 5.3 results supplement that release gate and do not
-replace it. See [Verification](verification.md) and [CHANGELOG](../CHANGELOG.md).
+See the [compliance report](../submission/COMPLIANCE.md) for the later
+resubmission candidate and its exact archive hashes.

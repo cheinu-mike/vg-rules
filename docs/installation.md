@@ -1,23 +1,13 @@
 # Install VG Rules
 
-Requires Blender **4.2.1 or later**. Version **0.1.4** is a development build for
-testing. The revised candidate requires new submission-readiness checks against
-its final installer hashes; see [CHANGELOG](../CHANGELOG.md). The existing
-[verification report](../submission/COMPLIANCE.md) covers earlier archives. The published
-release remains 0.1.2. Blender 5.2.0 on macOS Intel remains unsupported; no official
-build exists.
+Requires Blender **4.2.1 or later**. The **0.1.4** resubmission candidate
+includes the standalone worker, list-row selection fixes and Delete Prefix as
+the first and default Delete match type. Use the [compliance report](../submission/COMPLIANCE.md)
+to identify the verified installer hashes. The published release remains 0.1.2.
+Blender 5.2.0 has no official macOS Intel build and is unsupported there.
 
-The rebuilt 0.1.4 packages were tested locally on **Windows x64 with Blender
-5.3.0** on 2026-11-16. Headless source/installed-extension suites, installer
-lifecycle and native GUI checks passed. See the [5.3 report](blender-5.3.md).
-This does not establish 5.3 compatibility on Linux or macOS.
-
-The local 0.1.4 ZIPs rebuilt on 2026-11-15 include the standalone worker and
-list-row selection fixes, plus Delete Prefix as the first and default Delete
-match type. Earlier 0.1.4 ZIPs are preserved under `dist/history/0.1.4/`.
-Compare the hashes in
-[CHANGELOG](../CHANGELOG.md); the version number alone does not distinguish
-these source revisions.
+The [5.3 report](blender-5.3.md) covers the earlier 0.1.4 build tested on Windows
+x64. Previous ZIPs are preserved under `dist/history/0.1.4/`.
 
 ## Extension package
 

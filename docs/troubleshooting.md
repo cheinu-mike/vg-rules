@@ -36,13 +36,13 @@ Include:
 Required source and installed-extension checks, including read-only directories,
 cover Windows x64, Linux x64 and macOS Apple Silicon with Blender 4.2.1,
 4.2.23 and 5.2.0, and macOS Intel with 4.2.1 and 4.2.23. Blender 5.2.0 on Intel
-macOS is unsupported because there is no official build. Local GUI checks cover
-Windows only. Verification of the revised candidate is pending. The existing
-[results and scope](../submission/COMPLIANCE.md) cover earlier archive hashes.
+macOS is unsupported because there is no official build. All eleven hosted
+pairs and all three Windows GUI runs passed for the 0.1.4 resubmission candidate.
+See the [compliance report](../submission/COMPLIANCE.md) for the archive hashes.
 
-The latest rebuilt 0.1.4 archives separately passed local Windows x64 checks
+The earlier 0.1.4 archives passed local Windows x64 checks
 with Blender 5.3.0 on 2026-11-16, including native GUI Undo. See the
 [5.3 report](blender-5.3.md) for tested features, hashes and harness limitations.
-Linux/macOS 5.3 and the final candidate's full hosted release matrix remain
-unverified. Include the installer hash when reporting a 0.1.4 issue, since
+5.3 GUI coverage is limited to that Windows x64 build. Include the installer hash
+when reporting a 0.1.4 issue, since
 several development rebuilds share that version number.

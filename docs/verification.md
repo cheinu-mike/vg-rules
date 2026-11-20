@@ -1,21 +1,16 @@
 # Verification and release gate
 
-The current branch combines the standalone regex worker, rule-row selection
-fixes and Delete Prefix default/menu order update. Both local 0.1.4 installers
-were rebuilt on 2026-11-15 with those changes. Earlier 0.1.4 ZIPs are preserved
-under `dist/history/0.1.4/`.
-The [changelog](../CHANGELOG.md) records these separate verification scopes:
+The [0.1.4 resubmission candidate](../submission/COMPLIANCE.md) passed the
+release gate. GitHub Actions built both installers, and local verification used
+the same archive bytes. The [changelog](../CHANGELOG.md) lists their hashes.
 
 | Check | Latest recorded result | Scope |
 | --- | --- | --- |
-| Packaging/release-gate unit tests | 25 passed on 2026-11-16, including real Blender 5.3 validator rejection | Current builders and release gate; temporary packaging fixtures |
-| Source add-on integration suite | Passed on Windows with Blender 4.2.23 on 2026-11-15 | Latest source including the Delete Prefix default change |
-| Packaged Delete match checks | Passed on Windows with Blender 4.2.23 | Both latest archives: default, menu order, operator-created rows, saved explicit enum values and JSON presets |
-| Blender 5.3.0 local headless checks | All eleven stages passed on Windows x64 on 2026-11-16 | Latest rebuilt archives; source and installed-extension suites, enforced read-only/offline operation and all restart/lifecycle stages; includes Delete Prefix/default and stable saved enum numbers |
-| Blender 5.3.0 local GUI checks | All 14 checkpoints passed on 2026-11-16 | Latest packaged extension: native Cancel/Continue, Ctrl-Z, saved-rule transfer, text selection/editing/cancellation, Move/Remove and Delete Prefix default/menu; see the [5.3 report](blender-5.3.md) |
-| Full headless source, installed-extension and restart suites | All eleven stages passed on Windows with Blender 4.2.23 and 5.2.0 on 2026-11-15 | Earlier rebuild before the Delete Prefix default change; historical hashes in CHANGELOG |
-| Rule-row selection GUI checks | Passed on Windows with Blender 4.2.23 | Source UI session; no rebuilt final archive |
-| Final combined candidate | Rebuilt locally on 2026-11-15; submission verification pending | All eleven hosted pairs, three Windows GUI runs and refreshed Preview/Apply captures must match the rebuilt archive hashes |
+| Packaging and gate tests | 25 passed with Blender 4.2.23 | Includes official validator rejection and archive/source checks |
+| Hosted integration, runtime and restart suites | All eleven supported platform/version pairs passed | Both final ZIPs, including installed read-only and offline operation |
+| Windows x64 GUI | Passed on Blender 4.2.1, 4.2.23 and 5.2.0 | Cancel, Continue, native Ctrl-Z and saved-rule transfer on all three. 4.2.23 also covered rule-row editing, Move/Remove and Delete Prefix. |
+| Preview and Apply | Captured from the installed final extension on Blender 4.2.23 | Synthetic scene, unchanged cube thumbnail and hash-bound [capture evidence](../submission/capture.json) |
+| Local Blender 5.3.0 coverage | Headless and GUI checks passed on Windows x64 | Earlier 0.1.4 hashes in the [5.3 report](blender-5.3.md) |
 
 GitHub Actions tests the same candidate ZIP on Windows x64, Linux x64, macOS
 Intel and macOS Apple Silicon using pinned official Blender 4.2.1, 4.2.23 and
@@ -27,7 +22,7 @@ Blender **5.3.0** is additional local Windows coverage. It is accepted by
 `tests/run_blender.py --expect-version 5.3.0`, but has not been added to the
 hosted downloader, matrix or release gate. No Linux/macOS 5.3 pass is implied.
 See the [local report](blender-5.3.md) for the installed build identity and exact
-candidate hashes. The minimum remains 4.2.1 and the published version remains 0.1.2.
+hashes tested with 5.3.0. The minimum remains 4.2.1 and the published version remains 0.1.2.
 
 The workflow builds once, then every job downloads those exact installers.
 It runs Blender's official extension validator, the full source regression and
@@ -77,14 +72,14 @@ installers are checked in the GUI session too. Screenshot hashes and results are
 in submission/gui-results.json. GUI behavior on macOS/Linux has not been tested.
 
 ```sh
-python -B tests/gui_checks.py --blender /path/to/blender --output-dir tests/.artifacts/gui-check
+python -B tests/gui_checks.py --blender /path/to/blender --native-undo --output-dir tests/.artifacts/gui-check
 ```
 
 This pauses for visual inspection of warning.png and confirmation.png. Provide
 command.json as documented in the script only after inspecting the native dialog.
 It must not receive an automatic PASS for an unreviewed warning.
 
-For Blender 5.3, use `--native-undo` to disable event-simulation mode after
+`--native-undo` disables event-simulation mode after
 Continue and wait for a native Ctrl-Z in the viewport. Inspect `waiting.json`,
 focus the viewport, press Ctrl-Z, then write
 `{"action": "undo", "visual_review": true}` to `command.json`. The harness
@@ -114,10 +109,9 @@ exact installer hashes, package/source parity, licenses, public guides, listing
 and final-archive product captures. Missing, failed or stale evidence blocks release.
 Include the pattern/assignment text-selection and editing checks in final GUI
 verification so the combined package is checked for the row-selection fix too.
-The existing [compliance report](../submission/COMPLIANCE.md) and linked Actions
-run record earlier archive hashes. Verification of the revised candidate is
-pending; previous passes do not certify its final installers. Workflow artifacts
-retain detailed diagnostics for 30 days.
+The [compliance report](../submission/COMPLIANCE.md) and
+[hosted results](../submission/verification-results.json) record the final hashes.
+Workflow artifacts retain detailed diagnostics and the tested ZIPs for 30 days.
 
 ```sh
 python -B tests/compliance.py --evidence /path/to/downloaded/actions/results --output submission --require-ready

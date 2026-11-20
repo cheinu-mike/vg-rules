@@ -1,14 +1,14 @@
 {
   "status": "PASS",
   "blender": "4.2.23 LTS",
-  "extension_version": "0.1.3",
-  "zip": "dist/blender_extensions/vg_rules-0.1.3.zip",
-  "zip_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+  "extension_version": "0.1.4",
+  "zip": "dist/blender_extensions/vg_rules-0.1.4.zip",
+  "zip_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
   "scene": "VG Rules Synthetic Demo",
   "images": {
     "preview": {
       "path": "submission/images/preview.png",
-      "sha256": "82ec16b173747b6638926e82b76bc9e60f3f3ac4fb923a19dd1d1785ef2a7116",
+      "sha256": "4db35d78608b92809eefd89a41b331dd81e587af868b55fcd3fa28ab75846c16",
       "editor_size": [
         1800,
         1059
@@ -18,7 +18,7 @@
     },
     "apply": {
       "path": "submission/images/apply.png",
-      "sha256": "ec12c4c05d27114f450d9706799d6164faddbb8bb62b1e28415192153d090dc9",
+      "sha256": "23842bec0893a624f9c2fd2aa7d8407ef4ceab9a0474f62347f2583bd47ee41e",
       "editor_size": [
         1800,
         1059

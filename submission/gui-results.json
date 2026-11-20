@@ -1,13 +1,14 @@
 {
-  "generated_utc": "2026-10-19T18:55:11.528883+00:00",
-  "extension_version": "0.1.3",
-  "method": "Actual native warning visually reviewed from Blender editor screenshots; Cancel/Continue clicked with Blender event simulation, then Ctrl-Z; synthetic saved-rule scene and isolated offline Windows profiles",
+  "generated_utc": "2026-11-20T03:21:05.240188+00:00",
+  "extension_version": "0.1.4",
+  "method": "Native Blender warning visually reviewed in editor screenshots. Cancel and Continue received Blender mouse events. Undo and rule-row edits used native keyboard and mouse input. All profiles and scenes were disposable.",
   "results": [
     {
       "status": "PASS",
-      "blender": "4.2.0",
+      "blender": "4.2.1",
       "platform": "windows-x64",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -40,8 +41,8 @@
       ],
       "images": {
         "warning": {
-          "file": "submission/verification-images/4.2.0/warning.png",
-          "sha256": "644aa01152d013c910db713a6737d1a8a580124c2e9c301a15de088783a4c04f",
+          "file": "submission/verification-images/4.2.1/warning.png",
+          "sha256": "f4e859f1443b53de43a34155b0538025cbebad55e7e2f67c2c7b8cff2941a397",
           "area": [
             0,
             18,
@@ -50,8 +51,8 @@
           ]
         },
         "cancelled": {
-          "file": "submission/verification-images/4.2.0/cancelled.png",
-          "sha256": "8d51d4d34aa734e4d4be604dab4d47fd59942ac0fb894cc606e4b696b947d388",
+          "file": "submission/verification-images/4.2.1/cancelled.png",
+          "sha256": "6c554f42190d51a95cf2452d6a8c062aa4a36ef91ec86a66f0530aa571148f58",
           "area": [
             0,
             18,
@@ -60,8 +61,8 @@
           ]
         },
         "confirmation": {
-          "file": "submission/verification-images/4.2.0/confirmation.png",
-          "sha256": "644aa01152d013c910db713a6737d1a8a580124c2e9c301a15de088783a4c04f",
+          "file": "submission/verification-images/4.2.1/confirmation.png",
+          "sha256": "f4e859f1443b53de43a34155b0538025cbebad55e7e2f67c2c7b8cff2941a397",
           "area": [
             0,
             18,
@@ -70,8 +71,8 @@
           ]
         },
         "continued": {
-          "file": "submission/verification-images/4.2.0/continued.png",
-          "sha256": "121ae8fbd956cb9bd5a14d39186fbdeeeb386a5029606b25bf5ada56ff138ed3",
+          "file": "submission/verification-images/4.2.1/continued.png",
+          "sha256": "9b6a1db438dc09b36c6c0e5c2deae83db36b9e6e24aeaee5ec72a7a30d7820b5",
           "area": [
             0,
             18,
@@ -80,8 +81,8 @@
           ]
         },
         "undo": {
-          "file": "submission/verification-images/4.2.0/undo.png",
-          "sha256": "44c9164898149cdb69841f5021d08c9a85f026c2d92a245f72932a03224ee1a2",
+          "file": "submission/verification-images/4.2.1/undo.png",
+          "sha256": "f0ee01a66c1b269b58e4893bdfb8700d871ff88d84bdf3a951543107daba3a4b",
           "area": [
             0,
             18,
@@ -89,13 +90,15 @@
             1059
           ]
         }
-      }
+      },
+      "undo_input": "native keyboard"
     },
     {
       "status": "PASS",
       "blender": "4.2.23",
       "platform": "windows-x64",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -124,12 +127,40 @@
         {
           "name": "migration_backups_unchanged",
           "status": "PASS"
+        },
+        {
+          "name": "keep_text_select",
+          "status": "PASS"
+        },
+        {
+          "name": "keep_text_edit",
+          "status": "PASS"
+        },
+        {
+          "name": "keep_move_selected",
+          "status": "PASS"
+        },
+        {
+          "name": "keep_remove_selected",
+          "status": "PASS"
+        },
+        {
+          "name": "delete_text_select_cancel_edit",
+          "status": "PASS"
+        },
+        {
+          "name": "assignment_text_select_edit",
+          "status": "PASS"
+        },
+        {
+          "name": "delete_prefix_default",
+          "status": "PASS"
         }
       ],
       "images": {
         "warning": {
           "file": "submission/verification-images/4.2.23/warning.png",
-          "sha256": "b13ce4c6dbada249f0d458994cf3d3d3eaed84f2491944731786bc804f614d43",
+          "sha256": "1eeaefe28984e84e6b2b4f131d5e90017c0c9ed089bed573f371da9ba4a29365",
           "area": [
             0,
             18,
@@ -139,7 +170,7 @@
         },
         "cancelled": {
           "file": "submission/verification-images/4.2.23/cancelled.png",
-          "sha256": "307cd8e0b13f6a07dd6e1293d8ef63527e3f5b349750c35295f0eca5325c5341",
+          "sha256": "7bf94f40ec5dffd163a7cec520a383c70eba8b5a22e20154661de6e83d5822c5",
           "area": [
             0,
             18,
@@ -149,7 +180,7 @@
         },
         "confirmation": {
           "file": "submission/verification-images/4.2.23/confirmation.png",
-          "sha256": "b13ce4c6dbada249f0d458994cf3d3d3eaed84f2491944731786bc804f614d43",
+          "sha256": "1eeaefe28984e84e6b2b4f131d5e90017c0c9ed089bed573f371da9ba4a29365",
           "area": [
             0,
             18,
@@ -159,7 +190,7 @@
         },
         "continued": {
           "file": "submission/verification-images/4.2.23/continued.png",
-          "sha256": "5512b9bbb1b29a3d11e27c0b4b4be3d55e0108451938847aa449358d699a9e73",
+          "sha256": "1ee53924a706ac9e1305863ebddd720c9e79a6b4ff841127d6c4721b6ba05153",
           "area": [
             0,
             18,
@@ -169,7 +200,77 @@
         },
         "undo": {
           "file": "submission/verification-images/4.2.23/undo.png",
-          "sha256": "1bf7557c0cc18859b13f903452a387ad864f879cd0f1d71e71190080ea72fa9d",
+          "sha256": "2f3e5406091b6280d095e169b308cf4074eabf2743ebc641da20cc8f49c7ca8b",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "keep_text_select": {
+          "file": "submission/verification-images/4.2.23/keep_text_select.png",
+          "sha256": "70027e806129c712c779521506818fe337b476bafd09619cf442d8f059bfad41",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "keep_text_edit": {
+          "file": "submission/verification-images/4.2.23/keep_text_edit.png",
+          "sha256": "ce3ace8e21fc67769ec53aea485fff0ead5495d9897a86743409dd7e0afda0d3",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "keep_move_selected": {
+          "file": "submission/verification-images/4.2.23/keep_move_selected.png",
+          "sha256": "b536abe3e4c2c45d9cccc1133e97ad0451c3447b214b24f2642bddcc4fb8e49c",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "keep_remove_selected": {
+          "file": "submission/verification-images/4.2.23/keep_remove_selected.png",
+          "sha256": "a7958e74e84a2e6ca73ee593efe6cc7d961e0b8ee4a294192d4e302c6b55afd2",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "delete_text_select_cancel_edit": {
+          "file": "submission/verification-images/4.2.23/delete_text_select_cancel_edit.png",
+          "sha256": "d32be08c028ac92ed22212fbc9d9702d425e4921c2d1cc5902725641a66e1547",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "assignment_text_select_edit": {
+          "file": "submission/verification-images/4.2.23/assignment_text_select_edit.png",
+          "sha256": "bbccfb03cbb0758c91622016b7cc798f6c969532899313164e3fd99459ccd34f",
+          "area": [
+            0,
+            18,
+            1800,
+            1059
+          ]
+        },
+        "delete_prefix_default": {
+          "file": "submission/verification-images/4.2.23/delete_prefix_default.png",
+          "sha256": "df4cd233fcd3d22ba686fe39c62d817e1000dedc817dd04c9db080ccfcb8e837",
           "area": [
             0,
             18,
@@ -177,13 +278,15 @@
             1059
           ]
         }
-      }
+      },
+      "undo_input": "native keyboard"
     },
     {
       "status": "PASS",
       "blender": "5.2.0",
       "platform": "windows-x64",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "legacy_saved_blend_migration",
@@ -217,7 +320,7 @@
       "images": {
         "warning": {
           "file": "submission/verification-images/5.2.0/warning.png",
-          "sha256": "a240187d1bfb8b9f37729f0fc41d831b53153c4ad7866e0e380235e62135a979",
+          "sha256": "b550c1631b3e3f172758998b83d7255c96f6b57ad6ef911bd197c2b970a9c8e1",
           "area": [
             0,
             19,
@@ -227,7 +330,7 @@
         },
         "cancelled": {
           "file": "submission/verification-images/5.2.0/cancelled.png",
-          "sha256": "411b552a5ca4977c579aa2b0482cbb3b69f2d4c2399c952317f4883aa32dce14",
+          "sha256": "725b7b238ac5c8058cbe3fed8d924479fed8cdd68a0c4ae0755399c97411bcdd",
           "area": [
             0,
             19,
@@ -237,7 +340,7 @@
         },
         "confirmation": {
           "file": "submission/verification-images/5.2.0/confirmation.png",
-          "sha256": "a240187d1bfb8b9f37729f0fc41d831b53153c4ad7866e0e380235e62135a979",
+          "sha256": "b550c1631b3e3f172758998b83d7255c96f6b57ad6ef911bd197c2b970a9c8e1",
           "area": [
             0,
             19,
@@ -247,7 +350,7 @@
         },
         "continued": {
           "file": "submission/verification-images/5.2.0/continued.png",
-          "sha256": "97c0185ffb57ef1827ced1d38716a8c2b58d00a1617b548a2c0d47c3888f71ca",
+          "sha256": "d1d2af436473e095676f89cf5539ba422f54890563580b420c45bb75e4d2689f",
           "area": [
             0,
             19,
@@ -257,7 +360,7 @@
         },
         "undo": {
           "file": "submission/verification-images/5.2.0/undo.png",
-          "sha256": "f714cf3f0b850c00b00c4072de613d98261eddeb0cda9edbce324a68ccd69ff3",
+          "sha256": "4cb7ea29ff8921fae9ca473b66cfb6a12cd6cb1eedc700279db92bdb33faca98",
           "area": [
             0,
             19,
@@ -265,7 +368,8 @@
             1059
           ]
         }
-      }
+      },
+      "undo_input": "native keyboard"
     }
   ]
 }

@@ -1,82 +1,82 @@
 {
-  "workflow_run": "https://github.com/cheinu-mike/vg-rules/actions/runs/39306833907",
+  "workflow_run": "https://github.com/cheinu-mike/vg-rules/actions/runs/44666038856",
   "results": [
     {
       "status": "PASS",
       "platform": "linux-x64",
-      "expected_blender": "4.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "expected_blender": "4.2.1",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
-          "status": "PASS",
-          "seconds": 0.42,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
           "status": "PASS",
           "seconds": 0.39,
           "exit_code": 0
         },
         {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 0.29,
+          "exit_code": 0
+        },
+        {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 14.61,
+          "seconds": 13.32,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.6,
+          "seconds": 0.42,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 14.94,
+          "seconds": 13.59,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.42,
+          "seconds": 0.3,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.53,
+          "seconds": 0.38,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.65,
+          "seconds": 0.48,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.53,
+          "seconds": 0.39,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.52,
+          "seconds": 0.43,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.38,
+          "seconds": 0.27,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
-      "blender": "4.2.0",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
+      "blender": "4.2.1",
       "blender_architecture": "x86_64",
       "installed_checks": [
         "extension install/enable and installed-byte parity",
@@ -94,13 +94,13 @@
       "status": "PASS",
       "platform": "linux-x64",
       "expected_blender": "4.2.23",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 0.36,
+          "seconds": 0.4,
           "exit_code": 0
         },
         {
@@ -112,19 +112,19 @@
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 14.66,
+          "seconds": 13.98,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.59,
+          "seconds": 0.57,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 14.92,
+          "seconds": 14.28,
           "exit_code": 0
         },
         {
@@ -136,102 +136,13 @@
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.55,
+          "seconds": 0.57,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
           "seconds": 0.65,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 0.53,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 0.53,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 0.38,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
-      "blender": "4.2.23",
-      "blender_architecture": "x86_64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property and classes",
-        "disable/re-enable/disable registers and removes classes and Scene property",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "linux-x64",
-      "expected_blender": "5.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 1.45,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 0.46,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 14.06,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 0.6,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 14.22,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 0.48,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
-          "seconds": 0.52,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 0.59,
           "exit_code": 0
         },
         {
@@ -243,17 +154,106 @@
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.5,
+          "seconds": 0.54,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.4,
+          "seconds": 0.39,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
+      "blender": "4.2.23",
+      "blender_architecture": "x86_64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "linux-x64",
+      "expected_blender": "5.2.0",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 1.67,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 0.59,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 14.21,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 0.76,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 14.45,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 0.6,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 0.65,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 0.75,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 0.64,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 0.64,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 0.52,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
       "blender": "5.2.0",
       "blender_architecture": "x86_64",
       "installed_checks": [
@@ -271,79 +271,79 @@
     {
       "status": "PASS",
       "platform": "macos-arm64",
-      "expected_blender": "4.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "expected_blender": "4.2.1",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 1.99,
+          "seconds": 1.82,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.76,
+          "seconds": 1.14,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 15.34,
+          "seconds": 15.03,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 1.24,
+          "seconds": 0.9,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 15.6,
+          "seconds": 14.69,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.83,
+          "seconds": 0.64,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.86,
+          "seconds": 0.61,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 1.5,
+          "seconds": 0.75,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 1.34,
+          "seconds": 0.63,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 1.29,
+          "seconds": 0.61,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.99,
+          "seconds": 0.5,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
-      "blender": "4.2.0",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
+      "blender": "4.2.1",
       "blender_architecture": "arm64",
       "installed_checks": [
         "extension install/enable and installed-byte parity",
@@ -361,37 +361,126 @@
       "status": "PASS",
       "platform": "macos-arm64",
       "expected_blender": "4.2.23",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 2.17,
+          "seconds": 3.53,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 1.29,
+          "seconds": 1.32,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 15.88,
+          "seconds": 16.18,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 1.0,
+          "seconds": 1.75,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 16.18,
+          "seconds": 17.14,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_legacy",
+          "status": "PASS",
+          "seconds": 1.43,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration",
+          "status": "PASS",
+          "seconds": 1.56,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_migration_restart_old",
+          "status": "PASS",
+          "seconds": 2.1,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_update",
+          "status": "PASS",
+          "seconds": 1.95,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_updated_restart_uninstall",
+          "status": "PASS",
+          "seconds": 1.11,
+          "exit_code": 0
+        },
+        {
+          "name": "lifecycle_uninstalled_restart",
+          "status": "PASS",
+          "seconds": 1.14,
+          "exit_code": 0
+        }
+      ],
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
+      "blender": "4.2.23",
+      "blender_architecture": "arm64",
+      "installed_checks": [
+        "extension install/enable and installed-byte parity",
+        "Preview preserves data; regex Keep/Delete and full weights Apply",
+        "JSON preset export/import",
+        "full integration suite in installed extension namespace",
+        "offline flag remains false with Python network entry points blocked",
+        "runtime compliance regressions in installed extension namespace",
+        "disable cleans Scene property and classes",
+        "disable/re-enable/disable registers and removes classes and Scene property",
+        "enable, operations, worker, export and disable with enforced read-only installation"
+      ]
+    },
+    {
+      "status": "PASS",
+      "platform": "macos-arm64",
+      "expected_blender": "5.2.0",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
+      "checks": [
+        {
+          "name": "version",
+          "status": "PASS",
+          "seconds": 2.72,
+          "exit_code": 0
+        },
+        {
+          "name": "official_validation",
+          "status": "PASS",
+          "seconds": 1.08,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_addon",
+          "status": "PASS",
+          "seconds": 15.1,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_runtime",
+          "status": "PASS",
+          "seconds": 1.03,
+          "exit_code": 0
+        },
+        {
+          "name": "verify_extension",
+          "status": "PASS",
+          "seconds": 15.28,
           "exit_code": 0
         },
         {
@@ -403,124 +492,35 @@
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.87,
+          "seconds": 1.01,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.9,
+          "seconds": 1.11,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.88,
+          "seconds": 1.11,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.8,
+          "seconds": 1.09,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.58,
+          "seconds": 1.07,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
-      "blender": "4.2.23",
-      "blender_architecture": "arm64",
-      "installed_checks": [
-        "extension install/enable and installed-byte parity",
-        "Preview preserves data; regex Keep/Delete and full weights Apply",
-        "JSON preset export/import",
-        "full integration suite in installed extension namespace",
-        "offline flag remains false with Python network entry points blocked",
-        "runtime compliance regressions in installed extension namespace",
-        "disable cleans Scene property and classes",
-        "disable/re-enable/disable registers and removes classes and Scene property",
-        "enable, operations, worker, export and disable with enforced read-only installation"
-      ]
-    },
-    {
-      "status": "PASS",
-      "platform": "macos-arm64",
-      "expected_blender": "5.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
-      "checks": [
-        {
-          "name": "version",
-          "status": "PASS",
-          "seconds": 3.2,
-          "exit_code": 0
-        },
-        {
-          "name": "official_validation",
-          "status": "PASS",
-          "seconds": 1.12,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_addon",
-          "status": "PASS",
-          "seconds": 16.5,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_runtime",
-          "status": "PASS",
-          "seconds": 1.27,
-          "exit_code": 0
-        },
-        {
-          "name": "verify_extension",
-          "status": "PASS",
-          "seconds": 16.37,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_legacy",
-          "status": "PASS",
-          "seconds": 1.05,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration",
-          "status": "PASS",
-          "seconds": 1.05,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_migration_restart_old",
-          "status": "PASS",
-          "seconds": 1.24,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_update",
-          "status": "PASS",
-          "seconds": 1.0,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_updated_restart_uninstall",
-          "status": "PASS",
-          "seconds": 1.18,
-          "exit_code": 0
-        },
-        {
-          "name": "lifecycle_uninstalled_restart",
-          "status": "PASS",
-          "seconds": 0.89,
-          "exit_code": 0
-        }
-      ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
       "blender": "5.2.0",
       "blender_architecture": "arm64",
       "installed_checks": [
@@ -538,79 +538,79 @@
     {
       "status": "PASS",
       "platform": "macos-x64",
-      "expected_blender": "4.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "expected_blender": "4.2.1",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 4.32,
+          "seconds": 3.26,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 2.2,
+          "seconds": 1.95,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 21.49,
+          "seconds": 17.13,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 3.56,
+          "seconds": 2.11,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 23.11,
+          "seconds": 17.45,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 2.69,
+          "seconds": 1.79,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 3.22,
+          "seconds": 1.99,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 3.56,
+          "seconds": 2.16,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 2.92,
+          "seconds": 2.04,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 4.12,
+          "seconds": 2.07,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 3.04,
+          "seconds": 1.78,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
-      "blender": "4.2.0",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
+      "blender": "4.2.1",
       "blender_architecture": "x86_64",
       "installed_checks": [
         "extension install/enable and installed-byte parity",
@@ -628,77 +628,77 @@
       "status": "PASS",
       "platform": "macos-x64",
       "expected_blender": "4.2.23",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 3.55,
+          "seconds": 2.85,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 2.65,
+          "seconds": 1.71,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 21.75,
+          "seconds": 16.52,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 4.35,
+          "seconds": 2.0,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 25.98,
+          "seconds": 17.63,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 4.06,
+          "seconds": 2.09,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 3.85,
+          "seconds": 1.97,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 4.4,
+          "seconds": 2.11,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 3.09,
+          "seconds": 1.85,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 3.82,
+          "seconds": 1.91,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 3.07,
+          "seconds": 1.76,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
       "blender": "4.2.23",
       "blender_architecture": "x86_64",
       "installed_checks": [
@@ -716,79 +716,79 @@
     {
       "status": "PASS",
       "platform": "windows-x64",
-      "expected_blender": "4.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "expected_blender": "4.2.1",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 2.91,
+          "seconds": 3.67,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.75,
+          "seconds": 0.55,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 17.58,
+          "seconds": 15.36,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.98,
+          "seconds": 0.72,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 24.7,
+          "seconds": 21.81,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.59,
+          "seconds": 0.47,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.81,
+          "seconds": 0.62,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.92,
+          "seconds": 0.73,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.78,
+          "seconds": 0.61,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.77,
+          "seconds": 0.59,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.56,
+          "seconds": 0.55,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
-      "blender": "4.2.0",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
+      "blender": "4.2.1",
       "blender_architecture": "AMD64",
       "installed_checks": [
         "extension install/enable and installed-byte parity",
@@ -806,49 +806,49 @@
       "status": "PASS",
       "platform": "windows-x64",
       "expected_blender": "4.2.23",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 3.8,
+          "seconds": 4.25,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.72,
+          "seconds": 0.64,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 16.62,
+          "seconds": 15.81,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.8,
+          "seconds": 0.78,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 24.38,
+          "seconds": 27.14,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.5,
+          "seconds": 0.48,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.7,
+          "seconds": 0.69,
           "exit_code": 0
         },
         {
@@ -860,7 +860,7 @@
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.7,
+          "seconds": 0.64,
           "exit_code": 0
         },
         {
@@ -872,11 +872,11 @@
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.49,
+          "seconds": 0.45,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
       "blender": "4.2.23",
       "blender_architecture": "AMD64",
       "installed_checks": [
@@ -895,77 +895,77 @@
       "status": "PASS",
       "platform": "windows-x64",
       "expected_blender": "5.2.0",
-      "archive_sha256": "a9d019ec4d52cf8bbd29afda6df79ecd636088e423b633535c92caac680a51af",
-      "legacy_sha256": "2cd19608f64be6248fa02fa7cc24ce07b40d89771b4f0ad3e8ab36b033a37dc6",
+      "archive_sha256": "6f80769a0cb9ddd31304034f5befc7be89b68041ec7707cee8dd1669b402f481",
+      "legacy_sha256": "ef4eb88f5538c611992bbd4bf878c2041016ce6aee5dae2b6e41f8071a44e871",
       "checks": [
         {
           "name": "version",
           "status": "PASS",
-          "seconds": 4.64,
+          "seconds": 3.69,
           "exit_code": 0
         },
         {
           "name": "official_validation",
           "status": "PASS",
-          "seconds": 0.73,
+          "seconds": 0.98,
           "exit_code": 0
         },
         {
           "name": "verify_addon",
           "status": "PASS",
-          "seconds": 16.7,
+          "seconds": 17.56,
           "exit_code": 0
         },
         {
           "name": "verify_runtime",
           "status": "PASS",
-          "seconds": 0.94,
+          "seconds": 1.28,
           "exit_code": 0
         },
         {
           "name": "verify_extension",
           "status": "PASS",
-          "seconds": 27.81,
+          "seconds": 23.45,
           "exit_code": 0
         },
         {
           "name": "lifecycle_legacy",
           "status": "PASS",
-          "seconds": 0.69,
+          "seconds": 0.92,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration",
           "status": "PASS",
-          "seconds": 0.83,
+          "seconds": 1.06,
           "exit_code": 0
         },
         {
           "name": "lifecycle_migration_restart_old",
           "status": "PASS",
-          "seconds": 0.95,
+          "seconds": 1.24,
           "exit_code": 0
         },
         {
           "name": "lifecycle_update",
           "status": "PASS",
-          "seconds": 0.83,
+          "seconds": 1.09,
           "exit_code": 0
         },
         {
           "name": "lifecycle_updated_restart_uninstall",
           "status": "PASS",
-          "seconds": 0.8,
+          "seconds": 1.05,
           "exit_code": 0
         },
         {
           "name": "lifecycle_uninstalled_restart",
           "status": "PASS",
-          "seconds": 0.66,
+          "seconds": 0.83,
           "exit_code": 0
         }
       ],
-      "github_sha": "ab82ee5563f4f554d289fa771a4092e56fdc1fc8",
+      "github_sha": "3f8afdb3ef19eb9ff6a44480eadfaecb04c89861",
       "blender": "5.2.0",
       "blender_architecture": "AMD64",
       "installed_checks": [

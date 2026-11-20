@@ -8,25 +8,15 @@ This is the canonical development repository for VG Rules.
 - Assign all vertices to groups at weight 1.0, with optional side and Mirror settings.
 - Save rules in the `.blend` file and exchange JSON presets.
 
-Development build **0.1.4**. Requires Blender **4.2.1 or later**. This build is for
-testing and has not been published or submitted for Blender platform review.
-Current source includes the standalone regex worker, list-row selection fixes
-and Delete Prefix as the first and default Delete match type.
-Both local 0.1.4 installers were rebuilt from this branch on 2026-11-15 with
-these changes. Earlier 0.1.4 ZIPs are preserved under `dist/history/0.1.4/`.
-See [Build](#build), [Verification](docs/verification.md) and the hashes in
-[CHANGELOG](CHANGELOG.md).
-The rebuilt archives passed local Windows x64 testing with the installed
-**Blender 5.3.0** on 2026-11-16: all eleven headless stages and native GUI
-Cancel/Continue, Undo and saved-rule transfer checks. See the
-[Blender 5.3 verification report](docs/blender-5.3.md) for exact scope and limits.
-The revised candidate requires all eleven hosted platform/version combinations,
-local Windows GUI checks and the submission-readiness gate to pass against its
-final installer hashes. See [CHANGELOG](CHANGELOG.md). The existing
-[historical 0.1.3 compliance report](submission/COMPLIANCE.md) records earlier archive hashes;
-it does not verify this revised candidate.
-The published release remains 0.1.2; its submission evidence is preserved in
-[history](submission/history/0.1.2/COMPLIANCE.md).
+Development build **0.1.4** requires Blender **4.2.1 or later**. It includes the
+standalone regex worker, list-row selection fixes and Delete Prefix as the first
+and default Delete match type. The final candidate passed all eleven hosted
+checks and three Windows GUI runs. See the [compliance report](submission/COMPLIANCE.md)
+and installer hashes in the [changelog](CHANGELOG.md).
+
+The [Blender 5.3 verification report](docs/blender-5.3.md) records additional
+Windows x64 checks of the earlier 0.1.4 rebuild. The published release remains
+0.1.2, with [archived submission evidence](submission/history/0.1.2/COMPLIANCE.md).
 Blender 5.2.0 on macOS Intel remains unsupported because no official Intel build exists.
 
 Public guides: [Installation](docs/installation.md), [Usage](docs/usage.md),
@@ -137,7 +127,7 @@ generated meshes, presets and scenes. It runs the full source and installed ZIP
 suites with enforced read-only permissions, then separate processes for installer switches,
 update, restart and uninstall. GitHub Actions tests eleven required platform/version
 pairs using one candidate archive. See [Verification](docs/verification.md), the
-[historical compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).
+[compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).
 Missing, failed or stale results block submission readiness.
 
 To repeat the additional local Blender 5.3 checks on Windows:
@@ -163,7 +153,5 @@ Copyright (C) 2026 Blank Glyph. Licensed under **GPL-3.0-or-later**. Editable
 Python source, the copyright notice and complete GPL text are included in both
 installers. See [LICENSE](LICENSE) and [NOTICE](vg_rules/NOTICE.txt).
 
-The prepared [listing text](submission/LISTING.md) describes the current source.
-The existing [thumbnail, screenshots and reports](submission/README.md) belong to
-earlier archives. Refresh Preview/Apply captures from the final packaged extension
-before submitting the combined fixes; keep the existing cube thumbnail.
+The [submission materials](submission/README.md) include the listing, the cube
+thumbnail and Preview/Apply captures taken from the final packaged extension.

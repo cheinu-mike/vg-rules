@@ -1,10 +1,10 @@
 VG RULES - BLENDER EXTENSION
-Version 0.1.3 | Blank Glyph | Requires Blender 4.2 or later
+Version 0.1.4 | Blank Glyph | Requires Blender 4.2.1 or later
 Copyright (C) 2026 Blank Glyph. SPDX-License-Identifier: GPL-3.0-or-later.
 Editable Python source, NOTICE.txt and the complete GPL in COPYING.txt are included.
 
 INSTALL
-1. Keep vg_rules-0.1.3.zip compressed.
+1. Keep vg_rules-0.1.4.zip compressed.
 2. Preferences > Get Extensions > top-right menu > Install from Disk.
 3. Choose the extension ZIP and enable VG Rules.
 4. In the 3D Viewport, press N and open the VG Rules tab.
@@ -15,13 +15,19 @@ FIRST RULE
 1. Save current work, then start a new General scene with the default Cube.
 2. Select the Cube in Object Mode. In VG Rules, click Add Selected.
 3. Leave Keep and Delete empty. Under Full Weights - All Vertices, click +.
-4. Enter DemoWeight, choose Exact Name and leave Mirror Weights unchecked.
+4. Double-click the assignment name to enter DemoWeight. Choose Exact Name
+   and leave Mirror Weights unchecked.
 5. Preview Rule: expect 0 deletions, 1 assignment and 0 warnings.
    Preview does not create groups or change weights.
 6. Save a separate .blend copy, then Apply Rule. DemoWeight is created with
    weight 1.0 on all 8 Cube vertices. Results reports Applied.
 7. Inspect DemoWeight under Object Data Properties > Vertex Groups.
    Return to Object Mode after inspection before running rules again.
+
+SELECT AND EDIT LIST ROWS
+Click Keep/Delete pattern text or an assignment name to select its row.
+Double-click to edit the text; that row stays selected while editing.
+The up/down arrows and Remove button act on the selected row.
 
 MATCHING AND SCENE TARGETS
 Keep and Delete support Exact, Prefix, Suffix, Contains and Python Regex.
@@ -58,8 +64,9 @@ Leave Edit Mode on every user of a shared mesh before running rules.
 REGEX LIMITS
 Use Python regex syntax. Limits are 4096 characters per pattern and 64 patterns
 per Keep/Delete section. Matching uses Blender's bundled Python with a one-second
-worker deadline per rule. Invalid, slow, missing or failed workers skip the affected
-rule before mutation. Simplify regex or use literal filters; no extra package is needed.
+timeout per worker request. Startup and batches of rules can add time.
+Invalid, slow, missing or failed workers skip the affected rule before mutation.
+Simplify regex or use literal filters; no extra package is needed.
 
 PRESETS AND RECOVERY
 Rules save in the .blend file. Export JSON before changing installations or importing.
@@ -86,9 +93,11 @@ Duplicate/shared batch targets: disable extras or run Preview Rule/Apply Rule se
 Read-only target: use an editable local object and mesh. Read-only installation folders
 are supported; export presets to a writable user folder outside the installation.
 Regex worker warning: use an official Blender distribution with bundled Python;
-check that installation's interpreter exists. Do not install system Python packages.
+reinstall the complete VG Rules ZIP if regex_worker.py is missing. Check that the
+worker and interpreter are present/readable. No system Python packages are needed.
 Registration conflict: disable the other VG Rules, remove duplicates, then restart.
 Support: https://github.com/cheinu-mike/vg-rules/issues
 Include OS, Blender/VG Rules versions, installer type, Results text and reproduction
 steps. Use synthetic examples; do not post personal models or confidential projects.
-Docs: https://github.com/cheinu-mike/vg-rules/tree/main/docs
+Development build docs:
+https://github.com/cheinu-mike/vg-rules/tree/main/docs
