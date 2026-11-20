@@ -41,6 +41,11 @@ case unless that section's **Case Sensitive** box is enabled. Any Keep match pro
 against every Delete filter. Keep by itself deletes nothing. Blank rows and invalid
 patterns need correction or removal before that rule can run.
 
+New Keep and Delete rows start with **Prefix**. In the 2026-11-15 rebuild,
+Delete Prefix also appears first in its menu. Explicit match types in existing
+saved rules are preserved. An older row with no stored Delete match type adopts
+the new Prefix default; inspect saved rules and Preview before Apply.
+
 For a small cleanup example, keep prefix `DEF-` and exact name `cloth_pin`; delete
 prefix `MCH-` and contained text `_backup`. Only explicit unprotected matches delete.
 

@@ -48,18 +48,22 @@ Install from Disk, enable VG Rules, then open its 3D Viewport sidebar tab with N
 Use one installation at a time. Export JSON and save a `.blend` copy before updating
 or migrating. **Fully quit and restart Blender after replacing an installation.**
 
-[Installation](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/installation.md) ·
-[Usage](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/usage.md) ·
-[Migration](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/migration.md) ·
-[Troubleshooting](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/troubleshooting.md) ·
+[Installation](https://github.com/cheinu-mike/vg-rules/blob/main/docs/installation.md) ·
+[Usage](https://github.com/cheinu-mike/vg-rules/blob/main/docs/usage.md) ·
+[Migration](https://github.com/cheinu-mike/vg-rules/blob/main/docs/migration.md) ·
+[Troubleshooting](https://github.com/cheinu-mike/vg-rules/blob/main/docs/troubleshooting.md) ·
 [Support: GitHub Issues](https://github.com/cheinu-mike/vg-rules/issues)
 
 Required verification targets Windows x64, Linux x64 and macOS Apple Silicon with
 Blender 4.2.1, 4.2.23 and 5.2.0, and macOS Intel with 4.2.1 and 4.2.23.
 Verification of the 0.1.4 candidate is pending; the linked results cover
 earlier archive hashes.
+Additional local Windows x64 testing with Blender 5.3.0 passed for the rebuilt
+0.1.4 archives on 2026-11-16; see the
+[5.3 verification report](https://github.com/cheinu-mike/vg-rules/blob/main/docs/blender-5.3.md).
+Blender 5.3 on Linux/macOS has not been verified.
 Blender 5.2.0 has no official macOS Intel build and is unsupported there.
-[Verification requirements and current scope](https://github.com/cheinu-mike/vg-rules/blob/blender-review-fixes/docs/verification.md).
+[Verification requirements and current scope](https://github.com/cheinu-mike/vg-rules/blob/main/docs/verification.md).
 The runtime needs only file permission for presets;
 it has no external dependencies, network calls, registration requirement or custom updater.
 

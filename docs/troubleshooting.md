@@ -39,3 +39,10 @@ cover Windows x64, Linux x64 and macOS Apple Silicon with Blender 4.2.1,
 macOS is unsupported because there is no official build. Local GUI checks cover
 Windows only. Verification of the revised candidate is pending. The existing
 [results and scope](../submission/COMPLIANCE.md) cover earlier archive hashes.
+
+The latest rebuilt 0.1.4 archives separately passed local Windows x64 checks
+with Blender 5.3.0 on 2026-11-16, including native GUI Undo. See the
+[5.3 report](blender-5.3.md) for tested features, hashes and harness limitations.
+Linux/macOS 5.3 and the final candidate's full hosted release matrix remain
+unverified. Include the installer hash when reporting a 0.1.4 issue, since
+several development rebuilds share that version number.

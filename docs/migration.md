@@ -54,6 +54,18 @@ Preview/Apply refresh binding metadata when the rule is used. Preset import and
 export validate their data; Preview/Apply check targets and rule values before
 planning mesh changes. These checks run for the requested operation, not on file load.
 
+## Delete defaults in the 0.1.4 rebuild
+
+The 2026-11-15 0.1.4 rebuild changes the default for new Delete rows to Prefix
+and places it first in the menu. Explicitly saved match types keep their original
+meaning. Rows with no explicitly stored Delete match type use Prefix after the
+update. Check each match type and Preview before Apply.
+
+Local Windows x64 tests on Blender 5.3.0 verified saved `.blend`/JSON transfer
+between the classic add-on and extension, update, restart and uninstall. See
+the [5.3 verification report](blender-5.3.md). Use the same backup and restart
+procedure when moving to Blender 5.3.
+
 ## Support
 
 If an update or installer switch fails, reopen the saved copy and report through

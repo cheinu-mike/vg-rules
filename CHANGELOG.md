@@ -2,6 +2,46 @@
 
 ## 0.1.4 (2026-10-29, development build)
 
+Blender 5.3 local verification and documentation (2026-11-16):
+
+- Verify the 2026-11-15 rebuilt archives with the installed Windows x64 Blender
+  5.3.0, build `02f0899d78e3`. All 25 packaging/release-gate tests passed,
+  including real validator rejection. All eleven headless stages passed:
+  official validation, source and installed-extension integration/runtime,
+  enforced read-only/offline operation, installer switches, update, restart
+  and uninstall.
+- Pass all 14 packaged-extension GUI checkpoints: saved `.blend`/JSON transfer,
+  shared-data warning review, Cancel/Continue, native Ctrl-Z restoration,
+  Keep/Delete/assignment text selection and editing, edit cancellation,
+  Move/Remove and Delete Prefix default/menu order.
+- Extend the runner's exact-version option to 5.3.0. Add persistent regressions
+  for Delete Prefix and saved enum numbers. Add native Undo and list-check
+  modes to the GUI harness, with data assertions and portable screenshots.
+- Refresh README, public guides and submission indexes with the local 5.3
+  scope, reproduction commands and [detailed report](docs/blender-5.3.md).
+  No add-on runtime, packaged quick start or installer changes were required.
+
+Documentation/static checks: 60 local Markdown links and anchors resolved;
+Python syntax and exact source parity of both existing archives passed.
+
+Verified archive hashes remain:
+
+- Extension SHA-256: `543593e6f6aba5e6ecb70d20bab2add80d0d35a25129af96b264733ce4d62f42`
+- Classic add-on SHA-256: `6dd30eb3215446e0d2c0d38691d45b27e0c1fadea6c6d6481f575b6a71b1eead`
+
+Portable evidence is stored separately under ignored
+`tests/.artifacts/blender-5.3-2026-11-16/`. The initial sandboxed write-denial
+probe failed; complete runs outside the sandbox passed. Simulated Ctrl-Z failed
+to restore the fixture; after disabling event-simulation mode, native Ctrl-Z
+passed twice. These harness attempts are preserved with the successful results.
+
+Verification limits: Windows x64 Blender 5.3.0 only; no Linux/macOS 5.3 claim.
+The hosted matrix and release policy remain unchanged. All eleven required
+hosted combinations, three pinned Windows GUI runs and refreshed final-ZIP
+submission captures still require current-hash evidence. Submission readiness
+remains blocked and the published release remains 0.1.2. Historical installers
+and submission materials remain preserved.
+
 Delete rule default update (2026-11-15):
 
 - Make Delete Prefix the default for new Delete rows and place it above Delete

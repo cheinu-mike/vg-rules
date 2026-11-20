@@ -14,9 +14,13 @@ Both local installers were rebuilt on 2026-11-15 with those fixes and the Delete
 Prefix default/menu order update; verify their hashes against
 [CHANGELOG](../CHANGELOG.md) before checking the combined candidate.
 
-The development listing and quick start link to guides on `blender-review-fixes`
-so reviewers see documentation matching this source. When publishing, make those
-guides available on the release branch and update the links accordingly.
+The rebuilt archives passed additional local Windows x64 testing with Blender
+5.3.0 on 2026-11-16. See the [5.3 report](../docs/blender-5.3.md). Its logs and
+screenshots are stored separately under ignored `tests/.artifacts/`; they do not
+replace the historical materials below or satisfy the eleven-pair hosted gate.
+
+The listing and bundled quick start link to the guides on the canonical `main`
+branch.
 
 | Material | Use |
 | --- | --- |

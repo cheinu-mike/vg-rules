@@ -16,6 +16,10 @@ Both local 0.1.4 installers were rebuilt from this branch on 2026-11-15 with
 these changes. Earlier 0.1.4 ZIPs are preserved under `dist/history/0.1.4/`.
 See [Build](#build), [Verification](docs/verification.md) and the hashes in
 [CHANGELOG](CHANGELOG.md).
+The rebuilt archives passed local Windows x64 testing with the installed
+**Blender 5.3.0** on 2026-11-16: all eleven headless stages and native GUI
+Cancel/Continue, Undo and saved-rule transfer checks. See the
+[Blender 5.3 verification report](docs/blender-5.3.md) for exact scope and limits.
 The revised candidate requires all eleven hosted platform/version combinations,
 local Windows GUI checks and the submission-readiness gate to pass against its
 final installer hashes. See [CHANGELOG](CHANGELOG.md). The existing
@@ -135,6 +139,19 @@ update, restart and uninstall. GitHub Actions tests eleven required platform/ver
 pairs using one candidate archive. See [Verification](docs/verification.md), the
 [historical compliance report](submission/COMPLIANCE.md) and [CHANGELOG](CHANGELOG.md).
 Missing, failed or stale results block submission readiness.
+
+To repeat the additional local Blender 5.3 checks on Windows:
+
+```powershell
+$env:VGR_TEST_BLENDER = "C:\Program Files\Blender Foundation\Blender 5.3\blender.exe"
+python -B -m unittest discover -s tests -p "test_*.py"
+python -B tests/run_blender.py --blender "$env:VGR_TEST_BLENDER" --expect-version 5.3.0 --output-dir tests/.artifacts/blender-5.3/headless
+python -B tests/gui_checks.py --blender "$env:VGR_TEST_BLENDER" --list-checks --output-dir tests/.artifacts/blender-5.3/gui
+```
+
+The GUI run requires visual review and native input at its checkpoints; follow
+[Verification](docs/verification.md). These local checks supplement the pinned
+hosted release matrix; they do not replace it.
 
 ## Support and license
 

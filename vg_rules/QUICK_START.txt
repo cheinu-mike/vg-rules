@@ -100,4 +100,4 @@ Support: https://github.com/cheinu-mike/vg-rules/issues
 Include OS, Blender/VG Rules versions, installer type, Results text and reproduction
 steps. Use synthetic examples; do not post personal models or confidential projects.
 Development build docs:
-https://github.com/cheinu-mike/vg-rules/tree/blender-review-fixes/docs
+https://github.com/cheinu-mike/vg-rules/tree/main/docs

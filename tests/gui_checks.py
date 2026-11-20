@@ -8,6 +8,11 @@ command.json in the printed evidence directory: {"action": "cancel" or
 "continue", "x": window_x, "y": window_y, "visual_review": true}.
 Coordinates use Blender's bottom-left window origin. Only this test session
 and its disposable profile are changed. Logs/screenshots persist as evidence.
+With --native-undo, send Ctrl-Z to the viewport using the native keyboard, then
+provide {"action": "undo", "visual_review": true} to verify the resulting data.
+With --list-checks, follow each native list-edit instruction in waiting.json,
+then provide {"action": "lists", "visual_review": true}; data is asserted after
+each checkpoint. This option also enables --native-undo.
 """
 
 import argparse
@@ -36,6 +41,10 @@ def launch():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--blender', type=Path, required=True)
     parser.add_argument('--output-dir', type=Path, required=True)
+    parser.add_argument('--native-undo', action='store_true',
+                        help='Wait for native Ctrl-Z instead of simulating its key events')
+    parser.add_argument('--list-checks', action='store_true',
+                        help='Also verify native list selection/editing and Delete defaults')
     args = parser.parse_args()
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -51,6 +60,10 @@ def launch():
         profile = run / 'profile'
         env = environment(profile, run, args)
         env.update(VGR_GUI_OUTPUT=str(output), VGR_LIFECYCLE_PHASE='legacy')
+        if args.native_undo or args.list_checks:
+            env['VGR_GUI_NATIVE_UNDO'] = '1'
+        if args.list_checks:
+            env['VGR_GUI_LIST_CHECKS'] = '1'
         options = {'creationflags': subprocess.CREATE_NO_WINDOW} if os.name == 'nt' else {}
         fixture = subprocess.run([str(args.blender), '--background', '--factory-startup', '--offline-mode',
                                   '--python-exit-code', '1', '--python', str(ROOT / 'tests/verify_lifecycle.py')],
@@ -71,7 +84,8 @@ def launch():
         print(f'GUI evidence and dialog command directory: {output}', flush=True)
         with (output / 'stdout.txt').open('w', encoding='utf-8') as stdout, \
              (output / 'stderr.txt').open('w', encoding='utf-8') as stderr:
-            result = subprocess.run(command, cwd=profile, env=env, stdout=stdout, stderr=stderr, timeout=300, **options)
+            result = subprocess.run(command, cwd=profile, env=env, stdout=stdout, stderr=stderr,
+                                    timeout=900 if args.list_checks else 300, **options)
         if result.returncode or not (output / 'result.json').exists():
             raise RuntimeError(f'GUI checks failed; see {output}')
         report = json.loads((output / 'result.json').read_text())
@@ -236,6 +250,12 @@ def inside():
         command = json.loads(path.read_text())
         path.unlink()
         assert command['action'] == session['expected_action'] and command['visual_review']
+        if command['action'] == 'undo':
+            later(undone)
+            return
+        if command['action'] == 'lists':
+            later(verify_list_step)
+            return
         x, y = command['x'], command['y']
         bpy.context.window.event_simulate(type='MOUSEMOVE', value='NOTHING', x=x, y=y)
         bpy.context.window.event_simulate(type='LEFTMOUSE', value='PRESS', x=x, y=y)
@@ -271,7 +291,16 @@ def inside():
         check('continue_applies_confirmed_changes')
         capture('continued')
         bpy.context.window.event_simulate(type='MOUSEMOVE', value='NOTHING', x=550, y=600)
-        later(undo_key, 0.5)
+        if os.environ.get('VGR_GUI_NATIVE_UNDO') == '1':
+            # Event simulation ignores OS input until explicitly disabled.
+            bpy.app.use_event_simulate = False
+            session['expected_action'] = 'undo'
+            report['undo_input'] = 'native keyboard'
+            (output / 'waiting.json').write_text(json.dumps({'action': 'undo'}, indent=2), encoding='utf-8')
+            later(poll_command, 0.3)
+        else:
+            report['undo_input'] = 'event_simulate'
+            later(undo_key, 0.5)
 
     def undo_key():
         bpy.context.window.event_simulate(type='Z', value='PRESS', ctrl=True)
@@ -279,15 +308,85 @@ def inside():
         later(undone, 2)
 
     def undone():
+        capture('undo')
+        (output / 'undo-state.json').write_text(json.dumps({
+            'before': session['before'], 'after': snapshot(),
+            'operators': [op.bl_idname for op in bpy.context.window_manager.operators],
+        }, indent=2), encoding='utf-8')
         assert snapshot() == session['before'], 'Undo must restore every shared user and modifier'
         check('undo_restores_groups_weights_modifiers')
         assert digest(profile / 'saved_rules.blend') == original['blend_sha256']
         assert digest(profile / 'saved_rules.json') == original['json_sha256']
         check('migration_backups_unchanged')
-        capture('undo')
+        if os.environ.get('VGR_GUI_LIST_CHECKS') == '1':
+            later(prepare_lists)
+        else:
+            finish()
+
+    def finish():
         report['status'] = 'PASS'
         (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
         bpy.ops.wm.quit_blender()
+
+    list_steps = (
+        ('keep_text_select', 'Click Beta Keep text once.'),
+        ('keep_text_edit', 'Double-click Beta Keep, replace it with EditedKeep, press Enter.'),
+        ('keep_move_selected', 'Click the Keep up arrow to move EditedKeep above Alpha Keep.'),
+        ('keep_remove_selected', 'Click the Keep minus button to remove EditedKeep.'),
+        ('delete_text_select_cancel_edit', 'Double-click Beta Delete, type a replacement, then Escape.'),
+        ('assignment_text_select_edit', 'Double-click Beta Weight, replace it with EditedWeight, press Enter.'),
+        ('delete_prefix_default', 'Click the Delete plus button. Inspect its menu: Delete Prefix must be first and selected, then dismiss it.'),
+    )
+
+    def prepare_lists():
+        addon = sys.modules[module_name]
+        addon.load_rules(bpy.context.scene, {session['target_name']: {
+            'keep_exact': ['Alpha Keep', 'Beta Keep'],
+            'delete_exact': ['Alpha Delete', 'Beta Delete'],
+            'assign_all_vertices': ['Alpha Weight', 'Beta Weight'],
+        }})
+        rule = addon.active_rule(bpy.context.scene)
+        rule.keep_pattern_index = rule.delete_pattern_index = rule.assignment_index = 0
+        session['list_step'] = 0
+        wait_list_step()
+
+    def wait_list_step():
+        name, instruction = list_steps[session['list_step']]
+        session['expected_action'] = 'lists'
+        (output / 'waiting.json').write_text(json.dumps({
+            'action': 'lists', 'check': name, 'instruction': instruction,
+        }, indent=2), encoding='utf-8')
+        later(poll_command, 0.3)
+
+    def verify_list_step():
+        rule = sys.modules[module_name].active_rule(bpy.context.scene)
+        step = session['list_step']
+        if step == 0:
+            assert rule.keep_pattern_index == 1
+        elif step == 1:
+            assert rule.keep_pattern_index == 1 and rule.keep_patterns[1].value == 'EditedKeep'
+            assert rule.keep_patterns[0].value == 'Alpha Keep'
+        elif step == 2:
+            assert rule.keep_pattern_index == 0
+            assert [p.value for p in rule.keep_patterns] == ['EditedKeep', 'Alpha Keep']
+        elif step == 3:
+            assert [p.value for p in rule.keep_patterns] == ['Alpha Keep']
+        elif step == 4:
+            assert rule.delete_pattern_index == 1
+            assert [p.value for p in rule.delete_patterns] == ['Alpha Delete', 'Beta Delete']
+        elif step == 5:
+            assert rule.assignment_index == 1
+            assert [p.group_name for p in rule.assignments] == ['Alpha Weight', 'EditedWeight']
+        elif step == 6:
+            assert len(rule.delete_patterns) == 3 and rule.delete_pattern_index == 2
+            assert rule.delete_patterns[2].kind == 'delete_prefixes'
+            items = sys.modules[module_name].VGR_DeletePattern.bl_rna.properties['kind'].enum_items
+            assert next(iter(items)).identifier == 'delete_prefixes'
+        name, _ = list_steps[step]
+        check(name)
+        capture(name)
+        session['list_step'] += 1
+        wait_list_step() if session['list_step'] < len(list_steps) else finish()
 
     later(prepare, 3)
 

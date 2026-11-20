@@ -501,9 +501,16 @@ addon.load_rules(bpy.context.scene, {obj.name: {}})
 rule = addon.active_rule(bpy.context.scene)
 assert {item.identifier for item in addon.VGR_KeepPattern.bl_rna.properties["kind"].enum_items} == set(addon.engine.KEEP_KEYS)
 assert {item.identifier for item in addon.VGR_DeletePattern.bl_rna.properties["kind"].enum_items} == set(addon.engine.DELETE_KEYS)
+delete_menu = addon.VGR_DeletePattern.bl_rna.properties["kind"]
+assert delete_menu.default == "delete_prefixes"
+assert [(item.identifier, item.value) for item in delete_menu.enum_items] == [
+    ("delete_prefixes", 1), ("delete_exact", 0), ("delete_contains", 2),
+    ("delete_suffixes", 3), ("delete_regex", 4),
+], "Menu order must preserve the enum numbers stored in existing .blend files"
 bpy.ops.vgr.edit_list(list_name='KEEP', action='ADD')
 rule.keep_patterns[0].value = "DEF-"
 bpy.ops.vgr.edit_list(list_name='DELETE', action='ADD')
+assert rule.delete_patterns[0].kind == "delete_prefixes"
 rule.delete_patterns[0].value = "Shell"
 bpy.ops.vgr.edit_list(list_name='KEEP', action='ADD')
 rule.keep_patterns[1].kind, rule.keep_patterns[1].value = "keep_exact", "Exact Group"
